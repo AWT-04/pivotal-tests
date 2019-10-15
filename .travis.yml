@@ -9,7 +9,7 @@ before_script:
   - export PATH=$GRADLE_HOME/bin:$PATH
 addons:
   sonarcloud:
-    organization: awt04
+    organization: awt-04
     token:
       secure: $SONAR_TOKEN
 script:
