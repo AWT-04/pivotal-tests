@@ -1,0 +1,28 @@
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
+    compile group: 'io.cucumber', name: 'cucumber-java', version: '4.8.0'
+    compile group: 'io.cucumber', name: 'cucumber-testng', version: '4.8.0'
+}
+
+// Checkstyle configuration
+checkstyle {
+    toolVersion = '8.23'
+}
+
+test {
+    useTestNG()
+    testLogging {
+        events 'PASSED', 'STARTED', 'FAILED', 'SKIPPED'
+    }
+}
