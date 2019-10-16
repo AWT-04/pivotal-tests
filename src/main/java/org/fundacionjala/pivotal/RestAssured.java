@@ -17,16 +17,22 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Rest assured initial framework
+ * Rest assured initial framework.
  *
  * @author Andy Bazualdo
  * @version 1.0
  */
 public class RestAssured {
     /**
-     * The method load a config.json file and return Request specification
-     * @return returns a RequestSpecification object
-     * @throws IOException throws input /output exception
+     * The method load a config.json file and return Request specification.
+     * @return returns a RequestSpecification object.
+     * @throws IOException throws input /output exception.
+     */
+    /**
+     * The method load a config.json file and return Request specification.
+     * @return returns a RequestSpecification object.
+     * @throws IOException throws input /output exception.
+     * @throws ParseException throws parse exception.
      */
     public RequestSpecification getRequestSpecification() throws IOException, ParseException {
         JSONParser parser = new JSONParser();
@@ -35,7 +41,7 @@ public class RestAssured {
             Object obj = null;
             obj = parser.parse(new FileReader("./configJson/config.json"));
 
-        JSONObject jsonObject = (JSONObject)obj;
+        JSONObject jsonObject = (JSONObject) obj;
         //Reading the String
         String token = (String) jsonObject.get("x-trackerToken");
         requestSpecification =  new io.restassured.builder.RequestSpecBuilder()

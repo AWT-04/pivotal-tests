@@ -1,6 +1,5 @@
 package org.fundacionjala.pivotal;
 
-import io.cucumber.java.Before;
 import io.restassured.response.Response;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
@@ -20,7 +19,7 @@ public class Test2 {
     }
 
     @Test
-    public void GetProjectsWithSpecifications() throws IOException, ParseException {
+    public void getProjectsWithSpecifications() throws IOException, ParseException {
         setForTest();
         Assert.assertEquals(this.response.jsonPath().getString("name"), "AWT04");
     }
