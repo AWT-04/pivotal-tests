@@ -28,10 +28,10 @@ public class RestAssured {
      * @return returns a RequestSpecification object
      * @throws IOException throws input /output exception
      */
-    public RequestSpecification getRequestSpecification() throws IOException {
+    public RequestSpecification getRequestSpecification() throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         RequestSpecification requestSpecification = null;
-        try {
+
             Object obj = null;
             obj = parser.parse(new FileReader("./configJson/config.json"));
 
@@ -44,9 +44,6 @@ public class RestAssured {
                 .setContentType(io.restassured.http.ContentType.JSON)
                 .build();
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         return requestSpecification;
     }
 }

@@ -1,6 +1,7 @@
 package org.fundacionjala.pivotal;
 
 import io.restassured.response.Response;
+import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -18,13 +19,14 @@ public class Test2 {
             response = given(restAssured.getRequestSpecification())
                         .when()
                         .get("/projects/2406139");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | ParseException e) {
+            System.out.println(e.getMessage());
         }
+
     }
 
     @Test
-    public void test_Pivotal_Tracker_GetProjectsWithSpecifications() {
+    public void GetProjectsWithSpecifications() {
         Assert.assertEquals(this.response.jsonPath().getString("name"), "AWT04");
     }
 }
