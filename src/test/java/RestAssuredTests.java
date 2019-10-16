@@ -1,6 +1,4 @@
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
@@ -21,7 +19,7 @@ public class RestAssuredTests {
                 and().
                 contentType(ContentType.JSON).
                 and().
-                body("name", equalTo("AWT")).
+                body("name", equalTo("New name from Rest Assured")).
                 and().
                 body("iteration_length", equalTo(1))
         ;
@@ -92,12 +90,6 @@ public class RestAssuredTests {
                 statusCode(200);
     }
 
-
-
-
-
-
-
     @Test
     public void UpdateProject() {
         String token = "bfb2dcd6dd5650981b0147da1f9301d1";
@@ -122,5 +114,18 @@ public class RestAssuredTests {
         then().
         assertThat().
         statusCode(200);
+    }
+
+    @Test
+    public void DeleteProject() {
+        String token = "bfb2dcd6dd5650981b0147da1f9301d1";
+        given().
+        header("X-TrackerToken",token).
+        header("Content-Type","application/json").
+        when().
+        delete("https://www.pivotaltracker.com/services/v5/projects/2406356").
+        then().
+        assertThat().
+        statusCode(204);
     }
 }
