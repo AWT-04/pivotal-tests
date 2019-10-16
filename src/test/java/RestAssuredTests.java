@@ -115,12 +115,12 @@ public class RestAssuredTests {
     public void CreateProject() {
         String token = "bfb2dcd6dd5650981b0147da1f9301d1";
         given().
-                header("X-TrackerToken",token).
-                param("name", "New name from Rest Assured").
-                when().
-                put("https://www.pivotaltracker.com/services/v5/projects/2406102").
-                then().
-                assertThat().
-                statusCode(200);
+        header("X-TrackerToken",token).
+        param("name", "New project created from Rest Assured").
+        when().
+        post("https://www.pivotaltracker.com/services/v5/projects").
+        then().
+        assertThat().
+        statusCode(200);
     }
 }
