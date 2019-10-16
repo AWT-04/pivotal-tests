@@ -1,4 +1,6 @@
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
@@ -93,4 +95,32 @@ public class RestAssuredTests {
 
 
 
+
+
+
+    @Test
+    public void UpdateProject() {
+        String token = "bfb2dcd6dd5650981b0147da1f9301d1";
+        given().
+                header("X-TrackerToken",token).
+                param("name", "New name from Rest Assured").
+                when().
+                put("https://www.pivotaltracker.com/services/v5/projects/2406102").
+                then().
+                assertThat().
+                statusCode(200);
+    }
+
+    @Test
+    public void CreateProject() {
+        String token = "bfb2dcd6dd5650981b0147da1f9301d1";
+        given().
+                header("X-TrackerToken",token).
+                param("name", "New name from Rest Assured").
+                when().
+                put("https://www.pivotaltracker.com/services/v5/projects/2406102").
+                then().
+                assertThat().
+                statusCode(200);
+    }
 }
