@@ -123,9 +123,23 @@ public class RestAssuredTests {
         header("X-TrackerToken",token).
         header("Content-Type","application/json").
         when().
-        delete("https://www.pivotaltracker.com/services/v5/projects/2406356").
+        delete("https://www.pivotaltracker.com/services/v5/projects/2406361").
         then().
         assertThat().
         statusCode(204);
+    }
+
+    @Test
+    public void CreateStoryGivesSuceesfull() {
+        String token = "bfb2dcd6dd5650981b0147da1f9301d1";
+        given().
+        header("X-TrackerToken",token).
+        header("Content-Type","application/json").
+        param("name", "New Story created from Rest Assured").
+        when().
+        post("https://www.pivotaltracker.com/services/v5/projects/2406102/stories").
+        then().
+        assertThat().
+        statusCode(200);
     }
 }
