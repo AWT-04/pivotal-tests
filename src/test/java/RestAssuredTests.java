@@ -1,15 +1,102 @@
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
+import org.fundacionjala.pivotal.RestAssured;
+import org.junit.Assert;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.*;
+import static io.restassured.matcher.RestAssuredMatchers.*;
+import static org.hamcrest.Matchers.*;
+
 
 public class RestAssuredTests {
+
+    private RestAssured restAssured = new RestAssured();
+    private Response response = given(restAssured.getRequestSpecification())
+            .when()
+            .get("/projects/2406102");
+
+    @Test
+    public void test_Pivotal_Tracker_GetProjectsWithSpecifications() {
+        Assert.assertEquals(response.jsonPath().getString("name"), "New name from Rest Assured");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Test
     public void test_Pivotal_Tracker_Get_Specific_Project() {
         String token = "bfb2dcd6dd5650981b0147da1f9301d1";
-        given().
+                given().
                 header("X-TrackerToken",token).
                 when().
                 get("https://www.pivotaltracker.com/services/v5/projects/2406102").
