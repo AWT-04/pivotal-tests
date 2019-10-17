@@ -9,7 +9,7 @@ public class Test2 {
     private Response response;
     private static final int OK = 200;
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     public void getProjectsWithSpecifications() {
         String path = "/projects/2406139";
         response = restAssured.setGet(path);
