@@ -82,9 +82,9 @@ public class ManageController {
     /**
      * Sets post method path.
      * @param path string path to use url.
+     * @param json json path.
      * @return response object.
      */
-
     public Response setPost(final String path, final String json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
