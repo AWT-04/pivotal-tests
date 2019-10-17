@@ -28,4 +28,18 @@ public class TasksTest {
        // Assert.assertEquals(this.response.jsonPath().getString("complete"), false);
         // Assert.assertEquals(this.response.jsonPath().getString("position"), 1);
     }
+
+    public void setForPost() throws IOException, ParseException {
+        response = given(restAssured.getRequestSpecification())
+                .when()
+                .post("/projects/2406139/stories/169196012/tasks");
+    }
+
+    @Test
+    public void postTaskTypeFromStory() throws IOException, ParseException {
+        setForPost();
+        Assert.assertEquals(this.response.statusCode(), 200);
+    }
+
+
 }

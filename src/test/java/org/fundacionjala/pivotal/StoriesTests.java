@@ -27,4 +27,16 @@ public class StoriesTests {
         Assert.assertEquals(this.response.jsonPath().getString("name"), "Story created by Raul for testing \uD83D\uDC79");
         Assert.assertEquals(this.response.jsonPath().getString("requested_by_id"), 3294402);
     }
+
+    public void setForPost() throws IOException, ParseException {
+        response = given(restAssured.getRequestSpecification())
+                .when()
+                .post("/projects/2406139/stories");
+    }
+
+    @Test
+    public void postStoryTypeFromStory() throws IOException, ParseException {
+        setForPost();
+        Assert.assertEquals(this.response.statusCode(), 200);
+    }
 }
