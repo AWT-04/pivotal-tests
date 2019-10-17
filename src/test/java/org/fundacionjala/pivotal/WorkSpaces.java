@@ -4,7 +4,7 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class Test2 {
+public class WorkSpaces {
     private ManageController restAssured = new ManageController();
     private Response response;
     private static final int OK = 200;
