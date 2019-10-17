@@ -9,7 +9,7 @@ public class ProjectsTest {
     private Response response;
     private static final String PROJECTNAME = "Lisa";
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     public void post() {
         String endPoint = "/projects";
         String myJson = "{\"name\":\"Lisa\" }";
