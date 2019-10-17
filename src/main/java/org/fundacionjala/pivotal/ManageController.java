@@ -45,7 +45,7 @@ public class ManageController {
 
 
             Object obj = null;
-        try (FileReader reader = new FileReader("./configJson/config4.json")) {
+        try (FileReader reader = new FileReader("./configJson/config.json")) {
             obj = parser.parse(reader);
         } catch (IOException | ParseException e) {
             throw new AWT04exception(1, e.getMessage());
