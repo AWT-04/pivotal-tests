@@ -23,44 +23,27 @@ import static io.restassured.RestAssured.given;
  * @version 1.0
  */
 public class TasksTest {
-    private RestAssured restAssured = new RestAssured();
+    private ManageController restAssured = new ManageController();
     private Response response;
-
-    /*
-    Sets for get Tasks
-     */
-    public void setForTest() throws IOException, ParseException {
-        response = given(restAssured.getRequestSpecification())
-                .when()
-                .get("/projects/2406139/stories/169196012/tasks/67913037");
-    }
 
     /*
     Tests values get from Tasks
      */
     @Test
-    public void getTaskTypeFromStory() throws IOException, ParseException {
-        setForTest();
+    public void getTaskTypeFromStory()  {
+        response = restAssured.setGet("/projects/2406139/stories/169196012/tasks/67913037");
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
        Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), false);
        Assert.assertEquals(this.response.jsonPath().getInt("position"), 1);
     }
 
     /*
-    Sets for post tasks
-     */
-    public void setForPost() throws IOException, ParseException {
-
-    }
-
-    /*
     Tests post tasks
      */
     @Test
-    public void postTaskTypeFromStory() throws IOException, ParseException {
-        response = given(restAssured.getRequestSpecification())
-                .when()
-                .post("/projects/2406139/stories/169196012/tasks");
+    public void postTaskTypeFromStory() {
+        response = restAssured.setPost("/projects/2406139/stories/169196012/tasks");
+                //response.body("{'name':'New task'}");
         Assert.assertEquals(this.response.statusCode(), 200);
     }
 

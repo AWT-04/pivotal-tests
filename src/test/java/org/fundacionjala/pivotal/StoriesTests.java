@@ -23,7 +23,7 @@ import static io.restassured.RestAssured.given;
  * @version 1.0
  */
 public class StoriesTests {
-    private RestAssured restAssured = new RestAssured();
+    private ManageController restAssured = new ManageController();
     private Response response;
 
     /*
