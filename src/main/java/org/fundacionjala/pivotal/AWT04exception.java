@@ -19,7 +19,6 @@ public class AWT04exception extends RuntimeException {
     private final int code;
     private final String message;
 
-
     public AWT04exception(int code, final String message) {
         this.code = code;
         this.message = message;

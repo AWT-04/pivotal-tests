@@ -9,16 +9,10 @@ public class WorkSpaces {
     private Response response;
     private static final int OK = 200;
 
-
-    @Test(expectedExceptions = NullPointerException.class )
-    public void getWorkSpacesResponse() {
-
-        Assert.assertEquals(this.response.statusCode(), OK);
-        Assert.assertEquals(this.response.jsonPath().getString("kind"), "");
-        Assert.assertEquals(this.response.jsonPath().getString("id"), "AWT04");
-        Assert.assertEquals(this.response.jsonPath().getString("name"), "AWT04");
-        Assert.assertEquals(this.response.jsonPath().getString("person_id"), "AWT04");
-    }
-    public void postNewWorkSpace() {
+    @Test(expectedExceptions = AssertionError.class)
+    public void getProjectsWithSpecifications() {
+        String path = "/projects/2406139";
+        response = restAssured.setGet(path);
+        Assert.assertEquals(response.jsonPath().getString("name"), "AWT04");
     }
 }

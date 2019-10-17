@@ -4,12 +4,9 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
-
 public class Test2 {
     private ManageController restAssured = new ManageController();
     private Response response;
-
 
     @Test(expectedExceptions = AssertionError.class)
     public void getProjectsWithSpecifications() {
