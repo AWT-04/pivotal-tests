@@ -43,7 +43,7 @@ public class StoriesTests {
         setForTest();
         Assert.assertEquals(this.response.jsonPath().getString("story_type"), "feature");
         Assert.assertEquals(this.response.jsonPath().getString("name"), "Story created by Raul for testing \uD83D\uDC79");
-        Assert.assertEquals(this.response.jsonPath().getString("requested_by_id"), 3294402);
+        Assert.assertEquals(this.response.jsonPath().getInt("requested_by_id"), 3294402);
     }
 
     /*

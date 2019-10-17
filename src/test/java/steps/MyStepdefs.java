@@ -1,10 +1,12 @@
+package steps;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
 import org.fundacionjala.pivotal.ManageController;
 import org.testng.Assert;
-
 import static io.restassured.RestAssured.given;
+
 
 public class MyStepdefs {
     private ManageController restAssured = new ManageController();
@@ -20,5 +22,20 @@ public class MyStepdefs {
     @Then("I should see the kind as {string}")
     public void iShouldSeeTheKindAs(String arg0) {
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
+    }
+
+
+
+    @Given("I perform GET for {string}")
+    public void iPerformGETFor(String arg0) {
+        response = given(restAssured.getRequestSpecification())
+                .when()
+                .get("/projects/2406139/stories/169196012");
+    }
+
+    @Then("I should see the requested_by_id as {string}")
+    public void iShouldSeeTheRequested_by_idAs(String arg0) {
+        Assert.assertEquals(this.response.jsonPath().getString("story_type"), "feature");
+        Assert.assertEquals(this.response.jsonPath().getInt("requested_by_id"), 3294402);
     }
 }
