@@ -9,13 +9,14 @@ public class ProjectsTest {
     private Response response;
     private static final String PROJECTNAME = "Lisa";
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     public void post() {
         String endPoint = "/projects";
         String myJson = "{\"name\":\"Lisa\" }";
-        response = restAssured.setPost(endPoint,myJson);
+        response = restAssured.setPost(endPoint, myJson);
         Assert.assertEquals(response.jsonPath().getString("name"), PROJECTNAME);
     }
+
     @Test
     public void get() {
         String endPoint = "/projects";
