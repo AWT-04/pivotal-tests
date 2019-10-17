@@ -13,7 +13,7 @@ public class WorkSpaces {
     public void getProjectsWithSpecifications() {
         String path = "/projects/2406139";
         response = restAssured.setGet(path);
-        Assert.assertEquals(response.statusCode(),OK);
+        Assert.assertEquals(response.statusCode(), OK);
         Assert.assertEquals(response.jsonPath().getString("name"), "AWT04");
     }
 }
