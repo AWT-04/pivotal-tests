@@ -42,17 +42,15 @@ public class TasksTest {
     public void getTaskTypeFromStory() throws IOException, ParseException {
         setForTest();
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
-       // Assert.assertEquals(this.response.jsonPath().getString("complete"), false);
-        // Assert.assertEquals(this.response.jsonPath().getString("position"), 1);
+       Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), false);
+       Assert.assertEquals(this.response.jsonPath().getInt("position"), 1);
     }
 
     /*
     Sets for post tasks
      */
     public void setForPost() throws IOException, ParseException {
-        response = given(restAssured.getRequestSpecification())
-                .when()
-                .post("/projects/2406139/stories/169196012/tasks");
+
     }
 
     /*
@@ -60,7 +58,9 @@ public class TasksTest {
      */
     @Test
     public void postTaskTypeFromStory() throws IOException, ParseException {
-        setForPost();
+        response = given(restAssured.getRequestSpecification())
+                .when()
+                .post("/projects/2406139/stories/169196012/tasks");
         Assert.assertEquals(this.response.statusCode(), 200);
     }
 
