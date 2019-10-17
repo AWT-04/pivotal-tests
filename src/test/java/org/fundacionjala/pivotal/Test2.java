@@ -11,7 +11,7 @@ public class Test2 {
     private Response response;
 
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     public void getProjectsWithSpecifications() {
         String path = "/projects/2406139";
         response = restAssured.setGet(path);

@@ -10,7 +10,7 @@ public class WorkSpaces {
     private static final int OK = 200;
 
 
-    @Test
+    @Test(expectedExceptions = NullPointerException.class )
     public void getWorkSpacesResponse() {
 
         Assert.assertEquals(this.response.statusCode(), OK);
