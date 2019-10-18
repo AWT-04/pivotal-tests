@@ -71,7 +71,7 @@ public class TasksTest {
         profileContent.put("description", "New Task from Rest Assured");
         response = restAssured.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         String taskId = this.response.jsonPath().getString("id");
-        System.out.println("ID" + taskId);
+        System.out.println("ID created:" + taskId);
         response = restAssured.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
         Assert.assertEquals(this.response.statusCode(), 204);
     }
