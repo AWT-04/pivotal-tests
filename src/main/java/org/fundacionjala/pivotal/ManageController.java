@@ -76,7 +76,7 @@ public class ManageController {
      * @param json json object in string format.
      * @return response object.
      */
-    public Response setPost(final String path, final String json) {
+    public Response setPost(final String path, final JSONObject json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
                 .when()
@@ -87,14 +87,16 @@ public class ManageController {
     }
 
     /**
-     Sets put method path.
+     * Sets put method path.
      * @param path string path to use url.
+     * @param json json object in string format.
      * @return response object.
      */
-    public Response setPut(final String path) {
+    public Response setPut(final String path, final JSONObject json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
                 .when()
+                .body(json)
                 .put(path);
         return response;
     }
