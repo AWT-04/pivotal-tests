@@ -12,6 +12,7 @@ public class WorkSpaces {
     private static final int OK = 200;
     private int id;
     private String name;
+    private String idProy;
 
     @BeforeTest
     public void getInitialData() {
@@ -22,6 +23,10 @@ public class WorkSpaces {
         response = RequestManager.setGet(path);
         id = response.jsonPath().getInt("[0].id");
         name = response.jsonPath().getString("[0].name");
+
+        String pathProy = "/projects";
+        response = RequestManager.setGet(pathProy);
+        idProy = response.jsonPath().getString("[0].id");
     }
 
     @Test
@@ -44,10 +49,11 @@ public class WorkSpaces {
 
     @Test
     public void putWorkSpace() {
-        String path0 = "/my/workspaces";
         JSONObject profileContent = new JSONObject();
-        profileContent.put("name", "test 0");
+        profileContent.put("project_ids", idProy);
         String path = "/my/workspaces" + "/" + id;
+        System.out.println(path);
+        System.out.println(idProy);
         response = RequestManager.setPut(path,profileContent);
         Assert.assertEquals(response.statusCode(), OK);
         Assert.assertEquals(response.jsonPath().getInt("id"), id);
