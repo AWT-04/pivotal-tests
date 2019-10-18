@@ -28,11 +28,7 @@ import static io.restassured.RestAssured.given;
  * @version 1.0
  */
 public class ManageController {
-    /**
-     * The method load a config.json file and return Request specification.
-     * @return returns a RequestSpecification object.
-     * @throws IOException throws input /output exception.
-     */
+
     private Response response;
     private ManageController manageControll;
 
@@ -45,8 +41,6 @@ public class ManageController {
     public RequestSpecification getRequestSpecification() {
         JSONParser parser = new JSONParser();
         RequestSpecification requestSpecification = null;
-
-
         Object obj = null;
         try (FileReader reader = new FileReader("./configJson/config.json")) {
             obj = parser.parse(reader);
@@ -82,10 +76,10 @@ public class ManageController {
     /**
      * Sets post method path.
      * @param path string path to use url.
-     * @param json json path.
+     * @param json json object in string format.
      * @return response object.
      */
-    public Response setPost(final String path, final String json) {
+    public Response setPost(final String path, final JSONObject json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
                 .when()
@@ -96,14 +90,16 @@ public class ManageController {
     }
 
     /**
-     Sets put method path.
+     * Sets put method path.
      * @param path string path to use url.
+     * @param json json object in string format.
      * @return response object.
      */
-    public Response setPut(final String path) {
+    public Response setPut(final String path, final JSONObject json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
                 .when()
+                .body(json)
                 .put(path);
         return response;
     }
