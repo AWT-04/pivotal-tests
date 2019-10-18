@@ -7,14 +7,12 @@ import org.fundacionjala.pivotal.RequestManager;
 import org.testng.Assert;
 import org.json.simple.JSONObject;
 
-
 public class MyStepdefs {
     private Response response;
     private static final int POSITION = 3;
     private static final int VALUEOK = 200;
     private static final int VALUEOK1 = 204;
     private static final String DESCRIPTION = "description";
-
 
     /*Cucumber operations for Tasks*/
     /*GET*/
@@ -72,17 +70,7 @@ public class MyStepdefs {
         Assert.assertEquals(this.response.statusCode(), VALUEOK1);
     }
 
-
-
-
-
-
-
-
-
-
     /*Stories*/
-
     @Given("I perform GET for {string}")
     public void iPerformGETFor(final String arg0) {
         response = RequestManager.setGet("/projects/2406102/stories/169156513");
@@ -118,8 +106,6 @@ public class MyStepdefs {
     public void iShouldVerifyTheStoryStatusCodeAs(final String arg0) {
         Assert.assertEquals(this.response.statusCode(), VALUEOK);
     }
-
-
 
     @Given("I perform DELETE story operation for {string}")
     public void iPerformDELETEStoryOperationFor(final String arg0) {
