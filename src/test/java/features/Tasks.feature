@@ -16,6 +16,3 @@ Feature:
   Scenario: Verify delete operation
     Given I perform DELETE operation for "/task"
     Then I should have status code as "200"
-
-
-

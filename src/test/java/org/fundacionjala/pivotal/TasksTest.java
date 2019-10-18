@@ -11,11 +11,8 @@ package org.fundacionjala.pivotal;
 
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import java.io.IOException;
-import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
 
@@ -26,7 +23,6 @@ import static io.restassured.RestAssured.given;
  * @version 1.0
  */
 public class TasksTest {
-    private ManageController restAssured = new ManageController();
     private Response response;
 
     /*
@@ -34,7 +30,7 @@ public class TasksTest {
      */
     @Test
     public void getTaskTypeFromStory()  {
-        response = restAssured.setGet("/projects/2406102/stories/169156513/tasks/67928912");
+        response = RequestManager.setGet("/projects/2406102/stories/169156513/tasks/67928912");
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
        Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), false);
        Assert.assertEquals(this.response.jsonPath().getInt("position"), 3);
@@ -47,7 +43,7 @@ public class TasksTest {
     public void postTaskTypeFromStory() {
         JSONObject profileContent = new JSONObject();
         profileContent.put("description", "New Task from Rest Assured");
-        response = restAssured.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
+        response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         Assert.assertEquals(this.response.statusCode(), 200);
     }
 
@@ -59,7 +55,7 @@ public class TasksTest {
         JSONObject profileContent = new JSONObject();
         profileContent.put("description", "New name for task from Rest Assured");
 
-        response = restAssured.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
+        response = RequestManager.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
         Assert.assertEquals(this.response.statusCode(), 200);
     }
 
@@ -70,10 +66,10 @@ public class TasksTest {
     public void deleteTaskTypeFromStory() {
         JSONObject profileContent = new JSONObject();
         profileContent.put("description", "Task created and deleted from Rest Assured");
-        response = restAssured.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
+        response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         String taskId = this.response.jsonPath().getString("id");
         System.out.println("ID created:" + taskId);
-        response = restAssured.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
+        response = RequestManager.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
         Assert.assertEquals(this.response.statusCode(), 204);
     }
 }

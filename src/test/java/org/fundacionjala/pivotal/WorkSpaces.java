@@ -5,14 +5,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class WorkSpaces {
-    private ManageController restAssured = new ManageController();
     private Response response;
     private static final int OK = 200;
 
     @Test(expectedExceptions = AssertionError.class)
     public void getProjectsWithSpecifications() {
         String path = "/projects/2406139";
-        response = restAssured.setGet(path);
+        response = RequestManager.setGet(path);
         Assert.assertEquals(response.statusCode(), OK);
         Assert.assertEquals(response.jsonPath().getString("name"), "AWT04");
     }

@@ -1,19 +1,15 @@
 package steps;
 
-import gherkin.deps.com.google.gson.JsonObject;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
-import org.fundacionjala.pivotal.ManageController;
+import org.fundacionjala.pivotal.RequestManager;
 import org.testng.Assert;
-import java.util.HashMap;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import static io.restassured.RestAssured.given;
 
 
 public class MyStepdefs {
-    private ManageController restAssured = new ManageController();
     private Response response;
 
 
@@ -21,7 +17,7 @@ public class MyStepdefs {
     /*GET*/
     @Given("I perform GET operation for {string}")
     public void iPerformGETOperationFor(String arg0) {
-        response = restAssured.setGet("/projects/2406102/stories/169156513/tasks/67928912");
+        response = RequestManager.setGet("/projects/2406102/stories/169156513/tasks/67928912");
     }
 
     @Then("I should see the kind as {string}")
@@ -35,7 +31,7 @@ public class MyStepdefs {
     public void iPerformPOSTOperationFor(String arg0) {
          JSONObject profileContent = new JSONObject();
          profileContent.put("description", "New Task from Rest Assured");
-         response = restAssured.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
+         response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
     }
 
     @Then("I should see the status code as {string}")
@@ -48,7 +44,7 @@ public class MyStepdefs {
     public void iPerformPUTOperationFor(String arg0) {
         JSONObject profileContent = new JSONObject();
         profileContent.put("description", "New name for task from Rest Assured");
-        response = restAssured.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
+        response = RequestManager.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
     }
 
     @Then("I should verify the status code as {string}")
@@ -63,10 +59,10 @@ public class MyStepdefs {
     public void iPerformDELETEOperationFor(String arg0) {
         JSONObject profileContent = new JSONObject();
         profileContent.put("description", "New Task from Rest Assured");
-        response = restAssured.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
+        response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         String taskId = this.response.jsonPath().getString("id");
         System.out.println("ID created:" + taskId);
-        response = restAssured.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
+        response = RequestManager.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
     }
 
     @Then("I should have status code as {string}")
@@ -87,7 +83,7 @@ public class MyStepdefs {
 
     @Given("I perform GET for {string}")
     public void iPerformGETFor(String arg0) {
-        response = restAssured.setGet("/projects/2406102/stories/169156513");
+        response = RequestManager.setGet("/projects/2406102/stories/169156513");
     }
 
     @Then("I should see the requested_by_id as {string}")
@@ -100,7 +96,7 @@ public class MyStepdefs {
     public void iPerformPOSTFor(String arg0) {
         JSONObject profileContent = new JSONObject();
         profileContent.put("name", "New Story created from Rest Assured");
-        response = restAssured.setPost("/projects/2406102/stories", profileContent);
+        response = RequestManager.setPost("/projects/2406102/stories", profileContent);
     }
 
     @Then("I should see status code as {string}")
@@ -112,7 +108,7 @@ public class MyStepdefs {
     public void iPerformPUTStoriesOperationFor(String arg0) {
         JSONObject profileContent = new JSONObject();
         profileContent.put("name", "New name updated from Rest Assured");
-        response = restAssured.setPut("/projects/2406102/stories/169156513", profileContent);
+        response = RequestManager.setPut("/projects/2406102/stories/169156513", profileContent);
 
     }
 
@@ -127,10 +123,10 @@ public class MyStepdefs {
     public void iPerformDELETEStoryOperationFor(String arg0) {
         JSONObject profileContent = new JSONObject();
         profileContent.put("name", "New Task from Rest Assured");
-        response = restAssured.setPost("/projects/2406102/stories", profileContent);
+        response = RequestManager.setPost("/projects/2406102/stories", profileContent);
         String taskId = this.response.jsonPath().getString("id");
         System.out.println("ID created:" + taskId);
-        response = restAssured.setDelete("/projects/2406102/stories/" + taskId);
+        response = RequestManager.setDelete("/projects/2406102/stories/" + taskId);
 
     }
 

@@ -29,21 +29,20 @@ import static io.restassured.RestAssured.given;
  * @author Andy Bazualdo
  * @version 1.0
  */
-public class ManageController {
+public final class RequestManager {
+    private RequestManager(){}
     /**
      * The method load a config.json file and return Request specification.
      * @return returns a RequestSpecification object.
      * @throws IOException throws input /output exception.
      */
-    private Response response;
-    private ManageController manageControll;
     /**
      * The method load a config.json file and return Request specification.
      * @return returns a RequestSpecification object.
      * @throws IOException throws input /output exception.
      * @throws ParseException throws parse exception.
      */
-    public RequestSpecification getRequestSpecification() {
+    public static RequestSpecification getRequestSpecification() {
         JSONParser parser = new JSONParser();
         RequestSpecification requestSpecification = null;
 
@@ -72,11 +71,12 @@ public class ManageController {
      * @param path string path to use url.
      * @return response object.
      */
-    public Response setGet(final String path) {
-        manageControll = new ManageController();
-        response = given(manageControll.getRequestSpecification())
+    public static Response setGet(final String path) {
+        Response response = given(getRequestSpecification())
+                .log().all()
                 .when()
                 .get(path);
+        response.then().log().all();
         return response;
     }
 
@@ -85,9 +85,8 @@ public class ManageController {
      * @param path string path to use url.
      * @return response object.
      */
-    public Response setPost(final String path, final JSONObject json) {
-        manageControll = new ManageController();
-        response = given(manageControll.getRequestSpecification())
+    public static Response setPost(final String path, final JSONObject json) {
+        Response response = given(getRequestSpecification())
                 .when()
                 .contentType(ContentType.JSON)
                 .body(json)
@@ -100,9 +99,8 @@ public class ManageController {
      * @param path string path to use url.
      * @return response object.
      */
-    public Response setPut(final String path, final JSONObject json) {
-        manageControll = new ManageController();
-        response = given(manageControll.getRequestSpecification())
+    public static Response setPut(final String path, final JSONObject json) {
+        Response response = given(getRequestSpecification())
                 .when()
                 .body(json)
                 .put(path);
@@ -114,9 +112,8 @@ public class ManageController {
      * @param path string path to use url.
      * @return response object.
      */
-    public Response setDelete(final String path) {
-        manageControll = new ManageController();
-        response = given(manageControll.getRequestSpecification())
+    public static Response setDelete(final String path) {
+        Response response = given(getRequestSpecification())
                 .when()
                 .delete(path);
         return response;
@@ -127,9 +124,8 @@ public class ManageController {
      * @param path string path to use url.
      * @return response object.
      */
-    public Response setPatch(final String path) {
-        manageControll = new ManageController();
-        response = given(manageControll.getRequestSpecification())
+    public static Response setPatch(final String path) {
+        Response response = given(getRequestSpecification())
                 .when()
                 .patch(path);
         return response;
