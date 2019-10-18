@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2019 Jalasoft.
- *
+ * <p>
  * This software is the confidential and proprietary information of Jalasoft.
  * ("Confidential Information"). You shall not
  * disclose such Confidential Information and shall use it only in
@@ -15,8 +15,10 @@ import io.restassured.specification.RequestSpecification;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.io.FileReader;
 import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
 
 /**
@@ -33,6 +35,7 @@ public class ManageController {
      */
     private Response response;
     private ManageController manageControll;
+
     /**
      * The method load a config.json file and return Request specification.
      * @return returns a RequestSpecification object.
@@ -44,7 +47,7 @@ public class ManageController {
         RequestSpecification requestSpecification = null;
 
 
-            Object obj = null;
+        Object obj = null;
         try (FileReader reader = new FileReader("./configJson/config.json")) {
             obj = parser.parse(reader);
         } catch (IOException | ParseException e) {
@@ -54,7 +57,7 @@ public class ManageController {
         JSONObject jsonObject = (JSONObject) obj;
         //Reading the String
         String token = (String) jsonObject.get("x-trackerToken");
-        requestSpecification =  new io.restassured.builder.RequestSpecBuilder()
+        requestSpecification = new io.restassured.builder.RequestSpecBuilder()
                 .setBaseUri("https://www.pivotaltracker.com/services/v5")
                 .addHeader("X-TrackerToken", token)
                 .setContentType(ContentType.JSON)
@@ -79,12 +82,15 @@ public class ManageController {
     /**
      * Sets post method path.
      * @param path string path to use url.
+     * @param json json path.
      * @return response object.
      */
-    public Response setPost(final String path) {
+    public Response setPost(final String path, final String json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
                 .when()
+                .contentType(ContentType.JSON)
+                .body(json)
                 .post(path);
         return response;
     }
