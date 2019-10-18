@@ -8,11 +8,11 @@ import org.testng.annotations.Test;
 
 public class ProjectsTest {
     private Response response;
-    private static final String PROJECTNAME = "LisaII";
+    private static final String PROJECTNAME = "Lisa";
     private String id;
 
     @Test
-    public void post() {
+    public void createProject() {
         String endPoint = "/projects";
         JSONObject profileContent = new JSONObject();
         profileContent.put("name", PROJECTNAME);
@@ -21,16 +21,16 @@ public class ProjectsTest {
         Assert.assertEquals(response.jsonPath().getString("name"), PROJECTNAME);
     }
 
+    @Test
+    public void getProject() {
+        String endPoint = "/projects";
+        response = RequestManager.setGet(endPoint);
+        Assert.assertEquals(response.jsonPath().getString("name[0]"), PROJECTNAME);
+    }
+
     @AfterClass
     public void removeProject() {
         String endPoint = "/projects/" + id;
         response = RequestManager.setDelete(endPoint);
-    }
-
-    @Test
-    public void get() {
-        String endPoint = "/projects";
-        response = RequestManager.setGet(endPoint);
-        Assert.assertEquals(response.jsonPath().getString("name[0]"), "Project ramalaso");
     }
 }
