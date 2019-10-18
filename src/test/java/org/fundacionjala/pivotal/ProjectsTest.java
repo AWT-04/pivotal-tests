@@ -31,6 +31,6 @@ public class ProjectsTest {
     public void get() {
         String endPoint = "/projects";
         response = RequestManager.setGet(endPoint);
-        Assert.assertEquals(response.jsonPath().getString("name[0]"), "Lisa");
+        Assert.assertEquals(response.jsonPath().getString("name[0]"), "Project ramalaso");
     }
 }
