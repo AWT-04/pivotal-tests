@@ -69,7 +69,7 @@ public class TasksTest {
     @Test
     public void deleteTaskTypeFromStory() {
         JSONObject profileContent = new JSONObject();
-        profileContent.put("description", "New Task from Rest Assured");
+        profileContent.put("description", "Task created and deleted from Rest Assured");
         response = restAssured.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         String taskId = this.response.jsonPath().getString("id");
         System.out.println("ID created:" + taskId);
