@@ -85,6 +85,7 @@ public final class RequestManager {
                 .contentType(ContentType.JSON)
                 .body(json)
                 .post(path);
+        response.then().log().all();
         return response;
     }
 
@@ -100,6 +101,7 @@ public final class RequestManager {
                 .when()
                 .body(json)
                 .put(path);
+        response.then().log().all();
         return response;
     }
 
@@ -112,6 +114,7 @@ public final class RequestManager {
         Response response = given(getRequestSpecification())
                 .when()
                 .delete(path);
+        response.then().log().all();
         return response;
     }
 
@@ -124,6 +127,7 @@ public final class RequestManager {
         Response response = given(getRequestSpecification())
                 .when()
                 .patch(path);
+        response.then().log().all();
         return response;
     }
 }

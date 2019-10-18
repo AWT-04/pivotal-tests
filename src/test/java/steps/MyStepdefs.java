@@ -13,6 +13,7 @@ public class MyStepdefs {
     private static final int POSITION = 3;
     private static final int VALUEOK = 200;
     private static final int VALUEOK1 = 204;
+    private static final String DESCRIPTION = "description";
 
 
     /*Cucumber operations for Tasks*/
@@ -32,7 +33,7 @@ public class MyStepdefs {
      @Given("I perform POST operation for {string}")
     public void iPerformPOSTOperationFor(final String arg0) {
          JSONObject profileContent = new JSONObject();
-         profileContent.put("description", "New Task from Rest Assured");
+         profileContent.put(DESCRIPTION, "New Task from Rest Assured");
          response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
     }
 
@@ -45,7 +46,7 @@ public class MyStepdefs {
     @Given("I perform PUT operation for {string}")
     public void iPerformPUTOperationFor(final String arg0) {
         JSONObject profileContent = new JSONObject();
-        profileContent.put("description", "New name for task from Rest Assured");
+        profileContent.put(DESCRIPTION, "New name for task from Rest Assured");
         response = RequestManager.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
     }
 
@@ -60,7 +61,7 @@ public class MyStepdefs {
     @Given("I perform DELETE operation for {string}")
     public void iPerformDELETEOperationFor(final String arg0) {
         JSONObject profileContent = new JSONObject();
-        profileContent.put("description", "New Task from Rest Assured");
+        profileContent.put(DESCRIPTION, "New Task from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         String taskId = this.response.jsonPath().getString("id");
         response = RequestManager.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
