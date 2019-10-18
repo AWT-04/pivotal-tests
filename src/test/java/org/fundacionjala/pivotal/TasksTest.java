@@ -14,8 +14,6 @@ import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
-
 /**
  * Tests tasks from pivotal tracker.
  *
@@ -24,6 +22,9 @@ import static io.restassured.RestAssured.given;
  */
 public class TasksTest {
     private Response response;
+    private static final int POSITION = 3;
+    private static final int VALUEOK = 200;
+    private static final int VALUEOK1 = 204;
 
     /*
     Tests values get from Tasks
@@ -33,7 +34,7 @@ public class TasksTest {
         response = RequestManager.setGet("/projects/2406102/stories/169156513/tasks/67928912");
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
        Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), false);
-       Assert.assertEquals(this.response.jsonPath().getInt("position"), 3);
+       Assert.assertEquals(this.response.jsonPath().getInt("position"), POSITION);
     }
 
     /*
@@ -44,7 +45,7 @@ public class TasksTest {
         JSONObject profileContent = new JSONObject();
         profileContent.put("description", "New Task from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
-        Assert.assertEquals(this.response.statusCode(), 200);
+        Assert.assertEquals(this.response.statusCode(), VALUEOK);
     }
 
     /*
@@ -56,7 +57,7 @@ public class TasksTest {
         profileContent.put("description", "New name for task from Rest Assured");
 
         response = RequestManager.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
-        Assert.assertEquals(this.response.statusCode(), 200);
+        Assert.assertEquals(this.response.statusCode(), VALUEOK);
     }
 
     /*
@@ -70,6 +71,6 @@ public class TasksTest {
         String taskId = this.response.jsonPath().getString("id");
         System.out.println("ID created:" + taskId);
         response = RequestManager.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
-        Assert.assertEquals(this.response.statusCode(), 204);
+        Assert.assertEquals(this.response.statusCode(), VALUEOK1);
     }
 }

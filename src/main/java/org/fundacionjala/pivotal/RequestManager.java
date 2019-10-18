@@ -1,6 +1,5 @@
 /**
  * Copyright (c) 2019 Jalasoft.
- * <p>
  * This software is the confidential and proprietary information of Jalasoft.
  * ("Confidential Information"). You shall not
  * disclose such Confidential Information and shall use it only in
@@ -9,11 +8,9 @@
  */
 package org.fundacionjala.pivotal;
 
-import gherkin.deps.com.google.gson.JsonObject;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -31,7 +28,7 @@ import static io.restassured.RestAssured.given;
  * @version 1.0
  */
 public final class RequestManager {
-    private RequestManager(){}
+    private RequestManager() { }
 
     /**
      * The method load a config.json file and return Request specification.

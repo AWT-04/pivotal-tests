@@ -14,8 +14,6 @@ import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
-
 /**
  * Tests stories from pivotal tracker.
  *
@@ -24,6 +22,8 @@ import static io.restassured.RestAssured.given;
  */
 public class StoriesTests {
     private Response response;
+    private static final int VALUEOK = 200;
+    private static final int VALUEOK1 = 204;
 
     /*
     Tests values get from stories
@@ -43,7 +43,7 @@ public class StoriesTests {
         JSONObject profileContent = new JSONObject();
         profileContent.put("name", "New Story created from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories", profileContent);
-        Assert.assertEquals(this.response.statusCode(), 200);
+        Assert.assertEquals(this.response.statusCode(), VALUEOK);
     }
 
     /*
@@ -54,7 +54,7 @@ public class StoriesTests {
         JSONObject profileContent = new JSONObject();
         profileContent.put("name", "New name updated from Rest Assured");
         response = RequestManager.setPut("/projects/2406102/stories/169156513", profileContent);
-        Assert.assertEquals(this.response.statusCode(), 200);
+        Assert.assertEquals(this.response.statusCode(), VALUEOK);
     }
 
     /*
@@ -68,6 +68,6 @@ public class StoriesTests {
         String taskId = this.response.jsonPath().getString("id");
         System.out.println("ID created:" + taskId);
         response = RequestManager.setDelete("/projects/2406102/stories/" + taskId);
-        Assert.assertEquals(this.response.statusCode(), 204);
+        Assert.assertEquals(this.response.statusCode(), VALUEOK1);
     }
 }
