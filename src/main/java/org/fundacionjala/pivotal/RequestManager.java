@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2019 Jalasoft.
- *
+ * <p>
  * This software is the confidential and proprietary information of Jalasoft.
  * ("Confidential Information"). You shall not
  * disclose such Confidential Information and shall use it only in
@@ -17,9 +17,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
+
 
 import static io.restassured.RestAssured.given;
 
@@ -31,11 +32,7 @@ import static io.restassured.RestAssured.given;
  */
 public final class RequestManager {
     private RequestManager(){}
-    /**
-     * The method load a config.json file and return Request specification.
-     * @return returns a RequestSpecification object.
-     * @throws IOException throws input /output exception.
-     */
+
     /**
      * The method load a config.json file and return Request specification.
      * @return returns a RequestSpecification object.
@@ -45,9 +42,7 @@ public final class RequestManager {
     public static RequestSpecification getRequestSpecification() {
         JSONParser parser = new JSONParser();
         RequestSpecification requestSpecification = null;
-
-
-            Object obj = null;
+        Object obj = null;
         try (FileReader reader = new FileReader("./configJson/config.json")) {
             obj = parser.parse(reader);
         } catch (IOException | ParseException e) {
@@ -57,7 +52,7 @@ public final class RequestManager {
         JSONObject jsonObject = (JSONObject) obj;
         //Reading the String
         String token = (String) jsonObject.get("x-trackerToken");
-        requestSpecification =  new io.restassured.builder.RequestSpecBuilder()
+        requestSpecification = new io.restassured.builder.RequestSpecBuilder()
                 .setBaseUri("https://www.pivotaltracker.com/services/v5")
                 .addHeader("X-TrackerToken", token)
                 .setContentType(ContentType.JSON)
@@ -83,8 +78,10 @@ public final class RequestManager {
     /**
      * Sets post method path.
      * @param path string path to use url.
+     * @param json json object in string format.
      * @return response object.
      */
+
     public static Response setPost(final String path, final JSONObject json) {
         Response response = given(getRequestSpecification())
                 .when()
@@ -95,10 +92,12 @@ public final class RequestManager {
     }
 
     /**
-     Sets put method path.
+     * Sets put method path.
      * @param path string path to use url.
+     * @param json json object in string format.
      * @return response object.
      */
+
     public static Response setPut(final String path, final JSONObject json) {
         Response response = given(getRequestSpecification())
                 .when()
