@@ -61,7 +61,7 @@ public class MyStepdefs {
     @Given("I perform DELETE operation for {string}")
     public void iPerformDELETEOperationFor(final String arg0) {
         JSONObject profileContent = new JSONObject();
-        profileContent.put(DESCRIPTION, "New Task from Rest Assured");
+        profileContent.put(DESCRIPTION, "New Task created from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         String taskId = this.response.jsonPath().getString("id");
         response = RequestManager.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
@@ -124,7 +124,7 @@ public class MyStepdefs {
     @Given("I perform DELETE story operation for {string}")
     public void iPerformDELETEStoryOperationFor(final String arg0) {
         JSONObject profileContent = new JSONObject();
-        profileContent.put("name", "New Task from Rest Assured");
+        profileContent.put("name", "New Task delete from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories", profileContent);
         String taskId = this.response.jsonPath().getString("id");
         response = RequestManager.setDelete("/projects/2406102/stories/" + taskId);
