@@ -1,6 +1,7 @@
 package org.fundacionjala.pivotal;
 
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
@@ -14,8 +15,9 @@ public class ProjectsTest {
     @Test
     public void post() {
         String endPoint = "/projects";
-        String myJson = "{\"name\":\"LisaII\" }";
-        response = restAssured.setPost(endPoint, myJson);
+        JSONObject profileContent = new JSONObject();
+        profileContent.put("name", PROJECTNAME);
+        response = restAssured.setPost(endPoint, profileContent);
         id = response.jsonPath().getString("id");
         Assert.assertEquals(response.jsonPath().getString("name"), PROJECTNAME);
     }
