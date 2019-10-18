@@ -25,6 +25,7 @@ public class TasksTest {
     private static final int POSITION = 3;
     private static final int VALUEOK = 200;
     private static final int VALUEOK1 = 204;
+    private static final String DESCRIPTION = "description";
 
     /*
     Tests values get from Tasks
@@ -43,7 +44,7 @@ public class TasksTest {
     @Test
     public void postTaskTypeFromStory() {
         JSONObject profileContent = new JSONObject();
-        profileContent.put("description", "New Task from Rest Assured");
+        profileContent.put(DESCRIPTION, "New Task from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         Assert.assertEquals(this.response.statusCode(), VALUEOK);
     }
@@ -54,7 +55,7 @@ public class TasksTest {
     @Test
     public void putTaskTypeFromStory() {
         JSONObject profileContent = new JSONObject();
-        profileContent.put("description", "New name for task from Rest Assured");
+        profileContent.put(DESCRIPTION, "New name for task from Rest Assured");
 
         response = RequestManager.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
         Assert.assertEquals(this.response.statusCode(), VALUEOK);
@@ -66,10 +67,9 @@ public class TasksTest {
     @Test
     public void deleteTaskTypeFromStory() {
         JSONObject profileContent = new JSONObject();
-        profileContent.put("description", "Task created and deleted from Rest Assured");
+        profileContent.put(DESCRIPTION, "Task created and deleted from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         String taskId = this.response.jsonPath().getString("id");
-        System.out.println("ID created:" + taskId);
         response = RequestManager.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
         Assert.assertEquals(this.response.statusCode(), VALUEOK1);
     }

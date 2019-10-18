@@ -66,7 +66,6 @@ public class StoriesTests {
         profileContent.put("name", "New Task from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories", profileContent);
         String taskId = this.response.jsonPath().getString("id");
-        System.out.println("ID created:" + taskId);
         response = RequestManager.setDelete("/projects/2406102/stories/" + taskId);
         Assert.assertEquals(this.response.statusCode(), VALUEOK1);
     }

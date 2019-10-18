@@ -63,7 +63,6 @@ public class MyStepdefs {
         profileContent.put("description", "New Task from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
         String taskId = this.response.jsonPath().getString("id");
-        System.out.println("ID created:" + taskId);
         response = RequestManager.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
     }
 
@@ -127,7 +126,6 @@ public class MyStepdefs {
         profileContent.put("name", "New Task from Rest Assured");
         response = RequestManager.setPost("/projects/2406102/stories", profileContent);
         String taskId = this.response.jsonPath().getString("id");
-        System.out.println("ID created:" + taskId);
         response = RequestManager.setDelete("/projects/2406102/stories/" + taskId);
 
     }
