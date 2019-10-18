@@ -10,14 +10,17 @@
 package org.fundacionjala.pivotal;
 
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.io.IOException;
+import java.util.HashMap;
+
 import static io.restassured.RestAssured.given;
 
 /**
- * Tests Story from pivotal tracker.
+ * Tests stories from pivotal tracker.
  *
  * @author Raul Laredo
  * @version 1.0
@@ -27,40 +30,48 @@ public class StoriesTests {
     private Response response;
 
     /*
-    Sets for get Stories
-     */
-    public void setForTest() throws IOException, ParseException {
-        response = given(restAssured.getRequestSpecification())
-                .when()
-                .get("/projects/2406102/stories/169228368");
-    }
-
-    /*
-    Tests values get from Story
+    Tests values get from stories
      */
     @Test
-    public void getStoryTypeFromStory() throws IOException, ParseException {
-        setForTest();
-        Assert.assertEquals(this.response.jsonPath().getString("story_type"), "feature");
-        Assert.assertEquals(this.response.jsonPath().getString("name"), "Story created by Raul for testing \uD83D\uDC79");
-        Assert.assertEquals(this.response.jsonPath().getInt("requested_by_id"), 3294402);
+    public void getKindTypeFromStory()  {
+        response = restAssured.setGet("/projects/2406102/stories/169156513");
+        Assert.assertEquals(this.response.jsonPath().getString("kind"), "story");
+        Assert.assertEquals(this.response.jsonPath().getString("current_state"), "unstarted");
     }
 
     /*
-    Sets for post stories
-     */
-    public void setForPost() throws IOException, ParseException {
-        response = given(restAssured.getRequestSpecification())
-                .when()
-                .post("/projects/2406102/stories");
-    }
-
-    /*
-    Tests post stories
+    Tests post tasks
      */
     @Test
-    public void postStoryTypeFromStory() throws IOException, ParseException {
-        setForPost();
+    public void postStory() {
+        JSONObject profileContent = new JSONObject();
+        profileContent.put("name", "New Story created from Rest Assured");
+        response = restAssured.setPost("/projects/2406102/stories", profileContent);
         Assert.assertEquals(this.response.statusCode(), 200);
+    }
+
+    /*
+   Tests put stories
+    */
+    @Test
+    public void putTaskTypeFromStory() {
+        JSONObject profileContent = new JSONObject();
+        profileContent.put("name", "New name updated from Rest Assured");
+        response = restAssured.setPut("/projects/2406102/stories/169156513", profileContent);
+        Assert.assertEquals(this.response.statusCode(), 200);
+    }
+
+    /*
+   Tests delete tasks
+    */
+    @Test
+    public void deleteTaskTypeFromStory() {
+        JSONObject profileContent = new JSONObject();
+        profileContent.put("name", "New Task from Rest Assured");
+        response = restAssured.setPost("/projects/2406102/stories", profileContent);
+        String taskId = this.response.jsonPath().getString("id");
+        System.out.println("ID created:" + taskId);
+        response = restAssured.setDelete("/projects/2406102/stories/" + taskId);
+        Assert.assertEquals(this.response.statusCode(), 204);
     }
 }

@@ -58,6 +58,7 @@ public class TasksTest {
     public void putTaskTypeFromStory() {
         JSONObject profileContent = new JSONObject();
         profileContent.put("description", "New name for task from Rest Assured");
+
         response = restAssured.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
         Assert.assertEquals(this.response.statusCode(), 200);
     }

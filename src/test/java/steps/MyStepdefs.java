@@ -83,91 +83,24 @@ public class MyStepdefs {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /*Stories*/
 
+    @Given("I perform GET for {string}")
+    public void iPerformGETFor(String arg0) {
+        response = restAssured.setGet("/projects/2406102/stories/169156513");
+    }
 
-
-
+    @Then("I should see the requested_by_id as {string}")
+    public void iShouldSeeTheRequested_by_idAs(String arg0) {
+        Assert.assertEquals(this.response.jsonPath().getString("kind"), "story");
+        Assert.assertEquals(this.response.jsonPath().getString("current_state"), "unstarted");
+    }
 
     @Given("I perform POST  for {string}")
     public void iPerformPOSTFor(String arg0) {
         JSONObject profileContent = new JSONObject();
-        profileContent.put("name", "New Story from Rest-Assured");
-        response = restAssured.setPost("/projects/2406139/stories", profileContent);
+        profileContent.put("name", "New Story created from Rest Assured");
+        response = restAssured.setPost("/projects/2406102/stories", profileContent);
     }
 
     @Then("I should see status code as {string}")
@@ -175,22 +108,34 @@ public class MyStepdefs {
         Assert.assertEquals(this.response.statusCode(), 200);
     }
 
+    @Given("I perform PUT stories operation for {string}")
+    public void iPerformPUTStoriesOperationFor(String arg0) {
+        JSONObject profileContent = new JSONObject();
+        profileContent.put("name", "New name updated from Rest Assured");
+        response = restAssured.setPut("/projects/2406102/stories/169156513", profileContent);
 
-
-
-    @Given("I perform GET for {string}")
-    public void iPerformGETFor(String arg0) {
-        response = given(restAssured.getRequestSpecification())
-                .when()
-                .get("/projects/2406139/stories/169196012");
     }
 
-    @Then("I should see the requested_by_id as {string}")
-    public void iShouldSeeTheRequested_by_idAs(String arg0) {
-        Assert.assertEquals(this.response.jsonPath().getString("story_type"), "feature");
-        Assert.assertEquals(this.response.jsonPath().getInt("requested_by_id"), 3294402);
+    @Then("I should verify the story status code as {string}")
+    public void iShouldVerifyTheStoryStatusCodeAs(String arg0) {
+        Assert.assertEquals(this.response.statusCode(), 200);
     }
 
 
 
+    @Given("I perform DELETE story operation for {string}")
+    public void iPerformDELETEStoryOperationFor(String arg0) {
+        JSONObject profileContent = new JSONObject();
+        profileContent.put("name", "New Task from Rest Assured");
+        response = restAssured.setPost("/projects/2406102/stories", profileContent);
+        String taskId = this.response.jsonPath().getString("id");
+        System.out.println("ID created:" + taskId);
+        response = restAssured.setDelete("/projects/2406102/stories/" + taskId);
+
+    }
+
+    @Then("I should have story status code as {string}")
+    public void iShouldHaveStoryStatusCodeAs(String arg0) {
+        Assert.assertEquals(this.response.statusCode(), 204);
+    }
 }
