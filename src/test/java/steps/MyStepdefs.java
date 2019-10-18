@@ -53,8 +53,6 @@ public class MyStepdefs {
         Assert.assertEquals(this.response.statusCode(), VALUEOK);
     }
 
-
-
 /*DELETE*/
     @Given("I perform DELETE operation for {string}")
     public void iPerformDELETEOperationFor(final String arg0) {
@@ -114,7 +112,6 @@ public class MyStepdefs {
         response = RequestManager.setPost("/projects/2406102/stories", profileContent);
         String taskId = this.response.jsonPath().getString("id");
         response = RequestManager.setDelete("/projects/2406102/stories/" + taskId);
-
     }
 
     @Then("I should have story status code as {string}")
