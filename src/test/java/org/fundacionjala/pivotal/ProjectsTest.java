@@ -7,7 +7,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 public class ProjectsTest {
-    private ManageController restAssured = new ManageController();
     private Response response;
     private static final String PROJECTNAME = "LisaII";
     private String id;
@@ -17,7 +16,7 @@ public class ProjectsTest {
         String endPoint = "/projects";
         JSONObject profileContent = new JSONObject();
         profileContent.put("name", PROJECTNAME);
-        response = restAssured.setPost(endPoint, profileContent);
+        response = RequestManager.setPost(endPoint, profileContent);
         id = response.jsonPath().getString("id");
         Assert.assertEquals(response.jsonPath().getString("name"), PROJECTNAME);
     }
@@ -25,13 +24,13 @@ public class ProjectsTest {
     @AfterClass
     public void removeProject() {
         String endPoint = "/projects/" + id;
-        response = restAssured.setDelete(endPoint);
+        response = RequestManager.setDelete(endPoint);
     }
 
     @Test
     public void get() {
         String endPoint = "/projects";
-        response = restAssured.setGet(endPoint);
-        Assert.assertEquals(response.jsonPath().getString("name[0]"), "Lisa");
+        response = RequestManager.setGet(endPoint);
+        Assert.assertEquals(response.jsonPath().getString("name[0]"), "Project ramalaso");
     }
 }
