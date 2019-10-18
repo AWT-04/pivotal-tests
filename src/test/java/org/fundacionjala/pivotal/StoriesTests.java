@@ -32,7 +32,7 @@ public class StoriesTests {
     public void setForTest() throws IOException, ParseException {
         response = given(restAssured.getRequestSpecification())
                 .when()
-                .get("/projects/2406139/stories/169196012");
+                .get("/projects/2406102/stories/169228368");
     }
 
     /*
@@ -52,7 +52,7 @@ public class StoriesTests {
     public void setForPost() throws IOException, ParseException {
         response = given(restAssured.getRequestSpecification())
                 .when()
-                .post("/projects/2406139/stories");
+                .post("/projects/2406102/stories");
     }
 
     /*

@@ -13,6 +13,7 @@ import gherkin.deps.com.google.gson.JsonObject;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -84,7 +85,7 @@ public class ManageController {
      * @param path string path to use url.
      * @return response object.
      */
-    public Response setPost(final String path, final String json) {
+    public Response setPost(final String path, final JSONObject json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
                 .when()
@@ -99,10 +100,11 @@ public class ManageController {
      * @param path string path to use url.
      * @return response object.
      */
-    public Response setPut(final String path) {
+    public Response setPut(final String path, final JSONObject json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
                 .when()
+                .body(json)
                 .put(path);
         return response;
     }
