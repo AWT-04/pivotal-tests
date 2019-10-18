@@ -9,6 +9,7 @@
  */
 package org.fundacionjala.pivotal;
 
+import gherkin.deps.com.google.gson.JsonObject;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -17,6 +18,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+
 import static io.restassured.RestAssured.given;
 
 /**
@@ -81,10 +84,12 @@ public class ManageController {
      * @param path string path to use url.
      * @return response object.
      */
-    public Response setPost(final String path) {
+    public Response setPost(final String path, final String json) {
         manageControll = new ManageController();
         response = given(manageControll.getRequestSpecification())
                 .when()
+                .contentType(ContentType.JSON)
+                .body(json)
                 .post(path);
         return response;
     }

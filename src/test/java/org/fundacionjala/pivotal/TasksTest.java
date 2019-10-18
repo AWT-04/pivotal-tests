@@ -14,6 +14,8 @@ import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.io.IOException;
+import java.util.HashMap;
+
 import static io.restassured.RestAssured.given;
 
 /**
@@ -42,8 +44,9 @@ public class TasksTest {
      */
     @Test
     public void postTaskTypeFromStory() {
-        response = restAssured.setPost("/projects/2406139/stories/169196012/tasks");
-                //response.body("{'name':'New task'}");
+        HashMap<String, String> profileContent = new HashMap<>();
+        profileContent.put("name", "New Task from Rest-Assured");
+        response = restAssured.setPost("/projects/2406139/stories/169196012/tasks", profileContent);
         Assert.assertEquals(this.response.statusCode(), 200);
     }
 
