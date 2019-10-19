@@ -14,6 +14,8 @@ import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.LocalTime;
+
 /**
  * Tests tasks from pivotal tracker.
  *
@@ -27,15 +29,44 @@ public class TasksTest {
     private static final int VALUEOK1 = 204;
     private static final String DESCRIPTION = "description";
 
+    public String createProject(JSONObject body){
+        response = RequestManager.setPost("/projects", body);
+        String projectId = this.response.jsonPath().getString("id");
+        return projectId;
+    }
+
+    public String createStory(String projectID, JSONObject bodyStory){
+        response = RequestManager.setPost("/projects/"+ projectID+"/stories", bodyStory);
+        String storyId = this.response.jsonPath().getString("id");
+        return storyId;
+    }
+
+    public String createTask(String projectID, String storyID, JSONObject bodyTask){
+        response = RequestManager.setPost("/projects/"+ projectID+"/stories/"+storyID+"/tasks", bodyTask);
+        String taskId = this.response.jsonPath().getString("id");
+        return taskId;
+    }
+
     /*
     Tests values get from Tasks
      */
     @Test
     public void getTaskTypeFromStory()  {
-        response = RequestManager.setGet("/projects/2406102/stories/169156513/tasks/67928912");
+        JSONObject projectContent = new JSONObject();
+        projectContent.put("name", "Project " + LocalTime.now() );
+        String projectId = createProject(projectContent);
+        JSONObject storyContent = new JSONObject();
+        storyContent.put("name", "Story name " + LocalTime.now());
+        String storyId = createStory(projectId, storyContent);
+        JSONObject taskContent = new JSONObject();
+        taskContent.put("description", "Task description " + LocalTime.now());
+        String taskId = createTask(projectId, storyId, taskContent);
+
+        response = RequestManager.setGet("/projects/"+projectId+"/stories/" + storyId+"/tasks/" + taskId);
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
-       Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), false);
-       Assert.assertEquals(this.response.jsonPath().getInt("position"), POSITION);
+        Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), false);
+
+        RequestManager.setDelete("/projects/" + projectId);
     }
 
     /*
@@ -43,10 +74,17 @@ public class TasksTest {
      */
     @Test
     public void postTaskTypeFromStory() {
+        JSONObject projectContent = new JSONObject();
+        projectContent.put("name", "Project " + LocalTime.now() );
+        String projectId = createProject(projectContent);
+        JSONObject storyContent = new JSONObject();
+        storyContent.put("name", "Story name " + LocalTime.now());
+        String storyId = createStory(projectId, storyContent);
         JSONObject profileContent = new JSONObject();
-        profileContent.put(DESCRIPTION, "New Task from Rest Assured");
-        response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
+        profileContent.put(DESCRIPTION, "New Task from Rest Assured"+ LocalTime.now());
+        response = RequestManager.setPost("/projects/"+projectId+"/stories/" + storyId+"/tasks" , profileContent);
         Assert.assertEquals(this.response.statusCode(), VALUEOK);
+        RequestManager.setDelete("/projects/" + projectId);
     }
 
     /*
@@ -54,11 +92,20 @@ public class TasksTest {
     */
     @Test
     public void putTaskTypeFromStory() {
-        JSONObject profileContent = new JSONObject();
-        profileContent.put(DESCRIPTION, "New name for task from Rest Assured");
-
-        response = RequestManager.setPut("/projects/2406102/stories/169156513/tasks/67890506", profileContent);
+        JSONObject projectContent = new JSONObject();
+        projectContent.put("name", "Project " + LocalTime.now() );
+        String projectId = createProject(projectContent);
+        JSONObject storyContent = new JSONObject();
+        storyContent.put("name", "Story name " + LocalTime.now());
+        String storyId = createStory(projectId, storyContent);
+        JSONObject taskContent = new JSONObject();
+        taskContent.put("description", "Task description " + LocalTime.now());
+        String taskId = createTask(projectId, storyId, taskContent);
+        JSONObject newStoryContent = new JSONObject();
+        newStoryContent.put("description", "New task description" + LocalTime.now());
+        response = RequestManager.setPut("/projects/"+ projectId +"/stories/" + storyId+"/tasks/" + taskId, newStoryContent);
         Assert.assertEquals(this.response.statusCode(), VALUEOK);
+        RequestManager.setDelete("/projects/" + projectId);
     }
 
     /*
@@ -66,11 +113,19 @@ public class TasksTest {
     */
     @Test
     public void deleteTaskTypeFromStory() {
-        JSONObject profileContent = new JSONObject();
-        profileContent.put(DESCRIPTION, "Task created and deleted from Rest Assured");
-        response = RequestManager.setPost("/projects/2406102/stories/169156513/tasks", profileContent);
-        String taskId = this.response.jsonPath().getString("id");
-        response = RequestManager.setDelete("/projects/2406102/stories/169156513/tasks/" + taskId);
+        JSONObject projectContent = new JSONObject();
+        projectContent.put("name", "Project " + LocalTime.now() );
+        String projectId = createProject(projectContent);
+        JSONObject storyContent = new JSONObject();
+        storyContent.put("name", "Story name " + LocalTime.now());
+        String storyId = createStory(projectId, storyContent);
+        JSONObject taskContent = new JSONObject();
+        taskContent.put("description", "Task description " + LocalTime.now());
+        String taskId = createTask(projectId, storyId, taskContent);
+        JSONObject newStoryContent = new JSONObject();
+        newStoryContent.put("description", "New task description" + LocalTime.now());
+        response = RequestManager.setDelete("/projects/"+ projectId +"/stories/" + storyId+"/tasks/" + taskId);
         Assert.assertEquals(this.response.statusCode(), VALUEOK1);
+        RequestManager.setDelete("/projects/" + projectId);
     }
 }
