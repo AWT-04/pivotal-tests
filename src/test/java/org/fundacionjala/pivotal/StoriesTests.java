@@ -13,6 +13,7 @@ import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.time.LocalTime;
 
 /**
  * Tests stories from pivotal tracker.
@@ -25,14 +26,36 @@ public class StoriesTests {
     private static final int VALUEOK = 200;
     private static final int VALUEOK1 = 204;
 
+    public String createProject(JSONObject body){
+        response = RequestManager.setPost("/projects", body);
+        String projectId = this.response.jsonPath().getString("id");
+        return projectId;
+    }
+    public String createStory(String projectID, JSONObject bodyStory){
+        response = RequestManager.setPost("/projects/"+ projectID+"/stories", bodyStory);
+        String storyId = this.response.jsonPath().getString("id");
+        return storyId;
+    }
+
     /*
     Tests values get from stories
      */
     @Test
     public void getKindTypeFromStory()  {
-        response = RequestManager.setGet("/projects/2406102/stories/169156513");
+        JSONObject projectContent = new JSONObject();
+        projectContent.put("name", "Project " + LocalTime.now() );
+        String projectId = createProject(projectContent);
+        JSONObject storyContent = new JSONObject();
+        storyContent.put("name", "Story name " + LocalTime.now());
+        String storyId = createStory(projectId, storyContent);
+
+        response = RequestManager.setGet("/projects/"+projectId+"/stories/" + storyId);
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "story");
-        Assert.assertEquals(this.response.jsonPath().getString("current_state"), "unstarted");
+        Assert.assertEquals(this.response.jsonPath().getString("current_state"), "unscheduled");
+
+        RequestManager.setDelete("/projects/" + projectId);
+        RequestManager.setDelete("/projects/"+ projectId +"/stories/" + storyId);
+
     }
 
     /*
@@ -40,10 +63,14 @@ public class StoriesTests {
      */
     @Test
     public void postStory() {
-        JSONObject profileContent = new JSONObject();
-        profileContent.put("name", "New Story created from Rest Assured");
-        response = RequestManager.setPost("/projects/2406102/stories", profileContent);
+        JSONObject projectContent = new JSONObject();
+        projectContent.put("name", "New Project "+ LocalTime.now());
+        String projectId = createProject(projectContent);
+        JSONObject storyContent = new JSONObject();
+        storyContent.put("name", "New Story created " + LocalTime.now());
+        response = RequestManager.setPost("/projects/" + projectId + "/stories", storyContent);
         Assert.assertEquals(this.response.statusCode(), VALUEOK);
+        RequestManager.setDelete("/projects/" + projectId);
     }
 
     /*
@@ -51,10 +78,18 @@ public class StoriesTests {
     */
     @Test
     public void putTaskTypeFromStory() {
-        JSONObject profileContent = new JSONObject();
-        profileContent.put("name", "New name updated from Rest Assured");
-        response = RequestManager.setPut("/projects/2406102/stories/169156513", profileContent);
+        JSONObject projectContent = new JSONObject();
+        projectContent.put("name", "Project " + LocalTime.now());
+        String projectId = createProject(projectContent);
+        JSONObject storyContent = new JSONObject();
+        storyContent.put("name", "Story name " + LocalTime.now());
+        String storyId = createStory(projectId, storyContent);
+        JSONObject newStoryContent = new JSONObject();
+        newStoryContent.put("name", "New story name" + LocalTime.now());
+        response = RequestManager.setPut("/projects/"+ projectId +"/stories/" + storyId, newStoryContent);
         Assert.assertEquals(this.response.statusCode(), VALUEOK);
+        RequestManager.setDelete("/projects/" + projectId);
+        RequestManager.setDelete("/projects/"+ projectId +"/stories/" + storyId);
     }
 
     /*
@@ -62,11 +97,14 @@ public class StoriesTests {
     */
     @Test
     public void deleteTaskTypeFromStory() {
-        JSONObject profileContent = new JSONObject();
-        profileContent.put("name", "New Task from Rest Assured");
-        response = RequestManager.setPost("/projects/2406102/stories", profileContent);
-        String taskId = this.response.jsonPath().getString("id");
-        response = RequestManager.setDelete("/projects/2406102/stories/" + taskId);
+        JSONObject projectContent = new JSONObject();
+        projectContent.put("name", "Project " + LocalTime.now());
+        String projectId = createProject(projectContent);
+        JSONObject storyContent = new JSONObject();
+        storyContent.put("name", "Story name " + LocalTime.now());
+        String storyId = createStory(projectId, storyContent);
+        response = RequestManager.setDelete("/projects/"+ projectId +"/stories/" + storyId);
         Assert.assertEquals(this.response.statusCode(), VALUEOK1);
+        RequestManager.setDelete("/projects/" + projectId);
     }
 }
