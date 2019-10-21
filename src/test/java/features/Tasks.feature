@@ -6,7 +6,7 @@ Feature:
     And I fill the body with:
     """
     {
-    "name": "Project Test455"
+    "name": "Project for testing Test"
     }
     """
     And I save response as "Project"
@@ -26,6 +26,7 @@ Feature:
     }
     """
     Then I should see the status code as "200"
+    And Clean environment
 
   Scenario: Verify put operation
     Given I perform POST operation for "/projects"

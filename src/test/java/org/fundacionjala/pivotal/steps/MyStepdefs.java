@@ -78,6 +78,11 @@ public class MyStepdefs {
     @Then("I should see the status code as {string}")
     public void iShouldSeeTheStatusCodeAs(String arg0) {
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
-        
+
+    }
+
+    @And("Clean environment")
+    public void cleanEnvironment() {
+        RequestManager.setDelete("/projects/" + ProjectId);
     }
 }
