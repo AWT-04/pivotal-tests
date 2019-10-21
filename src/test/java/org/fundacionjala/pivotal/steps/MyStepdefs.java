@@ -19,11 +19,11 @@ public class MyStepdefs {
     private Response response;
     private String EndPoint;
     private String ProjectId;
+    private String StoryId;
 
     @Given("I perform POST operation for {string}")
     public void iPerformPOSTOperationFor(String arg0) {
         EndPoint = arg0;
-        System.out.println("arg0 = " + arg0);
     }
 
     @And("I fill the body with:")
@@ -31,19 +31,17 @@ public class MyStepdefs {
         JSONParser parser = new JSONParser();
         JSONObject json = (JSONObject) parser.parse(body);
         response = RequestManager.setPost(EndPoint, json);
-        System.out.println("response = " + response.prettyPrint());
     }
 
     @And("I save response as {string}")
     public void iSaveResponseAs(String arg0) {
         data.put(arg0, response);
-        System.out.println("data: " + data);
     }
 
     @And("I perform POST operation for other {string}")
     public void iPerformPOSTOperationForOther(String arg0) {
         ProjectId = response.jsonPath().getString("id");
-        EndPoint = String.format(arg0, ProjectId);
+        EndPoint = arg0.replace("{ProjectId}", ProjectId);
         System.out.println("arg0 = " + EndPoint);
     }
 
@@ -57,21 +55,29 @@ public class MyStepdefs {
 
     @And("I save response too as {string}")
     public void iSaveResponseTooAs(String arg0) {
-        data.put(arg0, response);
+        data.put("story", response);
+        System.out.println("data = " + data);
     }
 
     @When("I perform POST operation for a {string}")
     public void iPerformPOSTOperationForA(String arg0) {
-        JSONObject taskContent = new JSONObject();
-        taskContent.put("description", LocalTime.now());
-        response = RequestManager.setPost(arg0, taskContent);
+        StoryId = response.jsonPath().getString("id");
+        System.out.println("Project Id = " + ProjectId);
+        EndPoint = arg0.replace("{SId}", StoryId);
+        EndPoint = EndPoint.replace("{ProjectId}", ProjectId);
+        System.out.println("arg0 = " + EndPoint);
     }
 
+    @And("I fill the task body with:")
+    public void iFillTheTaskBodyWith(String body) throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(body);
+        response = RequestManager.setPost(EndPoint, json);
+        System.out.println("response = " + response.prettyPrint());
+    }
     @Then("I should see the status code as {string}")
     public void iShouldSeeTheStatusCodeAs(String arg0) {
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
+        
     }
-
-
-
 }

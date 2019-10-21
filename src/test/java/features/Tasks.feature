@@ -6,7 +6,7 @@ Feature:
     And I fill the body with:
     """
     {
-    "name": "Project Test322"
+    "name": "Project Test455"
     }
     """
     And I save response as "Project"
@@ -18,7 +18,8 @@ Feature:
     }
     """
     And I save response too as "S"
-    When I perform POST operation for a "/projects/{Project.id}/stories/{S.id}/tasks"
+    When I perform POST operation for a "/projects/{ProjectId}/stories/{SId}/tasks"
+    And I fill the task body with:
     """
     {
     "description": "Tasks Test"
