@@ -6,11 +6,12 @@ Feature:
     And I fill the body with:
     """
     {
-    "name": "Project Test"
+    "name": "Project Test211"
     }
     """
     And I save response as "Project"
-    And I perform POST operation for other "/projects/{Project.id}/stories"
+    And I perform POST operation for other "/projects/{ProjectId}/stories"
+    And I fill the story body with:
     """
     {
     "name": "Story Test"

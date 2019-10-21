@@ -18,6 +18,7 @@ public class MyStepdefs {
     HashMap<String, Response> data = new HashMap<>();
     private Response response;
     private String EndPoint;
+    private String ProjectId;
 
     @Given("I perform POST operation for {string}")
     public void iPerformPOSTOperationFor(String arg0) {
@@ -29,19 +30,28 @@ public class MyStepdefs {
         JSONParser parser = new JSONParser();
         JSONObject json = (JSONObject) parser.parse(body);
         response = RequestManager.setPost(EndPoint, json);
-        System.out.println("response = " + response);
+        System.out.println("response = " + response.prettyPrint());
     }
 
     @And("I save response as {string}")
     public void iSaveResponseAs(String arg0) {
         data.put(arg0, response);
+        System.out.println("data: " + data);
     }
 
     @And("I perform POST operation for other {string}")
     public void iPerformPOSTOperationForOther(String arg0) {
-        JSONObject storyContent = new JSONObject();
-        storyContent.put("name", LocalTime.now());
-        response = RequestManager.setPost(arg0, storyContent);
+        ProjectId = response.jsonPath().getString("id");
+        EndPoint = arg0;
+        System.out.println("arg0 = " + EndPoint);
+    }
+
+    @And("I fill the story body with:")
+    public void iFillTheStoryBodyWith(String body) throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(body);
+        response = RequestManager.setPost(EndPoint, json);
+        System.out.println("response = " + response.prettyPrint());
     }
 
     @And("I save response too as {string}")
@@ -60,6 +70,7 @@ public class MyStepdefs {
     public void iShouldSeeTheStatusCodeAs(String arg0) {
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
     }
+
 
 
 }
