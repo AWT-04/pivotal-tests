@@ -20,6 +20,7 @@ public class MyStepdefs {
     private String EndPoint;
     private String ProjectId;
     private String StoryId;
+    private String TaskId;
 
     @Given("I perform POST operation for {string}")
     public void iPerformPOSTOperationFor(String arg0) {
@@ -84,5 +85,22 @@ public class MyStepdefs {
     @And("Clean environment")
     public void cleanEnvironment() {
         RequestManager.setDelete("/projects/" + ProjectId);
+    }
+
+    @When("I perform PUT operation for a {string}")
+    public void iPerformPUTOperationForA(String arg0) {
+        TaskId = response.jsonPath().getString("id");
+        EndPoint = arg0.replace("{SId}", StoryId);
+        EndPoint = EndPoint.replace("{ProjectId}", ProjectId);
+        EndPoint = EndPoint.replace("{TaskId}", TaskId);
+
+    }
+
+    @And("I fill the task body with new name:")
+    public void iFillTheTaskBodyWithNewName(String body) throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(body);
+        response = RequestManager.setPut(EndPoint, json);
+        System.out.println("response PUT = " + response.prettyPrint());
     }
 }
