@@ -69,10 +69,9 @@ Feature:
     And I fill the body with:
     """
     {
-    "name": "Project for testing DELETE"
+    "name": "Project for testing DELETE3"
     }
     """
     And I save response as "Project"
-    When Clean environment
+    When Delete project for "/projects/"
     Then I should see the status code "200"
-

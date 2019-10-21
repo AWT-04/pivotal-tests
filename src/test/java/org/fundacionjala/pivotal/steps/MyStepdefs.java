@@ -37,6 +37,7 @@ public class MyStepdefs {
     @And("I save response as {string}")
     public void iSaveResponseAs(String arg0) {
         data.put(arg0, response);
+        System.out.println(data);
     }
 
     @And("I perform POST operation for other {string}")
@@ -76,6 +77,7 @@ public class MyStepdefs {
         response = RequestManager.setPost(EndPoint, json);
         System.out.println("response = " + response.prettyPrint());
     }
+
     @Then("I should see the status code as {string}")
     public void iShouldSeeTheStatusCodeAs(String arg0) {
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
@@ -101,6 +103,12 @@ public class MyStepdefs {
         JSONObject json = (JSONObject) parser.parse(body);
         response = RequestManager.setPut(EndPoint, json);
         System.out.println("response PUT = " + response.prettyPrint());
+    }
+
+    @When("Delete project for {string}")
+    public void deleteProjectFor(String arg0) {
+        System.out.println(arg0 + ProjectId);
+        RequestManager.setDelete(arg0 + ProjectId);
     }
 
     @Then("I should see the status code {string}")
