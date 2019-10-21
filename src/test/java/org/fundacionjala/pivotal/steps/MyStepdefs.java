@@ -107,12 +107,14 @@ public class MyStepdefs {
 
     @When("Delete project for {string}")
     public void deleteProjectFor(String arg0) {
+        ProjectId = data.get("Project").jsonPath().getString("id");
+        System.out.println("data = " + data);
         System.out.println(arg0 + ProjectId);
-        RequestManager.setDelete(arg0 + ProjectId);
+        response = RequestManager.setDelete(arg0 + ProjectId);
     }
 
     @Then("I should see the status code {string}")
     public void iShouldSeeTheStatusCode(String arg0) {
-        Assert.assertEquals(this.response.statusCode(), 200);
+        Assert.assertEquals(this.response.statusCode(), 204);
     }
 }
