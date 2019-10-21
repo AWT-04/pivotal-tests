@@ -25,6 +25,7 @@ public class MyStepdefs {
         EndPoint = arg0;
         System.out.println("arg0 = " + arg0);
     }
+
     @And("I fill the body with:")
     public void iFillTheBodyWith(String body) throws ParseException {
         JSONParser parser = new JSONParser();
@@ -42,7 +43,7 @@ public class MyStepdefs {
     @And("I perform POST operation for other {string}")
     public void iPerformPOSTOperationForOther(String arg0) {
         ProjectId = response.jsonPath().getString("id");
-        EndPoint = arg0;
+        EndPoint = String.format(arg0, ProjectId);
         System.out.println("arg0 = " + EndPoint);
     }
 

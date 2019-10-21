@@ -6,7 +6,7 @@ Feature:
     And I fill the body with:
     """
     {
-    "name": "Project Test211"
+    "name": "Project Test322"
     }
     """
     And I save response as "Project"
