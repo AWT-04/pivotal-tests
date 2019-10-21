@@ -1,20 +1,23 @@
 sudo: required
 language: java
 jdk:
-  - openjdk8
+- openjdk8
 before_script:
-  - wget http://services.gradle.org/distributions/gradle-5.6.2-bin.zip
-  - unzip gradle-5.6.2-bin.zip
-  - export GRADLE_HOME=$PWD/gradle-5.6.2
-  - export PATH=$GRADLE_HOME/bin:$PATH
+- wget http://services.gradle.org/distributions/gradle-5.6.2-bin.zip
+- unzip gradle-5.6.2-bin.zip
+- export GRADLE_HOME=$PWD/gradle-5.6.2
+- export PATH=$GRADLE_HOME/bin:$PATH
 addons:
   sonarcloud:
     organization: awt-04
     token:
-      secure: $SONAR_TOKEN
+      secure: "$SONAR_TOKEN"
 script:
-  - gradle compileJava compileTestJava
-  - sonar-scanner
-  - gradle check
+- gradle compileJava compileTestJava
+- sonar-scanner
+- gradle check
 notifications:
   email: true
+before_install:
+- openssl aes-256-cbc -K $encrypted_0c87c2226168_key -iv $encrypted_0c87c2226168_iv
+  -in config.json.enc -out configJson/config.json -d
