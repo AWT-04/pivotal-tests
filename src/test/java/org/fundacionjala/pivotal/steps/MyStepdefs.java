@@ -79,7 +79,6 @@ public class MyStepdefs {
     @Then("I should see the status code as {string}")
     public void iShouldSeeTheStatusCodeAs(String arg0) {
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "task");
-
     }
 
     @And("Clean environment")
@@ -102,5 +101,10 @@ public class MyStepdefs {
         JSONObject json = (JSONObject) parser.parse(body);
         response = RequestManager.setPut(EndPoint, json);
         System.out.println("response PUT = " + response.prettyPrint());
+    }
+
+    @Then("I should see the status code {string}")
+    public void iShouldSeeTheStatusCode(String arg0) {
+        Assert.assertEquals(this.response.statusCode(), 200);
     }
 }

@@ -6,7 +6,7 @@ Feature:
     And I fill the body with:
     """
     {
-    "name": "Project for testing Test POST"
+    "name": "Project for testing POST"
     }
     """
     And I save response as "Project"
@@ -35,7 +35,7 @@ Feature:
     And I fill the body with:
     """
     {
-    "name": "Project for testing Test PUT"
+    "name": "Project for testing PUT"
     }
     """
     And I save response as "Project"
@@ -63,3 +63,16 @@ Feature:
     """
     Then I should see the status code as "200"
     And Clean environment
+
+  Scenario: Verify delete operation
+    Given I perform POST operation for "/projects"
+    And I fill the body with:
+    """
+    {
+    "name": "Project for testing DELETE"
+    }
+    """
+    And I save response as "Project"
+    When Clean environment
+    Then I should see the status code "200"
+
