@@ -22,6 +22,12 @@ public class MyStepdefs {
     private String StoryId;
     private String TaskId;
 
+    public JSONObject getJson(String body) throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(body);
+        return json;
+    }
+
     @Given("I perform POST operation for {string}")
     public void iPerformPOSTOperationFor(String arg0) {
         EndPoint = arg0;
@@ -29,9 +35,7 @@ public class MyStepdefs {
 
     @And("I fill the body with:")
     public void iFillTheBodyWith(String body) throws ParseException {
-        JSONParser parser = new JSONParser();
-        JSONObject json = (JSONObject) parser.parse(body);
-        response = RequestManager.setPost(EndPoint, json);
+        response = RequestManager.setPost(EndPoint, getJson(body));
     }
 
     @And("I save response as {string}")
@@ -49,9 +53,7 @@ public class MyStepdefs {
 
     @And("I fill the story body with:")
     public void iFillTheStoryBodyWith(String body) throws ParseException {
-        JSONParser parser = new JSONParser();
-        JSONObject json = (JSONObject) parser.parse(body);
-        response = RequestManager.setPost(EndPoint, json);
+        response = RequestManager.setPost(EndPoint, getJson(body));
         System.out.println("response = " + response.prettyPrint());
     }
 
@@ -72,9 +74,7 @@ public class MyStepdefs {
 
     @And("I fill the task body with:")
     public void iFillTheTaskBodyWith(String body) throws ParseException {
-        JSONParser parser = new JSONParser();
-        JSONObject json = (JSONObject) parser.parse(body);
-        response = RequestManager.setPost(EndPoint, json);
+        response = RequestManager.setPost(EndPoint, getJson(body));
         System.out.println("response = " + response.prettyPrint());
     }
 
@@ -99,9 +99,7 @@ public class MyStepdefs {
 
     @And("I fill the task body with new name:")
     public void iFillTheTaskBodyWithNewName(String body) throws ParseException {
-        JSONParser parser = new JSONParser();
-        JSONObject json = (JSONObject) parser.parse(body);
-        response = RequestManager.setPut(EndPoint, json);
+        response = RequestManager.setPut(EndPoint, getJson(body));
         System.out.println("response PUT = " + response.prettyPrint());
     }
 
