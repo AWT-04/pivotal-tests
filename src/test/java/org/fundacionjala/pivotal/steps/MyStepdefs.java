@@ -18,7 +18,7 @@ public class MyStepdefs {
     private String endPoint;
     private String projectId;
     private String storyId;
-    private static final int ok1 = 204;
+    private static final int oK1 = 204;
     private static final String PROJECTID = "{ProjectId}";
 
     public JSONObject getJson(final String body) throws ParseException {
