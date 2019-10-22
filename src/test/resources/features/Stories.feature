@@ -29,7 +29,7 @@ Feature:
     "name": "Project for testing PUT4"
     }
     """
-    And I save response as "Project"
+    And I save response as "P"
     And I perform POST operation for other "/projects/{ProjectId}/stories"
     And I fill the story body with:
     """
