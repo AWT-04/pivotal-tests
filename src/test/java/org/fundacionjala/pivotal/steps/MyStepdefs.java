@@ -54,7 +54,7 @@ public class MyStepdefs {
 
     @And("I save response too as {string}")
     public void iSaveResponseTooAs(final String arg0) {
-        data.put("story", response);
+        data.put("Story", response);
     }
 
     @When("I perform POST operation for a {string}")
@@ -107,6 +107,17 @@ public class MyStepdefs {
     @Then("I should see the kind as {string}")
     public void iShouldSeeTheKindAs(String arg0) {
         Assert.assertEquals(this.response.jsonPath().getString("kind"), "story");
+    }
+
+    @Then("I should see the status code as {int}")
+    public void iShouldSeeTheStatusCodeAs(int arg0) {
+        Assert.assertEquals(this.response.statusCode(), arg0);
+    }
+
+    @When("I perform PUT story operation for a {string}")
+    public void iPerformPUTStoryOperationForA(String arg0) {
+        endPoint = arg0.replace("{SId}", data.get("Story").jsonPath().getString("id"));
+        endPoint = endPoint.replace(PROJECT_ID, data.get("Project").jsonPath().getString("id"));
     }
 
     public static class StoriesStepdefs {

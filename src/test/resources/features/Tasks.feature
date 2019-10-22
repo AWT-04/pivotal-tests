@@ -35,7 +35,7 @@ Feature:
     And I fill the body with:
     """
     {
-    "name": "Project for testing PUT"
+    "name": "Project for testing PUT5"
     }
     """
     And I save response as "Project"
