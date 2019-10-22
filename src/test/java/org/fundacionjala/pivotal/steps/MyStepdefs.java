@@ -19,7 +19,7 @@ public class MyStepdefs {
     private String projectId;
     private String storyId;
     private static final int OK1 = 204;
-    private static final String PROJECTID = "{ProjectId}";
+    private static final String PROJECT_ID = "{ProjectId}";
 
     public JSONObject getJson(final String body) throws ParseException {
         JSONParser parser = new JSONParser();
@@ -44,7 +44,7 @@ public class MyStepdefs {
     @And("I perform POST operation for other {string}")
     public void iPerformPOSTOperationForOther(final String arg0) {
         projectId = response.jsonPath().getString("id");
-        endPoint = arg0.replace(PROJECTID, projectId);
+        endPoint = arg0.replace(PROJECT_ID, projectId);
     }
 
     @And("I fill the story body with:")
@@ -61,7 +61,7 @@ public class MyStepdefs {
     public void iPerformPOSTOperationForA(final String arg0) {
         storyId = response.jsonPath().getString("id");
         endPoint = arg0.replace("{SId}", storyId);
-        endPoint = endPoint.replace(PROJECTID, projectId);
+        endPoint = endPoint.replace(PROJECT_ID, projectId);
     }
 
     @And("I fill the task body with:")
@@ -83,7 +83,7 @@ public class MyStepdefs {
     public void iPerformPUTOperationForA(final String arg0) {
         String taskId = response.jsonPath().getString("id");
         endPoint = arg0.replace("{SId}", storyId);
-        endPoint = endPoint.replace(PROJECTID, projectId);
+        endPoint = endPoint.replace(PROJECT_ID, projectId);
         endPoint = endPoint.replace("{TaskId}", taskId);
 
     }
