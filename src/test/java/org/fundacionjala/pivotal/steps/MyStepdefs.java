@@ -101,6 +101,6 @@ public class MyStepdefs {
 
     @Then("I should see the status code {string}")
     public void iShouldSeeTheStatusCode(final String arg0) {
-        Assert.assertEquals(this.response.statusCode(), ok1);
+        Assert.assertEquals(this.response.statusCode(), oK1);
     }
 }
