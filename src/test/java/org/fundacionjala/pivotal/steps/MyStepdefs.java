@@ -103,8 +103,13 @@ public class MyStepdefs {
     public void iShouldSeeTheStatusCode(final String arg0) {
         Assert.assertEquals(this.response.statusCode(), OK1);
     }
-public static class StoriesStepdefs {
-    @Given("I perform POST operation for {string} stories")
-    public void iPerformPOSTOperationForStories(String arg0) {
+
+    @Then("I should see the kind as {string}")
+    public void iShouldSeeTheKindAs(String arg0) {
+        Assert.assertEquals(this.response.jsonPath().getString("kind"), "story");
     }
-}}
+
+    public static class StoriesStepdefs {
+
+    }
+}
