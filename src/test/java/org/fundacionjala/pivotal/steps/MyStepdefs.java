@@ -18,7 +18,7 @@ public class MyStepdefs {
     private String endPoint;
     private String projectId;
     private String storyId;
-    private static final int oK1 = 204;
+    private static final int OK1 = 204;
     private static final String PROJECTID = "{ProjectId}";
 
     public JSONObject getJson(final String body) throws ParseException {
@@ -101,6 +101,6 @@ public class MyStepdefs {
 
     @Then("I should see the status code {string}")
     public void iShouldSeeTheStatusCode(final String arg0) {
-        Assert.assertEquals(this.response.statusCode(), oK1);
+        Assert.assertEquals(this.response.statusCode(), OK1);
     }
 }
