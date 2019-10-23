@@ -3,6 +3,7 @@ package org.fundacionjala.pivotal.steps;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.fundacionjala.pivotal.EndpointHelper;
 import org.fundacionjala.pivotal.RequestManager;
@@ -46,5 +47,10 @@ public class RequestStepDefs {
     @And("Clean project to {string}")
     public void cleanProjectTo(String endPoint) {
         RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
+    }
+
+    @When("I send a DELETE request to {string}")
+    public void iSendADELETERequestTo(String endPoint) {
+        response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
     }
 }
