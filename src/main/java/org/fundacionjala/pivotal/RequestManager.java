@@ -112,7 +112,7 @@ public final class RequestManager {
      * @param path string path to use url.
      * @return response object.
      */
-    public static Response setDelete(final String path) {
+    public static Response delete(final String path) {
         Response response = given(getRequestSpecification())
                 .when()
                 .delete(path);

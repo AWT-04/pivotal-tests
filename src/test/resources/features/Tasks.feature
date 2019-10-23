@@ -4,7 +4,7 @@ Feature: Tasks in stories
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing POST2"
+    "name": "Project for testing POST3"
     }
     """
     And I save response as "Project"
@@ -22,7 +22,7 @@ Feature: Tasks in stories
     }
     """
     Then I should see the status code as 200
-#    And Clean environment
+    And Clean project to "/projects/{Project.id}"
 
 
 

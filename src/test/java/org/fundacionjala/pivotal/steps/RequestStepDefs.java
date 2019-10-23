@@ -43,4 +43,8 @@ public class RequestStepDefs {
         Assert.assertEquals(this.response.jsonPath().getString(attribute), value);
     }
 
+    @And("Clean project to {string}")
+    public void cleanProjectTo(String endPoint) {
+        RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
+    }
 }
