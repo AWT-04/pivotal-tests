@@ -16,6 +16,7 @@ public class RequestStepDefs {
     private Response response;
 
     public RequestStepDefs(final ScenarioContext context) {
+
         this.context = context;
     }
 
@@ -34,11 +35,6 @@ public class RequestStepDefs {
         context.setContext(key, response);
     }
 
-    @Then("I should see the status code as {int}")
-    public void iShouldSeeTheStatusCode(int statusCode) {
-        Assert.assertEquals(this.response.statusCode(), statusCode);
-    }
-
     @Then("I should see the {string} as {string}")
     public void iShouldSeeTheKindAs(final String attribute, final String value) {
         Assert.assertEquals(this.response.jsonPath().getString(attribute), value);
@@ -52,5 +48,10 @@ public class RequestStepDefs {
     @When("I send a DELETE request to {string}")
     public void iSendADELETERequestTo(final String endPoint) {
         response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
+    }
+
+    @Given("I send a GET request to {string}")
+    public void iSendAGETRequestTo(String endPoint) {
+        response = RequestManager.get(endPoint);
     }
 }
