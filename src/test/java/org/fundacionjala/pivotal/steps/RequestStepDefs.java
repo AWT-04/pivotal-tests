@@ -16,6 +16,7 @@ public class RequestStepDefs {
     private Response response;
 
     public RequestStepDefs(final ScenarioContext context) {
+
         this.context = context;
     }
 
@@ -52,5 +53,10 @@ public class RequestStepDefs {
     @When("I send a DELETE request to {string}")
     public void iSendADELETERequestTo(String endPoint) {
         response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
+    }
+
+    @Given("I send a GET request to {string}")
+    public void iSendAGETRequestTo(String endPoint) {
+        response = RequestManager.get(endPoint);
     }
 }

@@ -24,9 +24,14 @@ public class ResponseStepDefs {
     private static final String PROJECT_ID = "{ProjectId}";
 
     public ResponseStepDefs(final ScenarioContext context) {
+
         this.context = context;
     }
 
-
-
+    @Then("Validate status code {int} of response {string}")
+    public void validateStatusCodeOfResponse(int statusCode, String resp) {
+        response = context.getContext(resp);
+        int status = response.statusCode();
+        Assert.assertEquals(status,statusCode);
+    }
 }
