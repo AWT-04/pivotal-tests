@@ -1,18 +1,7 @@
 package org.fundacionjala.pivotal.steps;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import io.restassured.response.Response;
-import org.fundacionjala.pivotal.RequestManager;
 import org.fundacionjala.pivotal.ScenarioContext;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.testng.Assert;
-
-import java.util.HashMap;
 
 public class ResponseStepDefs {
     private ScenarioContext context;
@@ -26,7 +15,4 @@ public class ResponseStepDefs {
     public ResponseStepDefs(final ScenarioContext context) {
         this.context = context;
     }
-
-
-
 }

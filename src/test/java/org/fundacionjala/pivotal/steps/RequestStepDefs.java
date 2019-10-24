@@ -45,12 +45,12 @@ public class RequestStepDefs {
     }
 
     @And("Clean project to {string}")
-    public void cleanProjectTo(String endPoint) {
+    public void cleanProjectTo(final String endPoint) {
         RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
     }
 
     @When("I send a DELETE request to {string}")
-    public void iSendADELETERequestTo(String endPoint) {
+    public void iSendADELETERequestTo(final String endPoint) {
         response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
     }
 }
