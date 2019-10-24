@@ -4,7 +4,7 @@ Feature: Tasks in stories
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing POST3"
+    "name": "Project for testing POST411"
     }
     """
     And I save response as "Project"
@@ -23,8 +23,6 @@ Feature: Tasks in stories
     """
     Then I should see the status code as 200
     And Clean project to "/projects/{Project.id}"
-
-
 
   Scenario: Verify put request for task endpoint
     Given I send a POST request to "/projects" with body json:
