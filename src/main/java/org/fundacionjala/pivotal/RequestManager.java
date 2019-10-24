@@ -55,6 +55,8 @@ public final class RequestManager {
                 .setContentType(ContentType.JSON)
                 .build();
 
+         requestSpecification
+                .log().all();
         return requestSpecification;
     }
 
@@ -79,7 +81,7 @@ public final class RequestManager {
      * @return response object.
      */
 
-    public static Response setPost(final String path, final JSONObject json) {
+    public static Response post(final String path, final String json) {
         Response response = given(getRequestSpecification())
                 .when()
                 .contentType(ContentType.JSON)
@@ -96,7 +98,7 @@ public final class RequestManager {
      * @return response object.
      */
 
-    public static Response setPut(final String path, final JSONObject json) {
+    public static Response put(final String path, final String json) {
         Response response = given(getRequestSpecification())
                 .when()
                 .body(json)
@@ -110,7 +112,7 @@ public final class RequestManager {
      * @param path string path to use url.
      * @return response object.
      */
-    public static Response setDelete(final String path) {
+    public static Response delete(final String path) {
         Response response = given(getRequestSpecification())
                 .when()
                 .delete(path);
