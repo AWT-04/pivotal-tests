@@ -4,14 +4,18 @@ Feature: Tasks in stories
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing POST3"
+    "name": "{PREFIX} Project for testing {RANDOM}"
     }
     """
+#    Given I send a POST request to "/projects" with body:
+#      | name   | PREFIX Project for testing RANDOM |
+#      | public | true                              |
+    Given I send a POST request to "/projects" with json file "json/ProjectJsonBody.json"
     And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
-    "name": "Story Test"
+    "name": "Story Test {CURRENT_DATE}"
     }
     """
     And I save response as "S"
@@ -22,15 +26,14 @@ Feature: Tasks in stories
     }
     """
     Then I should see the status code as 200
-    And Clean project to "/projects/{Project.id}"
-
+    And I send a DELETE request to "/projects/{Project.id}"
 
 
   Scenario: Verify put request for task endpoint
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing PUT4"
+    "name": "Project for testing PUT45"
     }
     """
     And I save response as "Project"
@@ -62,7 +65,7 @@ Feature: Tasks in stories
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing DELETE111"
+    "name": "Project for testing DELETE1111"
     }
     """
     And I save response as "Project"

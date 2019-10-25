@@ -17,6 +17,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 
 import static io.restassured.RestAssured.given;
@@ -37,27 +38,31 @@ public final class RequestManager {
      * @throws ParseException throws parse exception.
      */
     public static RequestSpecification getRequestSpecification() {
-        JSONParser parser = new JSONParser();
         RequestSpecification requestSpecification = null;
-        Object obj = null;
-        try (FileReader reader = new FileReader("./configJson/config.json")) {
-            obj = parser.parse(reader);
-        } catch (IOException | ParseException e) {
-            throw new AWT04exception(1, e.getMessage());
-        }
+        final String fileName = "./configJson/config.json";
+        JSONObject jsonObject = getJsonObject(fileName);
 
-        JSONObject jsonObject = (JSONObject) obj;
         //Reading the String
         String token = (String) jsonObject.get("x-trackerToken");
         requestSpecification = new io.restassured.builder.RequestSpecBuilder()
                 .setBaseUri("https://www.pivotaltracker.com/services/v5")
                 .addHeader("X-TrackerToken", token)
-                .setContentType(ContentType.JSON)
                 .build();
 
          requestSpecification
                 .log().all();
         return requestSpecification;
+    }
+
+    public static JSONObject getJsonObject(final String fileName) {
+        JSONObject jsonObject;
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader(fileName)) {
+            jsonObject = (JSONObject) parser.parse(reader);
+        } catch (IOException | ParseException e) {
+            throw new AWT04exception(1, e.getMessage());
+        }
+        return jsonObject;
     }
 
     /**
@@ -86,6 +91,15 @@ public final class RequestManager {
                 .when()
                 .contentType(ContentType.JSON)
                 .body(json)
+                .post(path);
+        response.then().log().all();
+        return response;
+    }
+
+    public static Response post(final String path, final Map<String, String> json) {
+        Response response = given(getRequestSpecification())
+                .params(json)
+                .when()
                 .post(path);
         response.then().log().all();
         return response;
