@@ -8,7 +8,11 @@ import io.restassured.response.Response;
 import org.fundacionjala.pivotal.EndpointHelper;
 import org.fundacionjala.pivotal.RequestManager;
 import org.fundacionjala.pivotal.ScenarioContext;
+import org.json.simple.JSONObject;
 import org.testng.Assert;
+
+import java.util.Map;
+
 
 public class RequestStepDefs {
 
@@ -25,6 +29,18 @@ public class RequestStepDefs {
         response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
     }
 
+    @Given("I send a POST request to {string} with body:")
+    public void iSendAPOSTRequestToEndpointWithBody(final String endPoint, final Map<String, String> body) {
+        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+    }
+
+    @Given("I send a POST request to {string} with json file {string}")
+    public void iSendAPOSTRequestToEndpointWithBodyJsonFile(final String endPoint,
+                                                            final String jsonPath) {
+        JSONObject body = RequestManager.getJsonObject("src/test/resources/".concat(jsonPath));
+        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+    }
+
     @Given("I send a PUT request to {string} with body json:")
     public void iSendAPUTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
         response = RequestManager.put(EndpointHelper.buildEndpoint(endPoint, context), body);
@@ -33,16 +49,12 @@ public class RequestStepDefs {
     @And("I save response as {string}")
     public void iSaveResponseAs(final String key) {
         context.setContext(key, response);
+        context.setContext("LAST_RESPONSE", response);
     }
 
     @Then("I should see the {string} as {string}")
     public void iShouldSeeTheKindAs(final String attribute, final String value) {
         Assert.assertEquals(this.response.jsonPath().getString(attribute), value);
-    }
-
-    @And("Clean project to {string}")
-    public void cleanProjectTo(final String endPoint) {
-        RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
     }
 
     @When("I send a DELETE request to {string}")
@@ -54,4 +66,5 @@ public class RequestStepDefs {
     public void iSendAGETRequestTo(String endPoint) {
         response = RequestManager.get(endPoint);
     }
+
 }

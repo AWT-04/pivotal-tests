@@ -27,4 +27,9 @@ public class ResponseStepDefs {
         Assert.assertEquals(status,statusCode);
     }
 
+    @Then("I should see the status code as {int}")
+    public void iShouldSeeTheStatusCode(int statusCode) {
+        response = context.getContext("LAST_RESPONSE");
+        Assert.assertEquals(this.response.statusCode(), statusCode);
+    }
 }
