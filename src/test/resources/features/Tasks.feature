@@ -25,7 +25,10 @@ Feature: Tasks in stories
     "description": "Tasks Test"
     }
     """
+    And I save response as "Task"
     Then I should see the status code as 200
+    And I should see the kind as "task"
+    And I should see the complete as "false"
     And I send a DELETE request to "/projects/{Project.id}"
 
   Scenario: Verify put request for task endpoint
