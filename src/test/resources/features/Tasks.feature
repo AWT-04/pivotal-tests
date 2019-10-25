@@ -32,7 +32,7 @@ Feature: Tasks in stories
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing PUT45"
+    "name": "Project for testing PUT456"
     }
     """
     And I save response as "Project"
@@ -57,14 +57,14 @@ Feature: Tasks in stories
     }
     """
     Then I should see the status code as 200
-    And Clean project to "/projects/{Project.id}"
+    And I send a DELETE request to "/projects/{Project.id}"
 
 
   Scenario: Verify delete request for task endpoint
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing DELETE1111"
+    "name": "Project for testing DELETE124"
     }
     """
     And I save response as "Project"
@@ -83,5 +83,5 @@ Feature: Tasks in stories
     """
     And I save response as "Task"
     When I send a DELETE request to "/projects/{Project.id}/stories/{S.id}/tasks/{Task.id}"
-    Then I should see the status code as 204
-    And Clean project to "/projects/{Project.id}"
+    Then I should see the status code as 200
+    And I send a DELETE request to "/projects/{Project.id}"
