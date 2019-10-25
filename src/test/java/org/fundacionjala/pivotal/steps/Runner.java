@@ -13,12 +13,10 @@ import java.util.List;
         features = "src/test/resources/features/"
 )
 public class Runner extends AbstractTestNGCucumberTests {
-    private Response response;
 
     @BeforeTest
     public void beforeAllScenaries() {
-        System.out.println("beforeAllScenaries");
-        response = RequestManager.setGet("/projects");
+        Response response = RequestManager.setGet("/projects");
         List<Integer> allID = response.jsonPath().getList("id");
         for (Integer id : allID) {
             RequestManager.delete("/projects/" + id);
