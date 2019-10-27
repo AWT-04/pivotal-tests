@@ -63,19 +63,4 @@ public class RequestStepDefs {
     public void iSendADELETERequestTo(final String endPoint) {
         response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
     }
-
-    @When("I send delete all to")
-    public void iSendDeleteAllTo() {
-        response = RequestManager.setGet("/projects");
-        response.jsonPath().getString("id");
-    }
-
-    @Given("Clean enviroment")
-    public void cleanEnviroment() {
-        response = RequestManager.setGet("/projects");
-        List<Integer> allID = response.jsonPath().getList("id");
-        for (Integer name : allID) {
-            RequestManager.delete("/projects/" + name);
-        }
-    }
 }

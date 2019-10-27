@@ -1,5 +1,5 @@
 Feature: Tasks in stories
-
+  @cleanProjects
   Scenario: Verify post request for task endpoint
     Given I send a POST request to "/projects" with body json:
     """
@@ -27,10 +27,9 @@ Feature: Tasks in stories
     """
     And I save response as "Task"
     Then I should see the status code as 200
-    And I should see the kind as "task"
-    And I should see the complete as "false"
-    And I send a DELETE request to "/projects/{Project.id}"
+#    And I send a DELETE request to "/projects/{Project.id}"
 
+  @cleanProjects
   Scenario: Verify put request for task endpoint
     Given I send a POST request to "/projects" with body json:
     """
@@ -63,9 +62,9 @@ Feature: Tasks in stories
     And I send a DELETE request to "/projects/{Project.id}"
 
 
+  @cleanProjects
   Scenario: Verify delete request for task endpoint
-    Given Clean enviroment
-    And I send a POST request to "/projects" with body json:
+    Given I send a POST request to "/projects" with body json:
     """
     {
     "name": "Project for testing DELETE124"
