@@ -11,6 +11,7 @@ import org.fundacionjala.pivotal.ScenarioContext;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -67,5 +68,14 @@ public class RequestStepDefs {
     public void iSendDeleteAllTo() {
         response = RequestManager.setGet("/projects");
         response.jsonPath().getString("id");
+    }
+
+    @Given("Clean enviroment")
+    public void cleanEnviroment() {
+        response = RequestManager.setGet("/projects");
+        List<Integer> allID = response.jsonPath().getList("id");
+        for (Integer name : allID) {
+            RequestManager.delete("/projects/" + name);
+        }
     }
 }

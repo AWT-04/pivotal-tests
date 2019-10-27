@@ -64,7 +64,8 @@ Feature: Tasks in stories
 
 
   Scenario: Verify delete request for task endpoint
-    Given I send a POST request to "/projects" with body json:
+    Given Clean enviroment
+    And I send a POST request to "/projects" with body json:
     """
     {
     "name": "Project for testing DELETE124"
