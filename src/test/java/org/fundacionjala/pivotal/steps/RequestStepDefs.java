@@ -10,8 +10,7 @@ import org.fundacionjala.pivotal.RequestManager;
 import org.fundacionjala.pivotal.ScenarioContext;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
-
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -58,9 +57,16 @@ public class RequestStepDefs {
         Assert.assertEquals(this.response.jsonPath().getString(attribute), value);
     }
 
-
     @When("I send a DELETE request to {string}")
     public void iSendADELETERequestTo(final String endPoint) {
         response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
+    }
+
+    @When("I send a POST request to my project{string} with {string} & {string}")
+    public void iSendAPOSTRequestToMyProjectWith(final String endPoint, final String name, final String story_type) {
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("name", name);
+        body.put("story_type", story_type);
+        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
     }
 }

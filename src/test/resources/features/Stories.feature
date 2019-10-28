@@ -67,9 +67,8 @@ Feature: Stories in projects
     Then I should see the status code as 200
     And I send a DELETE request to "/projects/{Project.id}"
 
-
   @cleanProjects
-  Scenario: Verify feature story_type for story endpoint
+  Scenario Outline: Verify story_types for story endpoint
     Given I send a POST request to "/projects" with body json:
     """
     {
@@ -77,17 +76,17 @@ Feature: Stories in projects
     }
     """
     And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body json:
-    """
-    {
-    "name": "Story Test",
-    "story_type": "feature"
-    }
-    """
+    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<story_type>"
     And I save response as "S"
     Then I should see the status code as 200
-    And I should see the "story_type" as "feature"
     And I send a DELETE request to "/projects/{Project.id}"
+    Examples:
+      | name       | story_type     |
+      | Story Test | feature        |
+      | Story Test | bug            |
+      | Story Test | chore          |
+      | Story Test | release        |
+
 
   @cleanProjects
   Scenario: Verify bug story_type for story endpoint
