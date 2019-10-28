@@ -115,7 +115,7 @@ Feature: Stories in projects
 
 # Negative Tests
   @cleanProjects
-  Scenario: Verify accepted current_state for story endpoint
+  Scenario: Verify no value for current_state for story endpoint
     Given I send a POST request to "/projects" with body json:
     """
     {
@@ -128,54 +128,32 @@ Feature: Stories in projects
     {
     "name": "Story Test",
     "estimate": 1.00 ,
+    "current_state": "None"
+    }
+    """
+    And I save response as "S"
+    Then I should see the status code as 400
+    And I should see the "error" as "One or more request parameters was missing or invalid."
+    And I send a DELETE request to "/projects/{Project.id}"
+
+  @cleanProjects
+  Scenario: Verify error for no estimate value with accepted current_state for story endpoint
+    Given I send a POST request to "/projects" with body json:
+    """
+    {
+    "name": "Project for testing"
+    }
+    """
+    And I save response as "Project"
+    When I send a POST request to "/projects/{Project.id}/stories" with body json:
+    """
+    {
+    "name": "Story Test",
     "current_state": "accepted"
     }
     """
     And I save response as "S"
-    Then I should see the status code as 200
-    And I should see the "current_state" as "accepted"
+    Then I should see the status code as 400
+    And I should see the "general_problem" as "Stories in the accepted state must be estimated."
     And I send a DELETE request to "/projects/{Project.id}"
 
-  @cleanProjects
-  Scenario: Verify delivered current_state for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "Project for testing"
-    }
-    """
-    And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body json:
-    """
-    {
-    "name": "Story Test",
-    "estimate": 1.00 ,
-    "current_state": "delivered"
-    }
-    """
-    And I save response as "S"
-    Then I should see the status code as 200
-    And I should see the "current_state" as "delivered"
-    And I send a DELETE request to "/projects/{Project.id}"
-
-  @cleanProjects
-  Scenario: Verify finished current_state for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "Project for testing"
-    }
-    """
-    And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body json:
-    """
-    {
-    "name": "Story Test",
-    "estimate": 1.00 ,
-    "current_state": "finished"
-    }
-    """
-    And I save response as "S"
-    Then I should see the status code as 200
-    And I should see the "current_state" as "finished"
-    And I send a DELETE request to "/projects/{Project.id}"
