@@ -16,7 +16,7 @@ public class ResponseStepDefs {
     }
 
     @Then("Validate status code {int} of response {string}")
-    public void validateStatusCodeOfResponse(int statusCode, String resp) {
+    public void validateStatusCodeOfResponse(int statusCode, final String resp) {
         response = context.getContext(resp);
         int status = response.statusCode();
         Assert.assertEquals(status, statusCode);

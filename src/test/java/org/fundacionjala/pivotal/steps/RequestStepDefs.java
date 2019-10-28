@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.fundacionjala.pivotal.EndpointHelper;
+import org.fundacionjala.pivotal.RandomNameGenerator;
 import org.fundacionjala.pivotal.RequestManager;
 import org.fundacionjala.pivotal.ScenarioContext;
 import org.json.simple.JSONObject;
@@ -26,7 +27,8 @@ public class RequestStepDefs {
 
     @Given("I send a POST request to {string} with body json:")
     public void iSendAPOSTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
-        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context),
+                RandomNameGenerator.replaceRandom(body));
     }
 
     @Given("I send a POST request to {string} with body:")
@@ -63,13 +65,13 @@ public class RequestStepDefs {
     }
 
     @Given("I send a GET request to {string}")
-    public void iSendAGETRequestTo(String endPoint) {
+    public void iSendAGETRequestTo(final String endPoint) {
         response = RequestManager.get(endPoint);
     }
+
     @When("I send delete all to")
     public void iSendDeleteAllTo() {
         response = RequestManager.get("/projects");
         response.jsonPath().getString("id");
     }
-
 }
