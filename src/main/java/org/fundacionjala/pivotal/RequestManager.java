@@ -70,7 +70,7 @@ public final class RequestManager {
      * @param path string path to use url.
      * @return response object.
      */
-    public static Response setGet(final String path) {
+    public static Response get(final String path) {
         Response response = given(getRequestSpecification())
                 .log().all()
                 .when()

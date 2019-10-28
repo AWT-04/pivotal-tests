@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.fundacionjala.pivotal.EndpointHelper;
+import org.fundacionjala.pivotal.RandomNameGenerator;
 import org.fundacionjala.pivotal.RequestManager;
 import org.fundacionjala.pivotal.ScenarioContext;
 import org.json.simple.JSONObject;
@@ -20,12 +21,14 @@ public class RequestStepDefs {
     private Response response;
 
     public RequestStepDefs(final ScenarioContext context) {
+
         this.context = context;
     }
 
     @Given("I send a POST request to {string} with body json:")
     public void iSendAPOSTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
-        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context),
+                RandomNameGenerator.replaceRandom(body));
     }
 
     @Given("I send a POST request to {string} with body:")
@@ -46,21 +49,29 @@ public class RequestStepDefs {
     }
 
     @And("I save response as {string}")
-    public void iSaveResponseAs(final String key) {
+    public void giiSaveResponseAs(final String key) {
         context.setContext(key, response);
         context.setContext("LAST_RESPONSE", response);
     }
-
 
     @Then("I should see the {string} as {string}")
     public void iShouldSeeTheKindAs(final String attribute, final String value) {
         Assert.assertEquals(this.response.jsonPath().getString(attribute), value);
     }
 
-
     @When("I send a DELETE request to {string}")
     public void iSendADELETERequestTo(final String endPoint) {
         response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
     }
 
+    @Given("I send a GET request to {string}")
+    public void iSendAGETRequestTo(final String endPoint) {
+        response = RequestManager.get(endPoint);
+    }
+
+    @When("I send delete all to")
+    public void iSendDeleteAllTo() {
+        response = RequestManager.get("/projects");
+        response.jsonPath().getString("id");
+    }
 }
