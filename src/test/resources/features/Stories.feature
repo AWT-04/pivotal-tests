@@ -79,6 +79,7 @@ Feature: Stories in projects
     When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<story_type>"
     And I save response as "S"
     Then I should see the status code as 200
+    And I should see the "story_type" as "<story_type>"
     And I send a DELETE request to "/projects/{Project.id}"
     Examples:
       | name       | story_type     |
@@ -89,7 +90,7 @@ Feature: Stories in projects
 
 
   @cleanProjects
-  Scenario: Verify bug story_type for story endpoint
+  Scenario Outline: Verify current_state for story endpoint
     Given I send a POST request to "/projects" with body json:
     """
     {
@@ -97,60 +98,22 @@ Feature: Stories in projects
     }
     """
     And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body json:
-    """
-    {
-    "name": "Story Test",
-    "story_type": "bug"
-    }
-    """
+    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<estimate>" & "<current_state>"
     And I save response as "S"
     Then I should see the status code as 200
-    And I should see the "story_type" as "bug"
+    And I should see the "current_state" as "<current_state>"
     And I send a DELETE request to "/projects/{Project.id}"
+    Examples:
+      | name       | estimate       | current_state  |
+      | Story Test | 1.00           | accepted       |
+      | Story Test | 1.00           | delivered      |
+      | Story Test | 1.00           | finished       |
+      | Story Test | 1.00           | started        |
+      | Story Test | 1.00           | rejected       |
+      | Story Test | 1.00           | unstarted      |
+      | Story Test | 1.00           | unscheduled    |
 
-  @cleanProjects
-  Scenario: Verify chore story_type for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "Project for testing"
-    }
-    """
-    And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body json:
-    """
-    {
-    "name": "Story Test",
-    "story_type": "chore"
-    }
-    """
-    And I save response as "S"
-    Then I should see the status code as 200
-    And I should see the "story_type" as "chore"
-    And I send a DELETE request to "/projects/{Project.id}"
-
-  @cleanProjects
-  Scenario: Verify release story_type for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "Project for testing"
-    }
-    """
-    And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body json:
-    """
-    {
-    "name": "Story Test",
-    "story_type": "release"
-    }
-    """
-    And I save response as "S"
-    Then I should see the status code as 200
-    And I should see the "story_type" as "release"
-    And I send a DELETE request to "/projects/{Project.id}"
-
+# Negative Tests
   @cleanProjects
   Scenario: Verify accepted current_state for story endpoint
     Given I send a POST request to "/projects" with body json:

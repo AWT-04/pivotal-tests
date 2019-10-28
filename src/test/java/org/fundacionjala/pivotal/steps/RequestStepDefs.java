@@ -69,4 +69,13 @@ public class RequestStepDefs {
         body.put("story_type", story_type);
         response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
     }
+
+    @When("I send a POST request to my project{string} with {string} & {string} & {string}")
+    public void iSendAPOSTRequestToMyProjectWith(final String endPoint, final String name, final String estimate, String current_state) {
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("name", name);
+        body.put("estimate", estimate);
+        body.put("current_state", current_state);
+        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+    }
 }
