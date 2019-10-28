@@ -1,68 +1,68 @@
-Feature:
-  Verify stories functionality for pivotal tracker
-
-  Scenario: Verify post operation
-    Given I perform POST operation for "/projects"
-    And I fill the body with:
+Feature: Stories in tasks
+  @cleanProjects
+  Scenario: Verify post request for story endpoint
+    Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing POST"
+    "name": "{PREFIX} Project for testing {RANDOM}"
+    }
+    """
+#    Given I send a POST request to "/projects" with body:
+#      | name   | PREFIX Project for testing RANDOM |
+#      | public | true                              |
+    Given I send a POST request to "/projects" with json file "json/ProjectJsonBody.json"
+    And I save response as "Project"
+    When I send a POST request to "/projects/{Project.id}/stories" with body json:
+    """
+    {
+    "name": "Story Test {CURRENT_DATE}"
+    }
+    """
+    And I save response as "S"
+    Then I should see the status code as 200
+
+  @cleanProjects
+  Scenario: Verify put request for story endpoint
+    Given I send a POST request to "/projects" with body json:
+    """
+    {
+    "name": "Project for testing PUT456"
     }
     """
     And I save response as "Project"
-    When I perform POST operation for other "/projects/{ProjectId}/stories"
-    And I fill the story body with:
+    And I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
     "name": "Story Test"
     }
     """
-    Then I should see the kind as "story"
-    And Clean environment
-
-
-  Scenario: Verify put operation
-    Given I perform POST operation for "/projects"
-    And I fill the body with:
-    """
+    And I save response as "S"
+    When I send a PUT request to "/projects/{Project.id}/stories/{S.id}" with body json:
+     """
     {
-    "name": "Project for testing PUT4"
-    }
-    """
-    And I save response as "P"
-    And I perform POST operation for other "/projects/{ProjectId}/stories"
-    And I fill the story body with:
-    """
-    {
-    "name": "Story Test"
-    }
-    """
-    And I save response too as "S"
-    When I perform PUT story operation for a "/projects/{ProjectId}/stories/{SId}"
-    And I fill the task body with new name:
-    """
-    {
-    "name": "New task name"
+    "name": "New Story Test name"
     }
     """
     Then I should see the status code as 200
-    And Clean environment
+    And I send a DELETE request to "/projects/{Project.id}"
 
-  Scenario: Verify delete operation
-    Given I perform POST operation for "/projects"
-    And I fill the body with:
+
+  @cleanProjects
+  Scenario: Verify delete request for story endpoint
+    Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing POST"
+    "name": "Project for testing DELETE124"
     }
     """
     And I save response as "Project"
-    And I perform POST operation for other "/projects/{ProjectId}/stories"
-    And I fill the story body with:
+    And I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
     "name": "Story Test"
     }
     """
-    When Delete project for "/projects/"
-    Then I should see the status code "204"
+    And I save response as "S"
+    When I send a DELETE request to "/projects/{Project.id}/stories/{S.id}"
+    Then I should see the status code as 200
+    And I send a DELETE request to "/projects/{Project.id}"
