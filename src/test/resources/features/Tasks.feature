@@ -1,5 +1,5 @@
 Feature: Tasks in stories
-
+  @cleanProjects
   Scenario: Verify post request for task endpoint
     Given I send a POST request to "/projects" with body json:
     """
@@ -26,9 +26,9 @@ Feature: Tasks in stories
     }
     """
     Then I should see the status code as 200
-    And I send a DELETE request to "/projects/{Project.id}"
+#    And I send a DELETE request to "/projects/{Project.id}"
 
-
+  @cleanProjects
   Scenario: Verify put request for task endpoint
     Given I send a POST request to "/projects" with body json:
     """
@@ -58,9 +58,9 @@ Feature: Tasks in stories
     }
     """
     Then I should see the status code as 200
-    And Clean project to "/projects/{Project.id}"
+#    And Clean project to "/projects/{Project.id}"
 
-
+  @cleanProjects
   Scenario: Verify delete request for task endpoint
     Given I send a POST request to "/projects" with body json:
     """
@@ -83,6 +83,5 @@ Feature: Tasks in stories
     }
     """
     And I save response as "Task"
-    When I send a DELETE request to "/projects/{Project.id}/stories/{S.id}/tasks/{Task.id}"
-    Then I should see the status code as 204
-    And Clean project to "/projects/{Project.id}"
+#    When I send a DELETE request to "/projects/{Project.id}/stories/{S.id}/tasks/{Task.id}"
+#    Then I should see the status code as 204

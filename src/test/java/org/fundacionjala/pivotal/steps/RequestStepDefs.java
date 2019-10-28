@@ -52,12 +52,10 @@ public class RequestStepDefs {
         context.setContext("LAST_RESPONSE", response);
     }
 
-
     @Then("I should see the {string} as {string}")
     public void iShouldSeeTheKindAs(final String attribute, final String value) {
         Assert.assertEquals(this.response.jsonPath().getString(attribute), value);
     }
-
 
     @When("I send a DELETE request to {string}")
     public void iSendADELETERequestTo(final String endPoint) {
@@ -73,4 +71,5 @@ public class RequestStepDefs {
         response = RequestManager.get("/projects");
         response.jsonPath().getString("id");
     }
+
 }

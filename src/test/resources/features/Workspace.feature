@@ -5,4 +5,4 @@ Feature: Workspaces tests
     When I save response as "workspace"
     Then Validate status code 200 of response "workspace"
 
- # Scenario:
+  Scenario:

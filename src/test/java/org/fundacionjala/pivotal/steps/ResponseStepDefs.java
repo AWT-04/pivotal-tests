@@ -6,6 +6,7 @@ import org.fundacionjala.pivotal.ScenarioContext;
 import org.testng.Assert;
 
 public class ResponseStepDefs {
+
     private ScenarioContext context;
     private Response response;
 
