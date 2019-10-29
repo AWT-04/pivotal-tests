@@ -76,7 +76,10 @@ Feature: Stories in projects
     }
     """
     And I save response as "Project"
-    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<story_type>"
+#    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<story_type>"
+    When I send a POST request to "/projects/{Project.id}/stories" with body:
+    | name      | <name>       |
+    |story_type | <story_type> |
     And I save response as "S"
     Then I should see the status code as 200
     And I should see the "story_type" as "<story_type>"
@@ -98,7 +101,11 @@ Feature: Stories in projects
     }
     """
     And I save response as "Project"
-    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<estimate>" & "<current_state>"
+#    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<estimate>" & "<current_state>"
+    When I send a POST request to "/projects/{Project.id}/stories" with body:
+      | name            | <name>            |
+      | estimate        | <estimate>        |
+      | current_state   | <current_state>   |
     And I save response as "S"
     Then I should see the status code as 200
     And I should see the "current_state" as "<current_state>"
