@@ -139,6 +139,23 @@ Feature: Stories in projects
     And I save response as "Stories"
     Then I should see the size of type "bug" in "story_type" of "Stories" as 2
 
+  @cleanProjects
+  Scenario Outline: Verify the size of bugs with story_type query param
+    Given I send a POST request to "/projects" with body:
+      | name | "Project for testing" |
+    And I save response as "Project"
+    And I send a POST request to "/projects/{Project.id}/stories" with body list:
+      | name         | story_type |
+      | Story Test 1 | feature    |
+      | Story Test 2 | bug        |
+      | Story Test 3 | bug        |
+    When I send a GET request to "/projects/{Project.id}/stories?with_story_type=<param1>"
+    And I save response as "Stories"
+    Then I should see the size of type "<param1>" in "story_type" of "Stories" as 2
+    Examples:
+      | param1       |
+      | bug          |
+
 # Negative Tests
   @cleanProjects
   Scenario: Verify no value for current_state for story endpoint
