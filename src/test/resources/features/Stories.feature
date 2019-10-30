@@ -1,4 +1,5 @@
 Feature: Stories in projects
+
   @cleanProjects
   Scenario: Verify post request for story endpoint
     Given I send a POST request to "/projects" with body json:
@@ -26,7 +27,7 @@ Feature: Stories in projects
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing PUT456"
+    "name": "Project for testing PUT"
     }
     """
     And I save response as "Project"
@@ -52,7 +53,7 @@ Feature: Stories in projects
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing DELETE124"
+    "name": "Project for testing DELETE"
     }
     """
     And I save response as "Project"
@@ -69,14 +70,9 @@ Feature: Stories in projects
 
   @cleanProjects
   Scenario Outline: Verify story_types for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "Project for testing"
-    }
-    """
+    Given I send a POST request to "/projects" with body:
+      | name      | "Project for testing" |
     And I save response as "Project"
-#    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<story_type>"
     When I send a POST request to "/projects/{Project.id}/stories" with body:
     | name      | <name>       |
     |story_type | <story_type> |
@@ -91,15 +87,10 @@ Feature: Stories in projects
       | Story Test | chore          |
       | Story Test | release        |
 
-
   @cleanProjects
   Scenario Outline: Verify current_state for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "Project for testing"
-    }
-    """
+    Given I send a POST request to "/projects" with body:
+      | name      | "Project for testing" |
     And I save response as "Project"
 #    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<estimate>" & "<current_state>"
     When I send a POST request to "/projects/{Project.id}/stories" with body:
@@ -119,6 +110,26 @@ Feature: Stories in projects
       | Story Test | 1.00           | rejected       |
       | Story Test | 1.00           | unstarted      |
       | Story Test | 1.00           | unscheduled    |
+
+#Afterhook cleans the project and it is not possible to go ahead
+  @cleanProjects
+  Scenario Outline: Verify increment of the size for story endpoint when adding stories
+    Given I send a POST request to "/projects" with body:
+      | name      | "Project for testing" |
+    And I save response as "Project"
+    When I send a POST request to "/projects/{Project.id}/stories" with body:
+      | name      | <name>       |
+      |story_type | <story_type> |
+    And I save response as "S"
+    Then I should see the status code as 200
+    And I should see the "story_type" as "<story_type>"
+#    And I send a DELETE request to "/projects/{Project.id}"
+    Examples:
+      | name        | story_type     |
+      | Story Test1 | feature        |
+      | Story Test2 | feature        |
+      | Story Test3 | feature        |
+
 
 # Negative Tests
   @cleanProjects
