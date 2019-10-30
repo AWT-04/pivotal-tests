@@ -79,14 +79,6 @@ public class RequestStepDefs {
     public void iShouldSeeTheSizeOfTypeInOfAs(String kind, String field, String EndPoint, int size) {
         response = context.getContext(EndPoint);
         List<String> storiesKind = response.jsonPath().getList(field);
-        System.out.println("storieskind = " + storiesKind );
-        int count = 0;
-        for (int i = 0; i < storiesKind.size(); i++) {
-            System.out.println("storieKind = " + storiesKind.get(i));
-            if(storiesKind.get(i).equals(kind)){
-                count++;
-            }
-        }
-        Assert.assertEquals(count, size);
+        Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x->x.equals(kind)).collect(Collectors.toList()).size(), size);
     }
 }
