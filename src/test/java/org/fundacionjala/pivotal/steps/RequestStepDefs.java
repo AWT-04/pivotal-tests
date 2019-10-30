@@ -78,7 +78,6 @@ public class RequestStepDefs {
     @And("I should see the size of type {string} in {string} of {string} as {int}")
     public void iShouldSeeTheSizeOfTypeInOfAs(String kind, String field, String EndPoint, int size) {
         response = context.getContext(EndPoint);
-        List<String> storiesKind = response.jsonPath().getList(field);
         Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x->x.equals(kind)).collect(Collectors.toList()).size(), size);
     }
 }
