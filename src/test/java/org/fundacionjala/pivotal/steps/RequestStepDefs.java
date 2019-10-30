@@ -13,6 +13,7 @@ import org.testng.Assert;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class RequestStepDefs {
@@ -64,13 +65,28 @@ public class RequestStepDefs {
     }
 
     @And("I should see the size of {string} in {string} as {int}")
-    public void iShouldSeeTheSizeOfInAs(String feature, String EndPoint, int size) {
+    public void iShouldSeeTheSizeOfInAs(String field, String EndPoint, int size) {
         response = context.getContext(EndPoint);
-        Assert.assertEquals(this.response.jsonPath().getList("id").size(), size);
+        Assert.assertEquals(this.response.jsonPath().getList(field).size(), size);
     }
 
     @And("I send a GET request to {string}")
     public void iSendAGETRequestTo(String endPoint) {
         response = RequestManager.setGet(EndpointHelper.buildEndpoint(endPoint, context));
+    }
+
+    @And("I should see the size of type {string} in {string} of {string} as {int}")
+    public void iShouldSeeTheSizeOfTypeInOfAs(String kind, String field, String EndPoint, int size) {
+        response = context.getContext(EndPoint);
+        List<String> storiesKind = response.jsonPath().getList(field);
+        System.out.println("storieskind = " + storiesKind );
+        int count = 0;
+        for (int i = 0; i < storiesKind.size(); i++) {
+            System.out.println("storieKind = " + storiesKind.get(i));
+            if(storiesKind.get(i).equals(kind)){
+                count++;
+            }
+        }
+        Assert.assertEquals(count, size);
     }
 }

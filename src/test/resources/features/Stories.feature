@@ -111,9 +111,8 @@ Feature: Stories in projects
       | Story Test | 1.00           | unstarted      |
       | Story Test | 1.00           | unscheduled    |
 
-#Afterhook cleans the project and it is not possible to go ahead
   @cleanProjects
-  Scenario: Verify increment of the size for story endpoint when adding stories
+  Scenario: Verify the size for story endpoint when adding stories
     Given I send a POST request to "/projects" with body:
       | name      | "Project for testing" |
     And I save response as "Project"
@@ -128,7 +127,25 @@ Feature: Stories in projects
       |story_type | feature           |
     When I send a GET request to "/projects/{Project.id}/stories"
     And I save response as "Stories"
-    Then I should see the size of "story" in "Stories" as 3
+    Then I should see the size of "id" in "Stories" as 3
+
+  @cleanProjects
+  Scenario: Verify the size of bugs for story endpoint when adding stories
+    Given I send a POST request to "/projects" with body:
+      | name      | "Project for testing" |
+    And I save response as "Project"
+    And I send a POST request to "/projects/{Project.id}/stories" with body:
+      | name      | Story Test1       |
+      |story_type | bug           |
+    And I send a POST request to "/projects/{Project.id}/stories" with body:
+      | name      | Story Test2       |
+      |story_type | bug           |
+    And I send a POST request to "/projects/{Project.id}/stories" with body:
+      | name      | Story Test3       |
+      |story_type | feature           |
+    When I send a GET request to "/projects/{Project.id}/stories"
+    And I save response as "Stories"
+    Then I should see the size of type "bug" in "story_type" of "Stories" as 2
 
 # Negative Tests
   @cleanProjects
