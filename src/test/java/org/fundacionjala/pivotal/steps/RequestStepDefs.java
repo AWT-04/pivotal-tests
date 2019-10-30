@@ -11,6 +11,7 @@ import org.fundacionjala.pivotal.ScenarioContext;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -62,20 +63,14 @@ public class RequestStepDefs {
         response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
     }
 
-    @When("I send a POST request to my project{string} with {string} & {string}")
-    public void iSendAPOSTRequestToMyProjectWith(final String endPoint, final String name, final String story_type) {
-        HashMap<String, String> body = new HashMap<String, String>();
-        body.put("name", name);
-        body.put("story_type", story_type);
-        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+    @And("I should see the size of {string} in {string} as {int}")
+    public void iShouldSeeTheSizeOfInAs(String feature, String EndPoint, int size) {
+        response = context.getContext(EndPoint);
+        Assert.assertEquals(this.response.jsonPath().getList("id").size(), size);
     }
 
-    @When("I send a POST request to my project{string} with {string} & {string} & {string}")
-    public void iSendAPOSTRequestToMyProjectWith(final String endPoint, final String name, final String estimate, String current_state) {
-        HashMap<String, String> body = new HashMap<String, String>();
-        body.put("name", name);
-        body.put("estimate", estimate);
-        body.put("current_state", current_state);
-        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+    @And("I send a GET request to {string}")
+    public void iSendAGETRequestTo(String endPoint) {
+        response = RequestManager.setGet(EndpointHelper.buildEndpoint(endPoint, context));
     }
 }

@@ -113,23 +113,22 @@ Feature: Stories in projects
 
 #Afterhook cleans the project and it is not possible to go ahead
   @cleanProjects
-  Scenario Outline: Verify increment of the size for story endpoint when adding stories
+  Scenario: Verify increment of the size for story endpoint when adding stories
     Given I send a POST request to "/projects" with body:
       | name      | "Project for testing" |
     And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body:
-      | name      | <name>       |
-      |story_type | <story_type> |
-    And I save response as "S"
-    Then I should see the status code as 200
-    And I should see the "story_type" as "<story_type>"
-#    And I send a DELETE request to "/projects/{Project.id}"
-    Examples:
-      | name        | story_type     |
-      | Story Test1 | feature        |
-      | Story Test2 | feature        |
-      | Story Test3 | feature        |
-
+    And I send a POST request to "/projects/{Project.id}/stories" with body:
+      | name      | Story Test1       |
+      |story_type | feature           |
+    And I send a POST request to "/projects/{Project.id}/stories" with body:
+      | name      | Story Test2       |
+      |story_type | feature           |
+    And I send a POST request to "/projects/{Project.id}/stories" with body:
+      | name      | Story Test3       |
+      |story_type | feature           |
+    When I send a GET request to "/projects/{Project.id}/stories"
+    And I save response as "Stories"
+    Then I should see the size of "story" in "Stories" as 3
 
 # Negative Tests
   @cleanProjects
