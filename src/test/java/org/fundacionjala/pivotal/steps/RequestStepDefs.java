@@ -90,4 +90,11 @@ public class RequestStepDefs {
         Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x->x.equals(kind)).
                 collect(Collectors.toList()).size(), size);
     }
+
+    @Then("I should see the size of type {string} in {string} of {string} as <size>")
+    public void iShouldSeeTheSizeOfTypeInOfAsSize(String kind, String field, String EndPoint, int size) {
+        response = context.getContext(EndPoint);
+        Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x->x.equals(kind)).
+                collect(Collectors.toList()).size(), size);
+    }
 }

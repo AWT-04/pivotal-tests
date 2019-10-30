@@ -68,6 +68,52 @@ Feature: Stories in projects
     Then I should see the status code as 200
     And I send a DELETE request to "/projects/{Project.id}"
 
+
+# Negative Tests
+  @cleanProjects
+  Scenario: Verify no value for current_state for story endpoint
+    Given I send a POST request to "/projects" with body json:
+    """
+    {
+    "name": "Project for testing"
+    }
+    """
+    And I save response as "Project"
+    When I send a POST request to "/projects/{Project.id}/stories" with body json:
+    """
+    {
+    "name": "Story Test",
+    "estimate": 1.00 ,
+    "current_state": "None"
+    }
+    """
+    And I save response as "S"
+    Then I should see the status code as 400
+    And I should see the "error" as "One or more request parameters was missing or invalid."
+    And I send a DELETE request to "/projects/{Project.id}"
+
+  @cleanProjects
+  Scenario: Verify error for no estimate value with accepted current_state for story endpoint
+    Given I send a POST request to "/projects" with body json:
+    """
+    {
+    "name": "Project for testing"
+    }
+    """
+    And I save response as "Project"
+    When I send a POST request to "/projects/{Project.id}/stories" with body json:
+    """
+    {
+    "name": "Story Test",
+    "current_state": "accepted"
+    }
+    """
+    And I save response as "S"
+    Then I should see the status code as 400
+    And I should see the "general_problem" as "Stories in the accepted state must be estimated."
+    And I send a DELETE request to "/projects/{Project.id}"
+
+#Scenario outline tests
   @cleanProjects
   Scenario Outline: Verify story_types for story endpoint
     Given I send a POST request to "/projects" with body:
@@ -135,9 +181,13 @@ Feature: Stories in projects
       | Story Test 1 | feature    |
       | Story Test 2 | bug        |
       | Story Test 3 | bug        |
+      | Story Test 4 | chore      |
+      | Story Test 5 | bug        |
+      | Story Test 6 | chore      |
+      | Story Test 7 | bug        |
     When I send a GET request to "/projects/{Project.id}/stories"
     And I save response as "Stories"
-    Then I should see the size of type "bug" in "story_type" of "Stories" as 2
+    Then I should see the size of type "bug" in "story_type" of "Stories" as 4
 
   @cleanProjects
   Scenario Outline: Verify the size of bugs with story_type query param
@@ -149,54 +199,55 @@ Feature: Stories in projects
       | Story Test 1 | feature    |
       | Story Test 2 | bug        |
       | Story Test 3 | bug        |
-    When I send a GET request to "/projects/{Project.id}/stories?with_story_type=<param1>"
+      | Story Test 4 | chore      |
+      | Story Test 5 | bug        |
+      | Story Test 6 | chore      |
+      | Story Test 7 | bug        |
+    When I send a GET request to "/projects/{Project.id}/stories?with_story_type=<story_t>"
     And I save response as "Stories"
-    Then I should see the size of type "<param1>" in "story_type" of "Stories" as 2
+    Then I should see the size of type "<story_t>" in "story_type" of "Stories" as <size>
     Examples:
-      | param1       |
-      | bug          |
+      | story_t | size |
+      | bug     | 4    |
+      | feature | 1    |
+      | chore   | 2    |
 
-# Negative Tests
-  @cleanProjects
-  Scenario: Verify no value for current_state for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "Project for testing"
-    }
-    """
-    And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body json:
-    """
-    {
-    "name": "Story Test",
-    "estimate": 1.00 ,
-    "current_state": "None"
-    }
-    """
-    And I save response as "S"
-    Then I should see the status code as 400
-    And I should see the "error" as "One or more request parameters was missing or invalid."
-    And I send a DELETE request to "/projects/{Project.id}"
+
 
   @cleanProjects
-  Scenario: Verify error for no estimate value with accepted current_state for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "Project for testing"
-    }
-    """
+  Scenario Outline: Verify the size of bugs with state query param
+    Given I send a POST request to "/projects" with body:
+      | name | "Project for testing" |
     And I save response as "Project"
-    When I send a POST request to "/projects/{Project.id}/stories" with body json:
-    """
-    {
-    "name": "Story Test",
-    "current_state": "accepted"
-    }
-    """
-    And I save response as "S"
-    Then I should see the status code as 400
-    And I should see the "general_problem" as "Stories in the accepted state must be estimated."
-    And I send a DELETE request to "/projects/{Project.id}"
+    And I send a POST request to "/projects/{Project.id}/stories" with body list:
+      | name       | estimate | current_state |
+      | Story Test | 1.00     | accepted      |
+      | Story Test | 1.00     | delivered     |
+      | Story Test | 1.00     | finished      |
+      | Story Test | 1.00     | started       |
+      | Story Test | 1.00     | rejected      |
+      | Story Test | 1.00     | unstarted     |
+      | Story Test | 1.00     | unscheduled   |
+      | Story Test | 1.00     | accepted      |
+      | Story Test | 1.00     | delivered     |
+      | Story Test | 1.00     | finished      |
+      | Story Test | 1.00     | started       |
+      | Story Test | 1.00     | rejected      |
+      | Story Test | 1.00     | unstarted     |
+      | Story Test | 1.00     | unscheduled   |
+      | Story Test | 1.00     | accepted      |
+      | Story Test | 1.00     | delivered     |
+      | Story Test | 1.00     | finished      |
+    When I send a GET request to "/projects/{Project.id}/stories?with_state=<state>"
+    And I save response as "Stories"
+    Then I should see the size of type "<state>" in "current_state" of "Stories" as <size>
+    Examples:
+      | state       | size |
+      | accepted    | 3    |
+      | delivered   | 3    |
+      | finished    | 3    |
+      | started     | 2    |
+      | rejected    | 2    |
+      | unstarted   | 2    |
+      | unscheduled | 2    |
 
