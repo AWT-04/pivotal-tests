@@ -71,60 +71,56 @@ Feature: Stories in projects
   @cleanProjects
   Scenario Outline: Verify story_types for story endpoint
     Given I send a POST request to "/projects" with body:
-      | name      | "Project for testing" |
+      | name | "Project for testing" |
     And I save response as "Project"
     When I send a POST request to "/projects/{Project.id}/stories" with body:
-    | name      | <name>       |
-    |story_type | <story_type> |
+      | name       | <name>       |
+      | story_type | <story_type> |
     And I save response as "S"
     Then I should see the status code as 200
     And I should see the "story_type" as "<story_type>"
     And I send a DELETE request to "/projects/{Project.id}"
     Examples:
-      | name       | story_type     |
-      | Story Test | feature        |
-      | Story Test | bug            |
-      | Story Test | chore          |
-      | Story Test | release        |
+      | name       | story_type |
+      | Story Test | feature    |
+      | Story Test | bug        |
+      | Story Test | chore      |
+      | Story Test | release    |
 
   @cleanProjects
   Scenario Outline: Verify current_state for story endpoint
     Given I send a POST request to "/projects" with body:
-      | name      | "Project for testing" |
+      | name | "Project for testing" |
     And I save response as "Project"
 #    When I send a POST request to my project"/projects/{Project.id}/stories" with "<name>" & "<estimate>" & "<current_state>"
     When I send a POST request to "/projects/{Project.id}/stories" with body:
-      | name            | <name>            |
-      | estimate        | <estimate>        |
-      | current_state   | <current_state>   |
+      | name          | <name>          |
+      | estimate      | <estimate>      |
+      | current_state | <current_state> |
     And I save response as "S"
     Then I should see the status code as 200
     And I should see the "current_state" as "<current_state>"
     And I send a DELETE request to "/projects/{Project.id}"
     Examples:
-      | name       | estimate       | current_state  |
-      | Story Test | 1.00           | accepted       |
-      | Story Test | 1.00           | delivered      |
-      | Story Test | 1.00           | finished       |
-      | Story Test | 1.00           | started        |
-      | Story Test | 1.00           | rejected       |
-      | Story Test | 1.00           | unstarted      |
-      | Story Test | 1.00           | unscheduled    |
+      | name       | estimate | current_state |
+      | Story Test | 1.00     | accepted      |
+      | Story Test | 1.00     | delivered     |
+      | Story Test | 1.00     | finished      |
+      | Story Test | 1.00     | started       |
+      | Story Test | 1.00     | rejected      |
+      | Story Test | 1.00     | unstarted     |
+      | Story Test | 1.00     | unscheduled   |
 
   @cleanProjects
   Scenario: Verify the size for story endpoint when adding stories
     Given I send a POST request to "/projects" with body:
-      | name      | "Project for testing" |
+      | name | "Project for testing" |
     And I save response as "Project"
-    And I send a POST request to "/projects/{Project.id}/stories" with body:
-      | name      | Story Test1       |
-      |story_type | feature           |
-    And I send a POST request to "/projects/{Project.id}/stories" with body:
-      | name      | Story Test2       |
-      |story_type | feature           |
-    And I send a POST request to "/projects/{Project.id}/stories" with body:
-      | name      | Story Test3       |
-      |story_type | feature           |
+    And I send a POST request to "/projects/{Project.id}/stories" with body list:
+      | name         | story_type |
+      | Story Test 1 | feature    |
+      | Story Test 2 | feature    |
+      | Story Test 3 | feature    |
     When I send a GET request to "/projects/{Project.id}/stories"
     And I save response as "Stories"
     Then I should see the size of "id" in "Stories" as 3
@@ -132,17 +128,13 @@ Feature: Stories in projects
   @cleanProjects
   Scenario: Verify the size of bugs for story endpoint when adding stories
     Given I send a POST request to "/projects" with body:
-      | name      | "Project for testing" |
+      | name | "Project for testing" |
     And I save response as "Project"
-    And I send a POST request to "/projects/{Project.id}/stories" with body:
-      | name      | Story Test1       |
-      |story_type | bug           |
-    And I send a POST request to "/projects/{Project.id}/stories" with body:
-      | name      | Story Test2       |
-      |story_type | bug           |
-    And I send a POST request to "/projects/{Project.id}/stories" with body:
-      | name      | Story Test3       |
-      |story_type | feature           |
+    And I send a POST request to "/projects/{Project.id}/stories" with body list:
+      | name         | story_type |
+      | Story Test 1 | feature    |
+      | Story Test 2 | bug        |
+      | Story Test 3 | bug        |
     When I send a GET request to "/projects/{Project.id}/stories"
     And I save response as "Stories"
     Then I should see the size of type "bug" in "story_type" of "Stories" as 2

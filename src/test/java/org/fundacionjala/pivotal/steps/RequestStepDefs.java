@@ -35,6 +35,15 @@ public class RequestStepDefs {
         response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
     }
 
+    @Given("I send a POST request to {string} with body list:")
+    public void iSendAPOSTRequestToEndpointWithBodyList(final String endPoint, final List<Map<String, String>> bodyList) {
+        for (Map<String, String> body: bodyList
+             ) {
+            response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+        }
+
+    }
+
     @Given("I send a POST request to {string} with json file {string}")
     public void iSendAPOSTRequestToEndpointWithBodyJsonFile(final String endPoint,
                                                             final String jsonPath) {
@@ -78,6 +87,7 @@ public class RequestStepDefs {
     @And("I should see the size of type {string} in {string} of {string} as {int}")
     public void iShouldSeeTheSizeOfTypeInOfAs(String kind, String field, String EndPoint, int size) {
         response = context.getContext(EndPoint);
-        Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x->x.equals(kind)).collect(Collectors.toList()).size(), size);
+        Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x->x.equals(kind)).
+                collect(Collectors.toList()).size(), size);
     }
 }
