@@ -37,7 +37,7 @@ public final class Environment {
     }
 
     public String getUser(final String value) {
-        final String userName = String.format("credentials,%s,username",value);
+        final String userName = String.format("credentials,%s,username", value);
         return Environment.getInstance().getValue(userName);
     }
 
