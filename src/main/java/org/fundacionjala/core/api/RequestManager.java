@@ -10,7 +10,9 @@ package org.fundacionjala.core.api;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.fundacionjala.pivotal.Authentication;
+import io.restassured.specification.RequestSpecification;
+
+
 import java.util.Map;
 
 
@@ -23,15 +25,20 @@ import static io.restassured.RestAssured.given;
  * @version 1.0
  */
 public final class RequestManager {
-    private RequestManager() { }
+    private static final RequestSpecification
+            REQUEST_SPECIFICATION = Authentication.getAuthenticationInstance().getRequestSpecification();
+
+    private RequestManager() {
+    }
 
     /**
      * Sets get method path.
+     *
      * @param path string path to use url.
      * @return response object.
      */
     public static Response get(final String path) {
-        Response response = given(Authentication.getRequestSpecification())
+        Response response = given().spec(REQUEST_SPECIFICATION)
                 .log().all()
                 .when()
                 .get(path);
@@ -41,13 +48,14 @@ public final class RequestManager {
 
     /**
      * Sets post method path.
+     *
      * @param path string path to use url.
      * @param json json object in string format.
      * @return response object.
      */
 
     public static Response post(final String path, final String json) {
-        Response response = given(Authentication.getRequestSpecification())
+        Response response = given().spec(REQUEST_SPECIFICATION)
                 .when()
                 .contentType(ContentType.JSON)
                 .body(json)
@@ -57,7 +65,7 @@ public final class RequestManager {
     }
 
     public static Response post(final String path, final Map<String, String> json) {
-        Response response = given(Authentication.getRequestSpecification())
+        Response response = given().spec(REQUEST_SPECIFICATION)
                 .params(json)
                 .when()
                 .post(path);
@@ -67,13 +75,14 @@ public final class RequestManager {
 
     /**
      * Sets put method path.
+     *
      * @param path string path to use url.
      * @param json json object in string format.
      * @return response object.
      */
 
     public static Response put(final String path, final String json) {
-        Response response = given(Authentication.getRequestSpecification())
+        Response response = given().spec(REQUEST_SPECIFICATION)
                 .when()
                 .body(json)
                 .put(path);
@@ -83,11 +92,12 @@ public final class RequestManager {
 
     /**
      * Sets delete method path.
+     *
      * @param path string path to use url.
      * @return response object.
      */
     public static Response delete(final String path) {
-        Response response = given(Authentication.getRequestSpecification())
+        Response response = given().spec(REQUEST_SPECIFICATION)
                 .when()
                 .delete(path);
         response.then().log().all();
@@ -96,11 +106,12 @@ public final class RequestManager {
 
     /**
      * Sets patch method path.
+     *
      * @param path string path to use url.
      * @return response object.
      */
     public static Response patch(final String path) {
-        Response response = given(Authentication.getRequestSpecification())
+        Response response = given().spec(REQUEST_SPECIFICATION)
                 .when()
                 .patch(path);
         response.then().log().all();
