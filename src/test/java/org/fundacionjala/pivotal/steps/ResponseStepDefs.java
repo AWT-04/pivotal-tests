@@ -1,5 +1,6 @@
 package org.fundacionjala.pivotal.steps;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
 import org.fundacionjala.pivotal.ScenarioContext;
@@ -26,5 +27,15 @@ public class ResponseStepDefs {
     public void iShouldSeeTheStatusCode(int statusCode) {
         response = context.getContext("LAST_RESPONSE");
         Assert.assertEquals(this.response.statusCode(), statusCode);
+    }
+
+    @And("I should see the kind as {string}")
+    public void iShouldSeeTheKindAs(String kind) {
+        Assert.assertEquals(this.response.jsonPath().getString("kind"), kind);
+    }
+
+    @And("I should see the complete as {string}")
+    public void iShouldSeeTheCompleteAs(boolean completed) {
+        Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), completed);
     }
 }
