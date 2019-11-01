@@ -1,4 +1,6 @@
-package org.fundacionjala.pivotal;
+package org.fundacionjala.core.utils;
+
+import org.fundacionjala.pivotal.ScenarioContext;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
