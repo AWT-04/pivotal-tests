@@ -30,12 +30,12 @@ public class ResponseStepDefs {
     }
 
     @And("I should see the kind as {string}")
-    public void iShouldSeeTheKindAs(String kind) {
+    public void iShouldSeeTheKindAs(final String kind) {
         Assert.assertEquals(this.response.jsonPath().getString("kind"), kind);
     }
 
     @And("I should see the complete as {string}")
-    public void iShouldSeeTheCompleteAs(boolean completed) {
+    public void iShouldSeeTheCompleteAs(final boolean completed) {
         Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), completed);
     }
 }

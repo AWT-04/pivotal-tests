@@ -12,7 +12,6 @@ import org.fundacionjala.pivotal.JSONHelper;
 import org.fundacionjala.pivotal.ScenarioContext;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,7 +39,8 @@ public class RequestStepDefs {
     }
 
     @Given("I send a POST request to {string} with body list:")
-    public void iSendAPOSTRequestToEndpointWithBodyList(final String endPoint, final List<Map<String, String>> bodyList) {
+    public void iSendAPOSTRequestToEndpointWithBodyList(final String endPoint,
+                                                        final List<Map<String, String>> bodyList) {
         for (Map<String, String> body: bodyList
              ) {
             response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
@@ -77,26 +77,28 @@ public class RequestStepDefs {
     }
 
     @And("I should see the size of {string} in {string} as {int}")
-    public void iShouldSeeTheSizeOfInAs(String field, String EndPoint, int size) {
-        response = context.getContext(EndPoint);
+    public void iShouldSeeTheSizeOfInAs(final String field, final String endPoint, final int size) {
+        response = context.getContext(endPoint);
         Assert.assertEquals(this.response.jsonPath().getList(field).size(), size);
     }
 
     @And("I send a GET request to {string}")
-    public void iSendAGETRequestTo(String endPoint) {
+    public void iSendAGETRequestTo(final String endPoint) {
         response = RequestManager.get(EndpointHelper.buildEndpoint(endPoint, context));
     }
 
     @And("I should see the size of type {string} in {string} of {string} as {int}")
-    public void iShouldSeeTheSizeOfTypeInOfAs(String kind, String field, String EndPoint, int size) {
-        response = context.getContext(EndPoint);
-        Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x->x.equals(kind)).
+    public void iShouldSeeTheSizeOfTypeInOfAs(final String kind, final String field,
+                                              final String endPoint, final int size) {
+        response = context.getContext(endPoint);
+        Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x -> x.equals(kind)).
                 collect(Collectors.toList()).size(), size);
     }
 
     @Then("I should see the size of type {string} in {string} of {string} as <size>")
-    public void iShouldSeeTheSizeOfTypeInOfAsSize(String kind, String field, String EndPoint, int size) {
-        response = context.getContext(EndPoint);
+    public void iShouldSeeTheSizeOfTypeInOfAsSize(final String kind, final String field,
+                                                  final String endPoint, final int size) {
+        response = context.getContext(endPoint);
         Assert.assertEquals(response.jsonPath().getList(field).stream().filter(x -> x.equals(kind)).
                 collect(Collectors.toList()).size(), size);
     }

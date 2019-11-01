@@ -1,3 +1,16 @@
 {
-  "x-trackerToken": "bfb2dcd6dd5650981b0147da1f9301d1"
+  "x-trackerToken": "be871249210697faa9fda9125caee064",
+  "credentials": {
+    "owner": {
+      "username": "fernandohinojosa1",
+      "apiToken": "be871249210697faa9fda9125caee064"
+    },
+    "member": {
+      "username": "",
+      "apiToken": ""
+    }
+  },
+  "url": {
+    "api": "https://www.pivotaltracker.com/services/v5"
+  }
 }
