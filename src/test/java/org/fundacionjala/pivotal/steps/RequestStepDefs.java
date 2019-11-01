@@ -5,10 +5,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
-import org.fundacionjala.pivotal.Authentication;
 import org.fundacionjala.core.utils.EndpointHelper;
 import org.fundacionjala.core.utils.RandomNameGenerator;
 import org.fundacionjala.core.api.RequestManager;
+import org.fundacionjala.pivotal.JSONHelper;
 import org.fundacionjala.pivotal.ScenarioContext;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
@@ -40,7 +40,7 @@ public class RequestStepDefs {
     @Given("I send a POST request to {string} with json file {string}")
     public void iSendAPOSTRequestToEndpointWithBodyJsonFile(final String endPoint,
                                                             final String jsonPath) {
-        JSONObject body = Authentication.getJsonObject("src/test/resources/".concat(jsonPath));
+        JSONObject body = JSONHelper.getJsonObject("src/test/resources/".concat(jsonPath));
         response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
     }
 
