@@ -147,7 +147,7 @@ Feature: Tasks in stories
     And I should see the "kind" as "task"
 
   @cleanProjects
-  Scenario: Verify GET complete request for task endpoint
+  Scenario: Verify GET complete parameter request for task endpoint
     Given I send a POST request to "/projects" with body json:
     """
     {
@@ -174,3 +174,30 @@ Feature: Tasks in stories
     Then I should see the status code as 200
     And I should see the "complete" as "false"
 
+  @cleanProjects
+  Scenario: Verify GET position parameter request for task endpoint
+    Given I send a POST request to "/projects" with body json:
+    """
+    {
+    "name": "Project for testing"
+    }
+    """
+    And I save response as "Project"
+    And I send a POST request to "/projects/{Project.id}/stories" with body json:
+    """
+    {
+    "name": "Story Test"
+    }
+    """
+    And I save response as "S"
+    And I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
+    """
+    {
+    "description": "Tasks Test",
+    "position": 1
+    }
+    """
+    And I save response as "Task"
+    When I send a GET request to "/projects/{Project.id}/stories/{S.id}/tasks/{Task.id}"
+    Then I should see the status code as 200
+    And I should see the "position" as "1"
