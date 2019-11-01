@@ -2,8 +2,7 @@ package org.fundacionjala.pivotal.steps;
 
 import io.cucumber.java.After;
 import io.restassured.response.Response;
-import org.fundacionjala.pivotal.RequestManager;
-
+import org.fundacionjala.core.api.RequestManager;
 import java.util.List;
 
 public class Hooks {

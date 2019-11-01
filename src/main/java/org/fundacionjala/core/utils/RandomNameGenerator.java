@@ -1,4 +1,4 @@
-package org.fundacionjala.pivotal;
+package org.fundacionjala.core.utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
