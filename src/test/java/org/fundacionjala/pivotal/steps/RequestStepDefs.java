@@ -111,11 +111,6 @@ public class RequestStepDefs {
         response.jsonPath().getString("id");
     }
 
-    @Given("I send a GET request to {string} ")
-    public void iSendAGETRequestTo(final String endPoint) {
-        response = RequestManager.get(endPoint);
-    }
-
     @And("I send a GET request to {string}")
     public void iSendAGETRequestToContext(final String endPoint) {
         response = RequestManager.get(EndpointHelper.buildEndpoint(endPoint, context));
