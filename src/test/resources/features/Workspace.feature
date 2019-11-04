@@ -8,7 +8,6 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
-    And I save response as "myWorkspace"
     When I should see the status code as 200
     Then I should see "id" is not null
     And I should see "person_id" is not null
@@ -33,7 +32,6 @@ Feature: Workspaces tests
         "project_ids": [{p.id}]
         }
       """
-    When I save response as "newWorkspace"
     Then I should see the status code as 200
     And I should see "id" is not null
     And I should see "person_id" is not null
@@ -41,6 +39,7 @@ Feature: Workspaces tests
     And I should see "id" is not null
     And I should see "person_id" is not null
 
+  @cleanProjectsBefore
   Scenario: I want confirm a workspace creation with projects
     Given I send a POST request to "/projects" with body json:
       """
@@ -51,7 +50,6 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
-    And I save response as "newProject"
     And I send a GET request to "/projects"
     And I save response as "p"
     And I should see the status code as 200
@@ -62,7 +60,6 @@ Feature: Workspaces tests
         "project_ids": {p.id}
         }
       """
-    When I save response as "newWorkspace"
     Then I should see the status code as 200
     And I should see "id" is not null
     And I should see "person_id" is not null
@@ -78,7 +75,6 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
-    And I save response as "myWorkspace"
     And I should see the status code as 200
     And I send a GET request to "/my/workspaces"
     And I save response as "myWorkspace"
@@ -101,7 +97,6 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
-    And I save response as "newProject"
     And I send a GET request to "/projects"
     And I save response as "p"
     And I should see the status code as 200
@@ -116,7 +111,6 @@ Feature: Workspaces tests
         "project_ids": {p.id}
         }
       """
-    When I save response as "newWorkspace"
     Then I should see the status code as 200
     And I should see "id" is not null
     And I should see "person_id" is not null
@@ -135,8 +129,10 @@ Feature: Workspaces tests
     And I save response as "myWorkspace"
     When I should see the status code as 200
     And I send a GET request to "/my/workspaces/{myWorkspace.id}"
-    Then I save response as "ws"
+    Then I should see the status code as 200
     And I should see the kind as "workspace"
+    And I should see "id" is not null
+    And I should see "person_id" is not null
 
   @cleanProjects
   Scenario: I want to validate a PUT request
@@ -218,7 +214,6 @@ Feature: Workspaces tests
     Given I send a POST request to "/my/workspaces" with body json:
       """
         {
-
         }
       """
     When I save response as "myWorkspace"
@@ -229,7 +224,6 @@ Feature: Workspaces tests
   @cleanProjects
   Scenario: I want validate error message for not existing workspace
     Given I send a GET request to "/my/workspaces/ABC"
-    When I save response as "myWorkspace"
     Then I should see the status code as 404
     And I should see the "kind" as "error"
     And I should see the "code" as "unfound_resource"
@@ -259,7 +253,6 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
-
     And I save response as "ws"
     And I should see the status code as 200
     And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
