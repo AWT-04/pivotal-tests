@@ -55,8 +55,6 @@ public class RequestStepDefs {
 
     @Given("I send a PUT request to {string} with body json:")
     public void iSendAPUTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
-        System.out.println(EndpointHelper.buildEndpoint(endPoint, context));
-        System.out.println(VariableNameHandler.replaceRandom(body, context));
         response = RequestManager.put(EndpointHelper.buildEndpoint(endPoint, context),
                 VariableNameHandler.replaceRandom(body, context));
     }

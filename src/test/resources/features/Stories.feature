@@ -7,7 +7,7 @@ Feature: Stories in projects
     {
     "name": "{PREFIX} Project for testing {RANDOM}"
     }
-    """ |
+    """
     Given I send a POST request to "/projects" with json file "json/ProjectJsonBody.json"
     And I save response as "Project"
 
