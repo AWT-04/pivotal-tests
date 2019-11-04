@@ -8,13 +8,11 @@
  */
 package org.fundacionjala.core.api;
 
+import java.util.Map;
+
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-
-
-import java.util.Map;
-
 
 import static io.restassured.RestAssured.given;
 
@@ -84,6 +82,7 @@ public final class RequestManager {
     public static Response put(final String path, final String json) {
         Response response = given().spec(REQUEST_SPECIFICATION)
                 .when()
+                .contentType(ContentType.JSON)
                 .body(json)
                 .put(path);
         response.then().log().all();
