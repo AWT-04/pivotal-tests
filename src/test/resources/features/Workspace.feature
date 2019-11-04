@@ -138,19 +138,38 @@ Feature: Workspaces tests
     Then I save response as "ws"
     And I should see the kind as "workspace"
 
-  @cleanWorkspacesBefore
-  Scenario: I want to validate PUT method execution for workspaces by specific ID
-    Given I send a POST request to "/my/workspaces" with body json:
+  @cleanProjects
+  Scenario: I want to validate a PUT request
+    Given I send a POST request to "/projects" with body json:
+      """
+        {
+        "name":"{RANDOM}",
+        "name":"{RANDOM}"
+        }
+      """
+    And I save response as "pro"
+    And I should see the status code as 200
+    And I send a POST request to "/my/workspaces" with body json:
       """
         {
         "name":"{RANDOM}"
         }
       """
-    And I save response as "myWorkspace"
-    When I should see the status code as 200
-    And I send a GET request to "/my/workspaces/{myWorkspace.id}"
-    Then I save response as "ws"
-    And I should see the kind as "workspace"
+
+    And I save response as "ws"
+    And I should see the status code as 200
+    And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
+      """
+        {
+        "project_ids": [{pro.id}]
+        }
+      """
+    When I save response as "newWorkspace"
+    Then I should see the status code as 200
+    And I should see the "kind" as "workspace"
+    And I should see "id" is not null
+    And I should see "person_id" is not null
+
 
   @cleanWorkspacesBefore
   Scenario: I want to validate DELETE method execution for workspaces by specific ID
@@ -223,9 +242,8 @@ Feature: Workspaces tests
     And I should see the "kind" as "error"
     And I should see the "code" as "unfound_resource"
 
-    # un handled error
   @cleanProjects
-  Scenario: I want to get unhandled error sending parameters to workspaces PUT request
+  Scenario: I want to validate an error sending parameters to workspaces PUT request
     Given I send a POST request to "/projects" with body json:
       """
         {
@@ -247,14 +265,15 @@ Feature: Workspaces tests
     And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
       """
         {
-        "project_ids": [{pro.id}]
+        "project_ids": {pro.id}
         }
       """
     When I save response as "newWorkspace"
-    Then I should see the status code as 500
+    Then I should see the status code as 400
     And I should see the "kind" as "error"
     And I should see "error" is not null
-    And I should see the "code" as "api_internal_error"
+    And I should see the "code" as "invalid_parameter"
+    And I should see the "general_problem" as "'project_ids' must be an array of int values"
 
   @cleanWorkspaces
   Scenario: I want validate error message of workspace creation with invalid comma at the end of parameter
