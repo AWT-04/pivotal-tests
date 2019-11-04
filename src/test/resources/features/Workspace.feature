@@ -1,43 +1,174 @@
 Feature: Workspaces tests
-  # Happy path
-  Scenario: Confirm a workspace creation
+# Happy path
+
+  Scenario: I want confirm a workspace creation without projects
     Given I send a POST request to "/my/workspaces" with body json:
       """
         {
         "name":"{RANDOM}"
         }
       """
-    When I save response as "myWorkspace"
+    And I save response as "myWorkspace"
+    When I should see the status code as 200
+    Then I should see "id" is not null
+    And I should see "person_id" is not null
+    And I should see the kind as "workspace"
+
+
+  Scenario: I want confirm a workspace creation with a project
+    Given I send a POST request to "/projects" with body json:
+      """
+        {
+        "name":"{RANDOM}"
+        }
+      """
+    And I save response as "newProject"
+    And I send a GET request to "/projects/{newProject.id}"
+    And I save response as "p"
+    And I should see the status code as 200
+    And I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"{RANDOM}",
+        "project_ids": [{p.id}]
+        }
+      """
+    When I save response as "newWorkspace"
     Then I should see the status code as 200
     And I should see "id" is not null
-    And I should see "kind" is not null
+    And I should see "person_id" is not null
+    And I should see the "kind" as "workspace"
+    And I should see "id" is not null
+    And I should see "person_id" is not null
 
-  @cleanWorkspaces
-  Scenario Outline: Verify get request for workspace
+  Scenario: I want confirm a workspace creation with projects
+    Given I send a POST request to "/projects" with body json:
+      """
+        {
+        "name":"{RANDOM}",
+        "name":"{RANDOM}",
+        "name":"{RANDOM}",
+        "name":"{RANDOM}"
+        }
+      """
+    And I save response as "newProject"
+    And I send a GET request to "/projects"
+    And I save response as "p"
+    And I should see the status code as 200
+    And I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"{RANDOM}",
+        "project_ids": {p.id}
+        }
+      """
+    When I save response as "newWorkspace"
+    Then I should see the status code as 200
+    And I should see "id" is not null
+    And I should see "person_id" is not null
+    And I should see the "kind" as "workspace"
+    And I should see "id" is not null
+    And I should see "person_id" is not null
+
+  @cleanProjectsBefore
+  Scenario: I want to validate GET method execution for workspaces
     Given I send a POST request to "/my/workspaces" with body json:
       """
         {
-        "name":"AT_workspaceTest"
+        "name":"{RANDOM}"
         }
       """
-    And I should see the status code as 200
-    When I send a GET request to "/my/workspaces"
     And I save response as "myWorkspace"
     And I should see the status code as 200
-    Then I should see the size of type "<variable>" in "story_type" of "myWorkspace" as <value>
-    Examples:
-      | variable | value              |
-      | name     | "AT_workspaceTest" |
-      | kind     | "workspace"        |
+    And I send a GET request to "/my/workspaces"
+    And I save response as "myWorkspace"
+    When I should see the status code as 200
+    Then I should see "id" is not null
+    And I should see "person_id" is not null
+    And I should see the "kind" as "workspace"
+    And I should see "id" is not null
+    And I should see "person_id" is not null
 
-  Scenario: Verify get request for workspace endpoint
-    Given I send a GET request to "/my/workspaces"
-    When I save response as "workspace"
+  @cleanProjects
+  @cleanWorkspaces
+  Scenario: I want confirm a workspaces creation with projects in a single request
+    Given I send a POST request to "/projects" with body json:
+      """
+        {
+        "name":"{RANDOM}",
+        "name":"{RANDOM}",
+        "name":"{RANDOM}",
+        "name":"{RANDOM}"
+        }
+      """
+    And I save response as "newProject"
+    And I send a GET request to "/projects"
+    And I save response as "p"
+    And I should see the status code as 200
+    And I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"{RANDOM}",
+        "project_ids": {p.id},
+        "name":"{RANDOM}",
+        "project_ids": {p.id},
+        "name":"{RANDOM}",
+        "project_ids": {p.id}
+        }
+      """
+    When I save response as "newWorkspace"
     Then I should see the status code as 200
     And I should see "id" is not null
+    And I should see "person_id" is not null
+    And I should see the "kind" as "workspace"
+    And I should see "id" is not null
+    And I should see "person_id" is not null
+
+  @cleanWorkspacesBefore
+  Scenario: I want to validate GET method execution for workspaces by specific ID
+    Given I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"{RANDOM}"
+        }
+      """
+    And I save response as "myWorkspace"
+    When I should see the status code as 200
+    And I send a GET request to "/my/workspaces/{myWorkspace.id}"
+    Then I save response as "ws"
+    And I should see the kind as "workspace"
+
+  @cleanWorkspacesBefore
+  Scenario: I want to validate PUT method execution for workspaces by specific ID
+    Given I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"{RANDOM}"
+        }
+      """
+    And I save response as "myWorkspace"
+    When I should see the status code as 200
+    And I send a GET request to "/my/workspaces/{myWorkspace.id}"
+    Then I save response as "ws"
+    And I should see the kind as "workspace"
+
+  @cleanWorkspacesBefore
+  Scenario: I want to validate DELETE method execution for workspaces by specific ID
+    Given I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"{RANDOM}"
+        }
+      """
+    And I save response as "myWorkspace"
+    When I should see the status code as 200
+    And I send a DELETE request to "/my/workspaces/{myWorkspace.id}"
+    Then I save response as "ws"
+    And I should see the kind as "workspace"
 
   # negative tests
-  Scenario: Negative workspace creation with invalid parameters
+  @cleanWorkspaces
+  Scenario: I want validate error message of workspace creation with empty name
     Given I send a POST request to "/my/workspaces" with body json:
       """
         {
@@ -48,3 +179,92 @@ Feature: Workspaces tests
     Then I should see the status code as 400
     And I should see the "kind" as "error"
     And I should see the "general_problem" as "Name can't be blank"
+
+  @cleanWorkspaces
+  Scenario: I want validate error message of workspace creation with invalid project ids
+    Given I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"{RANDOM}",
+        "project_ids":[99]
+        }
+      """
+    When I save response as "myWorkspace"
+    Then I should see the status code as 400
+    And I should see the "kind" as "error"
+    And I should see the "error" as "One or more request parameters was missing or invalid."
+
+  @cleanProjects
+  Scenario: I want validate error message of workspace creation with invalid project ids
+    Given I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+
+        }
+      """
+    When I save response as "myWorkspace"
+    Then I should see the status code as 400
+    And I should see the "kind" as "error"
+    And I should see the "error" as "One or more request parameters was missing or invalid."
+
+  @cleanProjects
+  Scenario: I want validate error message for not existing workspace
+    Given I send a GET request to "/my/workspaces/ABC"
+    When I save response as "myWorkspace"
+    Then I should see the status code as 404
+    And I should see the "kind" as "error"
+    And I should see the "code" as "unfound_resource"
+
+  @cleanWorkspacesBefore
+  Scenario: I want to validate error control of DELETE request for un existing workspace
+    Given I send a DELETE request to "/my/workspaces/123"
+    And I save response as "delete"
+    When I should see the status code as 404
+    And I should see the "kind" as "error"
+    And I should see the "code" as "unfound_resource"
+
+    # un handled error
+  @cleanProjects
+  Scenario: I want to get unhandled error sending parameters to workspaces PUT request
+    Given I send a POST request to "/projects" with body json:
+      """
+        {
+        "name":"{RANDOM}",
+        "name":"{RANDOM}"
+        }
+      """
+    And I save response as "pro"
+    And I should see the status code as 200
+    And I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"{RANDOM}"
+        }
+      """
+
+    And I save response as "ws"
+    And I should see the status code as 200
+    And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
+      """
+        {
+        "project_ids": [{pro.id}]
+        }
+      """
+    When I save response as "newWorkspace"
+    Then I should see the status code as 500
+    And I should see the "kind" as "error"
+    And I should see "error" is not null
+    And I should see the "code" as "api_internal_error"
+
+  @cleanWorkspaces
+  Scenario: I want validate error message of workspace creation with invalid comma at the end of parameter
+    Given I send a POST request to "/my/workspaces" with body json:
+      """
+        {
+        "name":"ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890",
+        }
+      """
+    When I save response as "myWorkspace"
+    Then I should see the status code as 500
+    And I should see the "kind" as "error"
+    And I should see the "error" as "An unexpected condition occurred."

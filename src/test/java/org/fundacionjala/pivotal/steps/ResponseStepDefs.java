@@ -3,8 +3,6 @@ package org.fundacionjala.pivotal.steps;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
-import org.fundacionjala.pivotal.EndpointHelper;
-import org.fundacionjala.pivotal.RequestManager;
 import org.fundacionjala.pivotal.ScenarioContext;
 import org.testng.Assert;
 
@@ -29,6 +27,7 @@ public class ResponseStepDefs {
     public void iShouldSeeTheStatusCode(int statusCode) {
         response = context.getContext("LAST_RESPONSE");
         Assert.assertEquals(this.response.statusCode(), statusCode);
+
     }
 
     @And("I should see the kind as {string}")
@@ -42,7 +41,7 @@ public class ResponseStepDefs {
     }
 
     @And("I should see {string} is not null")
-    public void iShouldSeeIsNotNull(String varName) {
+    public void iShouldSeeIsNotNull(final String varName) {
         response = context.getContext("LAST_RESPONSE");
         Assert.assertNotNull(this.response.jsonPath().getString(varName));
     }
