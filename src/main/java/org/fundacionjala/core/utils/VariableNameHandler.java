@@ -1,7 +1,14 @@
+/**
+ * Copyright (c) 2019 Jalasoft.
+ * This software is the confidential and proprietary information of Jalasoft.
+ * ("Confidential Information"). You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the license agreement you entered into
+ * with Jalasoft.
+ */
 package org.fundacionjala.core.utils;
 
 import org.fundacionjala.pivotal.ScenarioContext;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -12,8 +19,8 @@ import java.util.regex.Pattern;
 
 
 /**
- * @author lazaro on 10/24/2019.
- * @version AWT-04_pivotal-selenium-tests.
+ * @author Andy Bazualdo.
+ * @version 1.0.
  */
 public final class VariableNameHandler {
     // class variable
