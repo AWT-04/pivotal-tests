@@ -18,7 +18,7 @@ import org.testng.annotations.BeforeTest;
 import java.util.List;
 
 @CucumberOptions(
-        glue = {"org.fundacionjala.pivotal"},
+        glue = {"org.fundacionjala"},
         features = "src/test/resources/features/"
 )
 
@@ -33,7 +33,7 @@ public class Runner extends AbstractTestNGCucumberTests {
      * This method delete before all scenarios.
      */
     @BeforeTest
-    public void beforeAllScenaries() {
+    public void beforeAllScenarios() {
         Response response = RequestManager.get("/projects");
         List<Integer> allID = response.jsonPath().getList("id");
         for (Integer id : allID) {
