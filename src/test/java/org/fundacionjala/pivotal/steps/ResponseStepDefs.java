@@ -27,6 +27,7 @@ public class ResponseStepDefs {
     public void iShouldSeeTheStatusCode(int statusCode) {
         response = context.getContext("LAST_RESPONSE");
         Assert.assertEquals(this.response.statusCode(), statusCode);
+
     }
 
     @And("I should see the kind as {string}")
@@ -38,4 +39,11 @@ public class ResponseStepDefs {
     public void iShouldSeeTheCompleteAs(final boolean completed) {
         Assert.assertEquals(this.response.jsonPath().getBoolean("complete"), completed);
     }
+
+    @And("I should see {string} is not null")
+    public void iShouldSeeIsNotNull(final String varName) {
+        response = context.getContext("LAST_RESPONSE");
+        Assert.assertNotNull(this.response.jsonPath().getString(varName));
+    }
+
 }

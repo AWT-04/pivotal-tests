@@ -39,5 +39,10 @@ public class Runner extends AbstractTestNGCucumberTests {
         for (Integer id : allID) {
             RequestManager.delete("/projects/" + id);
         }
+        response = RequestManager.get("/my/workspaces");
+        allID = response.jsonPath().getList("id");
+        for (Integer id : allID) {
+            RequestManager.delete("/my/workspaces/" + id);
+        }
     }
 }

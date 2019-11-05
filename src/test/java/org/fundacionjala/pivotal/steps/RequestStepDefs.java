@@ -9,12 +9,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-
 import org.fundacionjala.core.api.RequestManager;
 import org.fundacionjala.core.utils.EndpointHelper;
-import org.fundacionjala.core.utils.RandomNameGenerator;
+import org.fundacionjala.core.utils.VariableNameHandler;
 import org.fundacionjala.pivotal.JSONHelper;
 import org.fundacionjala.pivotal.ScenarioContext;
+import org.testng.Assert;
 
 import static org.testng.Assert.assertEquals;
 
@@ -31,7 +31,7 @@ public class RequestStepDefs {
     @Given("I send a POST request to {string} with body json:")
     public void iSendAPOSTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
         response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context),
-                RandomNameGenerator.replaceRandom(body));
+         VariableNameHandler.replaceRandom(body, context));
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
@@ -59,7 +59,8 @@ public class RequestStepDefs {
 
     @Given("I send a PUT request to {string} with body json:")
     public void iSendAPUTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
-        response = RequestManager.put(EndpointHelper.buildEndpoint(endPoint, context), body);
+        response = RequestManager.put(EndpointHelper.buildEndpoint(endPoint, context),
+                VariableNameHandler.replaceRandom(body, context));
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
@@ -73,6 +74,7 @@ public class RequestStepDefs {
     public void iSendAGETRequestTo(final String endPoint) {
         response = RequestManager.get(EndpointHelper.buildEndpoint(endPoint, context));
         context.setContext(KEY_LAST_RESPONSE, response);
+
     }
 
     @And("I save response as {string}")
@@ -82,7 +84,14 @@ public class RequestStepDefs {
 
     @Then("I should see the {string} as {string}")
     public void iShouldSeeTheKindAs(final String attribute, final String value) {
-        assertEquals(this.response.jsonPath().getString(attribute), value);
+        String fistElement;
+        if (this.response.jsonPath().getString(attribute).contains(",")) {
+            fistElement = "[0].";
+            Assert.assertEquals(this.response.jsonPath().getString(fistElement + attribute), value);
+        } else {
+            Assert.assertEquals(this.response.jsonPath().getString(attribute), value);
+        }
+
     }
 
     @And("I should see the size of {string} in {string} as {int}")
@@ -113,5 +122,10 @@ public class RequestStepDefs {
     public void iSendDeleteAllTo() {
         response = RequestManager.get("/projects");
         response.jsonPath().getString("id");
+    }
+
+    @And("I send a GET request to {string} ")
+    public void iSendAGETRequestToContext(final String endPoint) {
+        response = RequestManager.get(EndpointHelper.buildEndpoint(endPoint, context));
     }
 }
