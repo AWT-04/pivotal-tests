@@ -15,7 +15,6 @@ dependencies {
     compile group: 'io.cucumber', name: 'cucumber-testng', version: '4.8.0'
     compile group: 'io.cucumber', name: 'cucumber-picocontainer', version: '4.8.0'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.1.0'
 }
 
@@ -24,9 +23,14 @@ checkstyle {
     toolVersion = '8.23'
 }
 
-test {
+task runFeatures(type: Test) {
     useTestNG()
-    testLogging {
-        events 'PASSED', 'STARTED', 'FAILED', 'SKIPPED'
+    options {
+        jvmArgs = ['-Dcucumber.options= --glue org.fundacionjala ' +
+                           '--plugin pretty ']
     }
+    testLogging.showStandardStreams = true
+    scanForTestClasses = false
+    ignoreFailures = false
+    reports.html.enabled = false
 }
