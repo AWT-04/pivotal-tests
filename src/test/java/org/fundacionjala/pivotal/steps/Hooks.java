@@ -22,19 +22,22 @@ import java.util.List;
  * This class delete all scenarios using a Prefix.
  */
 public class Hooks {
+
+    private static final String OWNER = "owner";
+
     /**
      * Delete all projects using a prefix.
      */
     @After("@cleanProjects")
     public void iSendDeleteAllToByPrefix() {
         final String prefix = "AT_";
-        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"),
+        Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER),
                 "/projects");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");
         for (int i = 0; i < allName.size(); i++) {
             if (allName.get(i) != null && allName.get(i).contains(prefix)) {
-                RequestManager.delete(Authentication.getRequestSpecification("owner"),
+                RequestManager.delete(Authentication.getRequestSpecification(OWNER),
                 "/projects/" + allID.get(i));
             }
         }
@@ -46,13 +49,13 @@ public class Hooks {
     @Before("@cleanProjectsBefore")
     public void iSendDeleteAllToByPrefixBefore() {
         final String prefix = "AT_";
-        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"),
+        Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER),
                 "/projects");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");
         for (int i = 0; i < allName.size(); i++) {
             if (allName.get(i) != null && allName.get(i).contains(prefix)) {
-                RequestManager.delete(Authentication.getRequestSpecification("owner"),
+                RequestManager.delete(Authentication.getRequestSpecification(OWNER),
                 "/projects/" + allID.get(i));
             }
         }
@@ -66,13 +69,13 @@ public class Hooks {
     @After("@cleanWorkspaces")
     public void iSendDeleteAllWSToByPrefix() {
         final String prefix = "AT_";
-        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"),
+        Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER),
                 "/my/workspaces");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");
         for (int i = 0; i < allName.size(); i++) {
             if (allName.get(i) != null && allName.get(i).contains(prefix)) {
-                RequestManager.delete(Authentication.getRequestSpecification("owner"),
+                RequestManager.delete(Authentication.getRequestSpecification(OWNER),
                         "/my/workspaces/" + allID.get(i));
             }
         }
@@ -84,13 +87,13 @@ public class Hooks {
     @Before("@cleanWorkspacesBefore")
     public void iSendDeleteAllWSToByPrefixBefore() {
         final String prefix = "AT_";
-        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"),
+        Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER),
                 "/my/workspaces");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");
         for (int i = 0; i < allName.size(); i++) {
             if (allName.get(i) != null && allName.get(i).contains(prefix)) {
-                RequestManager.delete(Authentication.getRequestSpecification("owner"),
+                RequestManager.delete(Authentication.getRequestSpecification(OWNER),
                 "/my/workspaces/" + allID.get(i));
             }
         }

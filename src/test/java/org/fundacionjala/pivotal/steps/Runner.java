@@ -29,20 +29,22 @@ import java.util.List;
  */
 public class Runner extends AbstractTestNGCucumberTests {
 
+    private static final String OWNER = "owner";
+
     /**
      * This method delete before all scenarios.
      */
     @BeforeTest
     public void beforeAllScenarios() {
-        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"), "/projects");
+        Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER), "/projects");
         List<Integer> allID = response.jsonPath().getList("id");
         for (Integer id : allID) {
-            RequestManager.delete(Authentication.getRequestSpecification("owner"), "/projects/" + id);
+            RequestManager.delete(Authentication.getRequestSpecification(OWNER), "/projects/" + id);
         }
-        response = RequestManager.get(Authentication.getRequestSpecification("owner"), "/my/workspaces");
+        response = RequestManager.get(Authentication.getRequestSpecification(OWNER), "/my/workspaces");
         allID = response.jsonPath().getList("id");
         for (Integer id : allID) {
-            RequestManager.delete(Authentication.getRequestSpecification("owner"), "/my/workspaces/" + id);
+            RequestManager.delete(Authentication.getRequestSpecification(OWNER), "/my/workspaces/" + id);
         }
     }
 }
