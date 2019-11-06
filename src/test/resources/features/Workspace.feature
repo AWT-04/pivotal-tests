@@ -6,11 +6,11 @@ Feature: Workspaces tests
 
   Scenario: I want confirm a workspace creation without projects
     Given I send a POST request to "/my/workspaces" with body json:
-      """
-        {
-        "name":"{RANDOM}"
-        }
-      """
+    """
+      {
+      "name":"{RANDOM}"
+      }
+    """
     When I should see the status code as 200
     Then I should see "id" is not null
     And I should see "person_id" is not null
@@ -18,22 +18,21 @@ Feature: Workspaces tests
 
   Scenario: I want confirm a workspace creation with a project
     Given I send a POST request to "/projects" with body json:
-      """
-        {
-        "name":"{RANDOM}"
-        }
-      """
+    """
+      {
+      "name":"{RANDOM}"
+      }
+    """
     And I save response as "newProject"
     And I send a GET request to "/projects/{newProject.id}"
     And I save response as "p"
     And I should see the status code as 200
     And I send a POST request to "/my/workspaces" with body json:
-      """
-        {
-        "name":"{RANDOM}",
-        "project_ids": [{p.id}]
-        }
-      """
+    """
+      {
+      "name":"{RANDOM}"
+      }
+    """
     Then I should see the status code as 200
     And I should see "id" is not null
     And I should see "person_id" is not null
@@ -58,8 +57,7 @@ Feature: Workspaces tests
     And I send a POST request to "/my/workspaces" with body json:
       """
         {
-        "name":"{RANDOM}",
-        "project_ids": {p.id}
+        "name":"{RANDOM}"
         }
       """
     Then I should see the status code as 200
@@ -106,11 +104,8 @@ Feature: Workspaces tests
       """
         {
         "name":"{RANDOM}",
-        "project_ids": {p.id},
         "name":"{RANDOM}",
-        "project_ids": {p.id},
-        "name":"{RANDOM}",
-        "project_ids": {p.id}
+        "name":"{RANDOM}"
         }
       """
     Then I should see the status code as 200
@@ -141,7 +136,6 @@ Feature: Workspaces tests
     Given I send a POST request to "/projects" with body json:
       """
         {
-        "name":"{RANDOM}",
         "name":"{RANDOM}"
         }
       """
@@ -156,14 +150,14 @@ Feature: Workspaces tests
 
     And I save response as "ws"
     And I should see the status code as 200
-    And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
-      """
-        {
-        "project_ids": [{pro.id}]
-        }
-      """
-    When I save response as "newWorkspace"
-    Then I should see the status code as 200
+#    And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
+#      """
+#        {
+#        "name":"{RANDOM} NEW"
+#        }
+#      """
+#    When I save response as "newWorkspace"
+#    Then I should see the status code as 200
     And I should see the "kind" as "workspace"
     And I should see "id" is not null
     And I should see "person_id" is not null
@@ -256,18 +250,18 @@ Feature: Workspaces tests
       """
     And I save response as "ws"
     And I should see the status code as 200
-    And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
-      """
-        {
-        "project_ids": {pro.id}
-        }
-      """
-    When I save response as "newWorkspace"
-    Then I should see the status code as 400
-    And I should see the "kind" as "error"
-    And I should see "error" is not null
-    And I should see the "code" as "invalid_parameter"
-    And I should see the "general_problem" as "'project_ids' must be an array of int values"
+#    And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
+#      """
+#        {
+#        "project_ids": {pro.id}
+#        }
+#      """
+#    When I save response as "newWorkspace"
+#    Then I should see the status code as 400
+#    And I should see the "kind" as "error"
+#    And I should see "error" is not null
+#    And I should see the "code" as "invalid_parameter"
+#    And I should see the "general_problem" as "'project_ids' must be an array of int values"
 
   @cleanWorkspaces
   Scenario: I want validate error message of workspace creation with invalid comma at the end of parameter
