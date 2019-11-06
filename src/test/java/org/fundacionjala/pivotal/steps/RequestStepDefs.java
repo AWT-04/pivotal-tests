@@ -30,13 +30,13 @@ public class RequestStepDefs {
     }
 
     @Given("I use {string} user")
-    public void iUseUser(String account) {
+    public void iUseUser(final String account) {
         requestSpec = Authentication.getRequestSpecification(account);
     }
 
     @Given("I send a POST request to {string} with body json:")
     public void iSendAPOSTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
-        response = RequestManager.post(Authentication.getRequestSpecification(""), EndpointHelper.buildEndpoint(endPoint, context),
+        response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context),
          VariableNameHandler.replaceRandom(body, context));
         context.setContext(KEY_LAST_RESPONSE, response);
     }
@@ -59,7 +59,7 @@ public class RequestStepDefs {
     public void iSendAPOSTRequestToEndpointWithBodyJsonFile(final String endPoint,
                                                             final String jsonPath) {
         JSONObject body = JSONHelper.getJsonObject("src/test/resources/".concat(jsonPath));
-        response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context),body);
+        response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context), body);
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 

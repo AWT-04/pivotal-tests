@@ -27,8 +27,9 @@ public final class RequestManager {
     /**
      * Sets get method path.
      *
-     * @param path string path to use url.
-     * @return response object.
+     * @param requestSpec validation spefication (username, password)
+     * @param path  string path to use url.
+     * @return response object
      */
     public static Response get(final RequestSpecification requestSpec, final String path) {
         Response response = given()
@@ -43,6 +44,7 @@ public final class RequestManager {
     /**
      * Sets post method path.
      *
+     * @param requestSpec validation spefication (username, password)
      * @param path string path to use url.
      * @param json json object in string format.
      * @return response object.
@@ -74,6 +76,7 @@ public final class RequestManager {
     /**
      * Sets put method path.
      *
+     * @param requestSpec validation spefication (username, password)
      * @param path string path to use url.
      * @param json json object in string format.
      * @return response object.
@@ -93,6 +96,7 @@ public final class RequestManager {
     /**
      * Sets delete method path.
      *
+     * @param requestSpec validation spefication (username, password)
      * @param path string path to use url.
      * @return response object.
      */
@@ -108,6 +112,7 @@ public final class RequestManager {
     /**
      * Sets patch method path.
      *
+     * @param requestSpec validation spefication (username, password)
      * @param path string path to use url.
      * @return response object.
      */
