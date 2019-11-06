@@ -12,7 +12,10 @@ Feature: Stories in projects
     """
     Then I should see the status code as 200
     And  I should see "id" is not null
-    And I should see the kind as "story"
+    And I should see the "kind" as "story"
+    And I should see the "current_state" as "unscheduled"
+    And I should see the "story_type" as "feature"
+
 
   @cleanProjects
   Scenario: Verify put request for story endpoint
@@ -40,6 +43,8 @@ Feature: Stories in projects
     And I should see the "name" as "New Story Test name"
     And  I should see "id" is not null
     And I should see the kind as "story"
+    And I should see the "current_state" as "unscheduled"
+    And I should see the "story_type" as "feature"
 
   @cleanProjects
   Scenario: Verify delete request for story endpoint
