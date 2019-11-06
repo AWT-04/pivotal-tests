@@ -28,7 +28,7 @@ public class Hooks {
      */
     @After("@cleanProjects")
     public void iSendDeleteAllToByPrefix() {
-        final String prefix = " ";
+        final String prefix = "AT_";
         Response response = RequestManager.get("/projects");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");

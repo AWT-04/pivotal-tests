@@ -53,7 +53,7 @@ public class RequestStepDefs {
     public void iSendAPOSTRequestToEndpointWithBodyJsonFile(final String endPoint,
                                                             final String jsonPath) {
         JSONObject body = JSONHelper.getJsonObject("src/test/resources/".concat(jsonPath));
-        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context),body);
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
