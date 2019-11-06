@@ -1,4 +1,9 @@
 Feature: Stories in projects
+  As an owner user, I want to add stories to a specific project,
+  so that I can register my user stories.
+
+  Background:
+    Given I use "owner" user
 
   @cleanProjects
   Scenario: Verify post request for story endpoint
@@ -109,7 +114,6 @@ Feature: Stories in projects
     """
     Then I should see the status code as 400
     And I should see the "general_problem" as "Stories in the accepted state must be estimated."
-    And I send a DELETE request to "/projects/{Project.id}"
 
 #Scenario outline tests
   @cleanProjects

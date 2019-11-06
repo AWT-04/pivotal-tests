@@ -1,7 +1,8 @@
 Feature: Tasks in stories
 
   Background:
-    Given I send a POST request to "/projects" with body json:
+    Given I use "owner" user
+    And I send a POST request to "/projects" with body json:
     """
     {
     "name": "{RANDOM}"
@@ -57,7 +58,7 @@ Feature: Tasks in stories
     Given I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """
     {
-    "description": "Tasks Test"
+    "description": "Tasks"
     }
     """
     And I save response as "Task"

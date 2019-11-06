@@ -12,15 +12,14 @@ package org.fundacionjala.pivotal.steps;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.restassured.response.Response;
+
+import org.fundacionjala.core.api.Authentication;
 import org.fundacionjala.core.api.RequestManager;
 
 import java.util.List;
 
 /**
  * This class delete all scenarios using a Prefix.
- *
- * @author Fernando Hinojosa on 11/02/2019.
- * @version v1.0
  */
 public class Hooks {
     /**
@@ -29,12 +28,12 @@ public class Hooks {
     @After("@cleanProjects")
     public void iSendDeleteAllToByPrefix() {
         final String prefix = "AT_";
-        Response response = RequestManager.get("/projects");
+        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"), "/projects");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");
         for (int i = 0; i < allName.size(); i++) {
             if (allName.get(i) != null && allName.get(i).contains(prefix)) {
-                RequestManager.delete("/projects/" + allID.get(i));
+                RequestManager.delete(Authentication.getRequestSpecification("owner"), "/projects/" + allID.get(i));
             }
         }
     }
@@ -45,12 +44,12 @@ public class Hooks {
     @Before("@cleanProjectsBefore")
     public void iSendDeleteAllToByPrefixBefore() {
         final String prefix = "AT_";
-        Response response = RequestManager.get("/projects");
+        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"), "/projects");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");
         for (int i = 0; i < allName.size(); i++) {
             if (allName.get(i) != null && allName.get(i).contains(prefix)) {
-                RequestManager.delete("/projects/" + allID.get(i));
+                RequestManager.delete(Authentication.getRequestSpecification("owner"), "/projects/" + allID.get(i));
             }
         }
     }
@@ -63,12 +62,12 @@ public class Hooks {
     @After("@cleanWorkspaces")
     public void iSendDeleteAllWSToByPrefix() {
         final String prefix = "AT_";
-        Response response = RequestManager.get("/my/workspaces");
+        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"), "/my/workspaces");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");
         for (int i = 0; i < allName.size(); i++) {
             if (allName.get(i) != null && allName.get(i).contains(prefix)) {
-                RequestManager.delete("/my/workspaces/" + allID.get(i));
+                RequestManager.delete(Authentication.getRequestSpecification("owner"), "/my/workspaces/" + allID.get(i));
             }
         }
     }
@@ -79,12 +78,12 @@ public class Hooks {
     @Before("@cleanWorkspacesBefore")
     public void iSendDeleteAllWSToByPrefixBefore() {
         final String prefix = "AT_";
-        Response response = RequestManager.get("/my/workspaces");
+        Response response = RequestManager.get(Authentication.getRequestSpecification("owner"), "/my/workspaces");
         List<String> allName = response.jsonPath().getList("name");
         List<Integer> allID = response.jsonPath().getList("id");
         for (int i = 0; i < allName.size(); i++) {
             if (allName.get(i) != null && allName.get(i).contains(prefix)) {
-                RequestManager.delete("/my/workspaces/" + allID.get(i));
+                RequestManager.delete(Authentication.getRequestSpecification("owner"), "/my/workspaces/" + allID.get(i));
             }
         }
     }

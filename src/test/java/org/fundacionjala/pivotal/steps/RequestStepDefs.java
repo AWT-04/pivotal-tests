@@ -2,12 +2,13 @@ package org.fundacionjala.pivotal.steps;
 
 import java.util.List;
 import java.util.Map;
-
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import org.fundacionjala.core.api.Authentication;
 import org.json.simple.JSONObject;
 import org.fundacionjala.core.api.RequestManager;
 import org.fundacionjala.core.utils.EndpointHelper;
@@ -15,29 +16,34 @@ import org.fundacionjala.core.utils.VariableNameHandler;
 import org.fundacionjala.pivotal.JSONHelper;
 import org.fundacionjala.pivotal.ScenarioContext;
 import org.testng.Assert;
-
 import static org.testng.Assert.assertEquals;
 
 public class RequestStepDefs {
-
     private static final String KEY_LAST_RESPONSE = "LAST_RESPONSE";
+
     private ScenarioContext context;
     private Response response;
+    private RequestSpecification requestSpec;
 
     public RequestStepDefs(final ScenarioContext context) {
         this.context = context;
     }
 
+    @Given("I use {string} user")
+    public void iUseUser(String account) {
+        requestSpec = Authentication.getRequestSpecification(account);
+    }
+
     @Given("I send a POST request to {string} with body json:")
     public void iSendAPOSTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
-        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context),
+        response = RequestManager.post(Authentication.getRequestSpecification(""), EndpointHelper.buildEndpoint(endPoint, context),
          VariableNameHandler.replaceRandom(body, context));
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
     @Given("I send a POST request to {string} with body:")
     public void iSendAPOSTRequestToEndpointWithBody(final String endPoint, final Map<String, String> body) {
-        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+        response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context), body);
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
@@ -45,7 +51,7 @@ public class RequestStepDefs {
     public void iSendAPOSTRequestToEndpointWithBodyList(final String endPoint,
                                                         final List<Map<String, String>> bodyList) {
         for (Map<String, String> body: bodyList) {
-            response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context), body);
+            response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context), body);
         }
     }
 
@@ -53,26 +59,26 @@ public class RequestStepDefs {
     public void iSendAPOSTRequestToEndpointWithBodyJsonFile(final String endPoint,
                                                             final String jsonPath) {
         JSONObject body = JSONHelper.getJsonObject("src/test/resources/".concat(jsonPath));
-        response = RequestManager.post(EndpointHelper.buildEndpoint(endPoint, context),body);
+        response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context),body);
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
     @Given("I send a PUT request to {string} with body json:")
     public void iSendAPUTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
-        response = RequestManager.put(EndpointHelper.buildEndpoint(endPoint, context),
+        response = RequestManager.put(requestSpec, EndpointHelper.buildEndpoint(endPoint, context),
                 VariableNameHandler.replaceRandom(body, context));
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
     @When("I send a DELETE request to {string}")
     public void iSendADELETERequestTo(final String endPoint) {
-        response = RequestManager.delete(EndpointHelper.buildEndpoint(endPoint, context));
+        response = RequestManager.delete(requestSpec, EndpointHelper.buildEndpoint(endPoint, context));
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
     @And("I send a GET request to {string}")
     public void iSendAGETRequestTo(final String endPoint) {
-        response = RequestManager.get(EndpointHelper.buildEndpoint(endPoint, context));
+        response = RequestManager.get(requestSpec, EndpointHelper.buildEndpoint(endPoint, context));
         context.setContext(KEY_LAST_RESPONSE, response);
 
     }
@@ -118,14 +124,8 @@ public class RequestStepDefs {
                 .count(), size);
     }
 
-    @When("I send delete all to")
-    public void iSendDeleteAllTo() {
-        response = RequestManager.get("/projects");
-        response.jsonPath().getString("id");
-    }
-
     @And("I send a GET request to {string} ")
     public void iSendAGETRequestToContext(final String endPoint) {
-        response = RequestManager.get(EndpointHelper.buildEndpoint(endPoint, context));
+        response = RequestManager.get(requestSpec, EndpointHelper.buildEndpoint(endPoint, context));
     }
 }

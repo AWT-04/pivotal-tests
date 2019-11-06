@@ -1,6 +1,9 @@
 Feature: Workspaces tests
 # Happy path
 
+  Background:
+    Given I use "owner" user
+
   Scenario: I want confirm a workspace creation without projects
     Given I send a POST request to "/my/workspaces" with body json:
       """
@@ -12,7 +15,6 @@ Feature: Workspaces tests
     Then I should see "id" is not null
     And I should see "person_id" is not null
     And I should see the kind as "workspace"
-
 
   Scenario: I want confirm a workspace creation with a project
     Given I send a POST request to "/projects" with body json:
@@ -236,12 +238,11 @@ Feature: Workspaces tests
     And I should see the "kind" as "error"
     And I should see the "code" as "unfound_resource"
 
-  @cleanProjects
+  @cleanProjects @cleanWorkspaces
   Scenario: I want to validate an error sending parameters to workspaces PUT request
     Given I send a POST request to "/projects" with body json:
       """
         {
-        "name":"{RANDOM}",
         "name":"{RANDOM}"
         }
       """
