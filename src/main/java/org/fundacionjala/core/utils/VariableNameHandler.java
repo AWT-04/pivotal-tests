@@ -8,28 +8,31 @@
  */
 package org.fundacionjala.core.utils;
 
-import org.fundacionjala.pivotal.ScenarioContext;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.fundacionjala.pivotal.ScenarioContext;
 
 /**
- * @author Andy Bazualdo.
- * @version 1.0.
  */
 public final class VariableNameHandler {
     // class variable
     private static final String LEXICON = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
     private static final String PREFIX = "AT_";
     private static final java.util.Random RAND = new java.util.Random();
-    private static final Set<String> IDENTIFIERS = new HashSet<>();
     private static final int NUM_CHARS = 5;
-    private static final String RANDOM = "RANDOM";
+    private static final Map<String, Supplier<String>> MAP = new HashMap<>();
+    static {
+        MAP.put("RANDOM", VariableNameHandler::randomIdentifier);
+        MAP.put("DATE", VariableNameHandler::getDate);
+        MAP.put("UUI", VariableNameHandler::generateUUID);
+    }
 
     /**
      * Constructor method.
@@ -69,22 +72,8 @@ public final class VariableNameHandler {
      * @return returns the changed value fr the variable.
      */
     private static String processVariable(final String var) {
-        String c = null;
-        switch (var) {
-            case RANDOM:
-                c = randomIdentifier();
-                break;
-            case "DATE":
-                c = getDate();
-                break;
-            case "UUI":
-                c = generateUUID();
-                break;
-            default:
-                c = var;
-                break;
-        }
-        return c;
+        String c = MAP.get(var).get();
+        return c == null ? var : c;
     }
 
     /**
@@ -97,9 +86,6 @@ public final class VariableNameHandler {
             int length = RAND.nextInt(NUM_CHARS) + NUM_CHARS;
             for (int i = 0; i < length; i++) {
                 builder.append(LEXICON.charAt(RAND.nextInt(LEXICON.length())));
-            }
-            if (IDENTIFIERS.contains(builder.toString())) {
-                builder = new StringBuilder();
             }
         }
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");

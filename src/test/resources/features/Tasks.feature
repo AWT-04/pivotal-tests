@@ -1,10 +1,11 @@
 Feature: Tasks in stories
 
   Background:
-    Given I send a POST request to "/projects" with body json:
+    Given I use "owner" user
+    And I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing"
+    "name": "{RANDOM}"
     }
     """
     And I save response as "Project"
@@ -26,7 +27,10 @@ Feature: Tasks in stories
     """
     And I save response as "Task"
     Then I should see the status code as 200
-    # Missing validations on body response
+    And  I should see "id" is not null
+    And I should see the kind as "task"
+    And I should see the "complete" as "false"
+    And I should see the "position" as "1"
 
   @cleanProjects
   Scenario: Verify put request for task endpoint
@@ -44,21 +48,26 @@ Feature: Tasks in stories
     }
     """
     Then I should see the status code as 200
-    # Missing validations on body response
+    And  I should see "id" is not null
+    And I should see the kind as "task"
+    And I should see the "complete" as "false"
+    And I should see the "position" as "1"
 
   @cleanProjects
   Scenario: Verify delete request for task endpoint
     Given I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """
     {
-    "description": "Tasks Test"
+    "description": "Tasks"
     }
     """
     And I save response as "Task"
     When I send a DELETE request to "/projects/{Project.id}/stories/{S.id}/tasks/{Task.id}"
     Then I should see the status code as 204
-    # Missing validations
-    # GET
+    And I send a GET request to "/projects/{Project.id}/stories/{S.id}/tasks/{Task.id}"
+    And I should see the status code as 404
+    And I should see the "kind" as "error"
+    And I should see the "code" as "unfound_resource"
 
   @cleanProjects
   Scenario: Verify error request for task endpoint

@@ -12,6 +12,8 @@ package org.fundacionjala.pivotal.steps;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 import io.restassured.response.Response;
+
+import org.fundacionjala.core.api.Authentication;
 import org.fundacionjala.core.api.RequestManager;
 import org.testng.annotations.BeforeTest;
 
@@ -24,25 +26,25 @@ import java.util.List;
 
 /**
  * This class delete all.
- * @author Fernando Hinojosa on 11/02/2019.
- * @version v1.0
  */
 public class Runner extends AbstractTestNGCucumberTests {
+
+    private static final String OWNER = "owner";
 
     /**
      * This method delete before all scenarios.
      */
     @BeforeTest
     public void beforeAllScenarios() {
-        Response response = RequestManager.get("/projects");
+        Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER), "/projects");
         List<Integer> allID = response.jsonPath().getList("id");
         for (Integer id : allID) {
-            RequestManager.delete("/projects/" + id);
+            RequestManager.delete(Authentication.getRequestSpecification(OWNER), "/projects/" + id);
         }
-        response = RequestManager.get("/my/workspaces");
+        response = RequestManager.get(Authentication.getRequestSpecification(OWNER), "/my/workspaces");
         allID = response.jsonPath().getList("id");
         for (Integer id : allID) {
-            RequestManager.delete("/my/workspaces/" + id);
+            RequestManager.delete(Authentication.getRequestSpecification(OWNER), "/my/workspaces/" + id);
         }
     }
 }

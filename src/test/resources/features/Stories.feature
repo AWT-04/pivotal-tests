@@ -1,4 +1,9 @@
 Feature: Stories in projects
+  As an owner user, I want to add stories to a specific project,
+  so that I can register my user stories.
+
+  Background:
+    Given I use "owner" user
 
   @cleanProjects
   Scenario: Verify post request for story endpoint
@@ -7,18 +12,22 @@ Feature: Stories in projects
     When I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
-    "name": "Story Test {CURRENT_DATE}"
+    "name":"{RANDOM}"
     }
     """
     Then I should see the status code as 200
-    # Missing validations
+    And  I should see "id" is not null
+    And I should see the "kind" as "story"
+    And I should see the "current_state" as "unscheduled"
+    And I should see the "story_type" as "feature"
+
 
   @cleanProjects
   Scenario: Verify put request for story endpoint
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing PUT"
+    "name":"{RANDOM}"
     }
     """
     And I save response as "Project"
@@ -36,14 +45,18 @@ Feature: Stories in projects
     }
     """
     Then I should see the status code as 200
-    # Missing validations
+    And I should see the "name" as "New Story Test name"
+    And  I should see "id" is not null
+    And I should see the kind as "story"
+    And I should see the "current_state" as "unscheduled"
+    And I should see the "story_type" as "feature"
 
   @cleanProjects
   Scenario: Verify delete request for story endpoint
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing DELETE"
+    "name":"{RANDOM}"
     }
     """
     And I save response as "Project"
@@ -56,8 +69,11 @@ Feature: Stories in projects
     And I save response as "S"
     When I send a DELETE request to "/projects/{Project.id}/stories/{S.id}"
     Then I should see the status code as 204
-    # Missing validations
-    # GET
+    And I send a GET request to "/projects/{Project.id}/stories/{S.id}"
+    And I should see the status code as 404
+    And I should see the "kind" as "error"
+    And I should see the "code" as "unfound_resource"
+
 
 # Negative Tests
   @cleanProjects
@@ -65,7 +81,7 @@ Feature: Stories in projects
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing"
+    "name": "{RANDOM}"
     }
     """
     And I save response as "Project"
@@ -85,7 +101,7 @@ Feature: Stories in projects
     Given I send a POST request to "/projects" with body json:
     """
     {
-    "name": "Project for testing"
+    "name": "{RANDOM}"
     }
     """
     And I save response as "Project"
@@ -98,13 +114,12 @@ Feature: Stories in projects
     """
     Then I should see the status code as 400
     And I should see the "general_problem" as "Stories in the accepted state must be estimated."
-    And I send a DELETE request to "/projects/{Project.id}"
 
 #Scenario outline tests
   @cleanProjects
   Scenario Outline: Verify story_types for story endpoint
     Given I send a POST request to "/projects" with body:
-      | name | "Project for testing" |
+     | name | "AT_{RANDOM}" |
     And I save response as "Project"
     When I send a POST request to "/projects/{Project.id}/stories" with body:
       | name       | <name>       |
@@ -121,7 +136,7 @@ Feature: Stories in projects
   @cleanProjects
   Scenario Outline: Verify current_state for story endpoint
     Given I send a POST request to "/projects" with body:
-      | name | "Project for testing" |
+      | name | "AT_{RANDOM}" |
     And I save response as "Project"
     When I send a POST request to "/projects/{Project.id}/stories" with body:
       | name          | <name>          |
@@ -142,7 +157,7 @@ Feature: Stories in projects
   @cleanProjects
   Scenario: Verify the size for story endpoint when adding stories
     Given I send a POST request to "/projects" with body:
-      | name | "Project for testing" |
+      | name | "AT_{RANDOM}" |
     And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body list:
       | name         | story_type |
@@ -156,7 +171,7 @@ Feature: Stories in projects
   @cleanProjects
   Scenario: Verify the size of bugs for story endpoint when adding stories
     Given I send a POST request to "/projects" with body:
-      | name | "Project for testing" |
+      | name | "AT_{RANDOM}" |
     And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body list:
       | name         | story_type |
@@ -174,7 +189,7 @@ Feature: Stories in projects
   @cleanProjects
   Scenario Outline: Verify the size of bugs with story_type query param
     Given I send a POST request to "/projects" with body:
-      | name | "Project for testing" |
+      | name | "AT_{RANDOM}" |
     And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body list:
       | name         | story_type |
@@ -197,7 +212,7 @@ Feature: Stories in projects
   @cleanProjects
   Scenario Outline: Verify the size of bugs with state query param
     Given I send a POST request to "/projects" with body:
-      | name | "Project for testing" |
+      | name | "AT_{RANDOM}" |
     And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body list:
       | name       | estimate | current_state |

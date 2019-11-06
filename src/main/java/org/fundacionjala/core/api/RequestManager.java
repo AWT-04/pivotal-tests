@@ -18,13 +18,8 @@ import static io.restassured.RestAssured.given;
 
 /**
  * Rest assured initial framework.
- *
- * @author Andy Bazualdo
- * @version 1.0
  */
 public final class RequestManager {
-    private static final RequestSpecification
-            REQUEST_SPECIFICATION = Authentication.getAuthenticationInstance().getRequestSpecification();
 
     private RequestManager() {
     }
@@ -32,11 +27,13 @@ public final class RequestManager {
     /**
      * Sets get method path.
      *
-     * @param path string path to use url.
-     * @return response object.
+     * @param requestSpec validation spefication (username, password)
+     * @param path  string path to use url.
+     * @return response object
      */
-    public static Response get(final String path) {
-        Response response = given().spec(REQUEST_SPECIFICATION)
+    public static Response get(final RequestSpecification requestSpec, final String path) {
+        Response response = given()
+                .spec(requestSpec)
                 .log().all()
                 .when()
                 .get(path);
@@ -47,13 +44,16 @@ public final class RequestManager {
     /**
      * Sets post method path.
      *
+     * @param requestSpec validation spefication (username, password)
      * @param path string path to use url.
      * @param json json object in string format.
      * @return response object.
      */
 
-    public static Response post(final String path, final String json) {
-        Response response = given().spec(REQUEST_SPECIFICATION)
+    public static Response post(final RequestSpecification requestSpec, final String path,
+                                final String json) {
+        Response response = given()
+                .spec(requestSpec)
                 .when()
                 .contentType(ContentType.JSON)
                 .body(json)
@@ -62,8 +62,10 @@ public final class RequestManager {
         return response;
     }
 
-    public static Response post(final String path, final Map<String, String> json) {
-        Response response = given().spec(REQUEST_SPECIFICATION)
+    public static Response post(final RequestSpecification requestSpec, final String path,
+                                final Map<String, String> json) {
+        Response response = given()
+                .spec(requestSpec)
                 .params(json)
                 .when()
                 .post(path);
@@ -74,13 +76,15 @@ public final class RequestManager {
     /**
      * Sets put method path.
      *
+     * @param requestSpec validation spefication (username, password)
      * @param path string path to use url.
      * @param json json object in string format.
      * @return response object.
      */
 
-    public static Response put(final String path, final String json) {
-        Response response = given().spec(REQUEST_SPECIFICATION)
+    public static Response put(final RequestSpecification requestSpec, final String path, final String json) {
+        Response response = given()
+                .spec(requestSpec)
                 .when()
                 .contentType(ContentType.JSON)
                 .body(json)
@@ -92,11 +96,13 @@ public final class RequestManager {
     /**
      * Sets delete method path.
      *
+     * @param requestSpec validation spefication (username, password)
      * @param path string path to use url.
      * @return response object.
      */
-    public static Response delete(final String path) {
-        Response response = given().spec(REQUEST_SPECIFICATION)
+    public static Response delete(final RequestSpecification requestSpec, final String path) {
+        Response response = given()
+                .spec(requestSpec)
                 .when()
                 .delete(path);
         response.then().log().all();
@@ -106,11 +112,13 @@ public final class RequestManager {
     /**
      * Sets patch method path.
      *
+     * @param requestSpec validation spefication (username, password)
      * @param path string path to use url.
      * @return response object.
      */
-    public static Response patch(final String path) {
-        Response response = given().spec(REQUEST_SPECIFICATION)
+    public static Response patch(final RequestSpecification requestSpec, final String path) {
+        Response response = given()
+                .spec(requestSpec)
                 .when()
                 .patch(path);
         response.then().log().all();
