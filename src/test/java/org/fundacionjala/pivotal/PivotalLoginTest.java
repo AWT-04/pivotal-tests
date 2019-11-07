@@ -27,8 +27,6 @@ public class PivotalLoginTest {
     public void startWebDriver() {
         WebDriverManager.chromedriver().setup();
         browser = new ChromeDriver();
-
-
     }
 
     @Test
@@ -47,18 +45,25 @@ public class PivotalLoginTest {
     @Test
     public void createProjectWithNewAcount() {
         login();
-        browser.findElement(By.xpath("//button[@id=\"create-project-button\"]")).click();
-        browser.findElement(By.xpath("//input[@name='project_name']")).sendKeys("Test1");
-        browser.findElement(By.xpath("//div [@ class=\"tc-account-selector__header\"]")).click();
+//        browser.findElement(By.xpath("//button[@id=\"create-project-button\"]")).click();
+        browser.findElement(By.cssSelector("#create-project-button")).click();
+//        browser.findElement(By.xpath("//input[@name='project_name']")).sendKeys("Test1");
+        browser.findElement(By.cssSelector("input[name='project_name']")).sendKeys("Test1");
+//        browser.findElement(By.xpath("//div [@ class=\"tc-account-selector__header\"]")).click();
+        browser.findElement(By.cssSelector(".tc-account-selector__header")).click();
         browser.findElement(By.cssSelector(".tc-account-selector__create-account-icon")).click();
         browser.findElement(By.cssSelector(".tc-account-creator__name")).sendKeys("test_account");
-        browser.findElement(By.xpath("//input [@name='project_type' and @value='public']")).click();
-        browser.findElement(By.xpath("//button [@class='zWDds__Button pvXpn__Button--positive']")).click();
+//        browser.findElement(By.xpath("//input [@name='project_type' and @value='public']")).click();
+        String projectType = "public";
+        browser.findElement(By.cssSelector(String.format("input[name='project_type'][value='%s']", projectType))).click();
+//        browser.findElement(By.xpath("//button [@class='zWDds__Button pvXpn__Button--positive']")).click();
+//        browser.findElement(By.cssSelector(".zWDds__Button.pvXpn__Button--positive")).click();
+        browser.findElement(By.cssSelector(".pvXpn__Button--positive")).click();
 
         // explicit wait - to wait for the compose button to be click-able
         WebDriverWait wait = new WebDriverWait(browser,30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//span [@class='raw_context_name public']")));
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span [@class='raw_context_name public']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".raw_context_name.public")));
         // click on the compose button as soon as the "compose" button is visible
 
         String project = browser.findElement(By.xpath("//span [@class = 'raw_context_name public']")).getText();
@@ -68,7 +73,16 @@ public class PivotalLoginTest {
         Assert.assertEquals(project.toUpperCase(), "Test1".toUpperCase());
         Assert.assertEquals(projectPrivacy.toUpperCase(), "(public)".toUpperCase());
 
+        // Navigation
         browser.findElement(By.xpath("//span [@class='public_project_label']")).click();
+
+        // second validations
+
+        // Navigation
+
+        // third validations
+
+        // .....
 
     }
 
