@@ -29,8 +29,10 @@ public class PivotalLoginTest {
         browser.findElement(By.xpath("//*[@id=\"modal_area\"]/div/div[2]/div/form/div/div/fieldset/div/div[2]/div[1]/ul/li/span[1]/div")).click();
         browser.findElement(By.cssSelector(".pvXpn__Button--positive")).click();
         (new WebDriverWait(browser, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".scrimVisible")));
+        //Validate the title in the project page
         Assert.assertTrue(browser.getTitle().contains(title));
-        browser.quit();
+
+       //browser.close();
     }
 
     public static void ExplicitWait(WebDriver driver, String css){

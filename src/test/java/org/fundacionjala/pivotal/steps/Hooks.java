@@ -30,7 +30,7 @@ public class Hooks {
      */
     @After("@cleanProjects")
     public void iSendDeleteAllToByPrefix() {
-        final String prefix = "AT_";
+        final String prefix = "";
         Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER),
                 "/projects");
         List<String> allName = response.jsonPath().getList("name");
