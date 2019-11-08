@@ -18,6 +18,7 @@ public class PivotalTest {
 
     @BeforeMethod
     public void setUp() {
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         WebDriverManager.chromedriver().setup();
         webDriver = new ChromeDriver();
         webDriver.navigate().to("https://www.pivotaltracker.com/signin/");
