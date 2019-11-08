@@ -3,6 +3,7 @@ package org.fundacionjala.pivotal.steps;
 import Base.BaseUtil;
 import Pages.DashboardPage;
 import Pages.LoginPage;
+import Pages.ProjectPage;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -86,6 +87,9 @@ public class SeleniumSteps {
         (new WebDriverWait(base.driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".scrimVisible")));
         //Validate the title in the project page
         Assert.assertTrue(base.driver.getTitle().contains(title));
+//        ProjectPage projectPage = new ProjectPage(base.driver);
+//        projectPage.btnAllProjects.click();
+//        Assert.assertTrue(projectPage.itemProject.isDisplayed());
 
     }
 }
