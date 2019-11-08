@@ -1,10 +1,16 @@
 package org.fundacionjala.pivotal.steps;
 
 import Base.BaseUtil;
+import Pages.DashboardPage;
 import Pages.LoginPage;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 
 public class SeleniumSteps {
@@ -41,5 +47,43 @@ public class SeleniumSteps {
     public void iEnterAsPassword(String password) {
         LoginPage loginPage = new LoginPage(base.driver);
         loginPage.txtPassword.sendKeys(password);
+    }
+
+    @When("I click create project button")
+    public void iClickCreateProjectButton() {
+        DashboardPage dashboardPage = new DashboardPage(base.driver);
+        dashboardPage.btnCreateProject.submit();
+    }
+
+    @And("I enter {string} the name of the project")
+    public void iEnterTheNameOfTheProject(String nameProject) {
+        DashboardPage dashboardPage = new DashboardPage(base.driver);
+        dashboardPage.txtProjectName.sendKeys(nameProject);
+    }
+
+    @And("I click the account options")
+    public void iClickTheAccountOptions() {
+        DashboardPage dashboardPage = new DashboardPage(base.driver);
+        dashboardPage.btnSelection.click();
+    }
+
+    @And("I select the account")
+    public void iSelectTheAccount() {
+        DashboardPage dashboardPage = new DashboardPage(base.driver);
+        dashboardPage.optAccount.click();
+    }
+
+    @And("I click the accept button")
+    public void iClickTheAcceptButton() {
+        DashboardPage dashboardPage = new DashboardPage(base.driver);
+        dashboardPage.btnAcceptCreateProject.submit();
+    }
+
+    @Then("I should see the title {string} in the navigator")
+    public void iShouldSeeTheTitleInTheNavigator(String title) {
+        (new WebDriverWait(base.driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".scrimVisible")));
+        //Validate the title in the project page
+        Assert.assertTrue(base.driver.getTitle().contains(title));
+
     }
 }
