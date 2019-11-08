@@ -16,7 +16,7 @@ public class HooksSelenium {
         this.base = base;
     }
 
-    @Before
+    @Before("@InitializeDriver")
     public void InitializeTest(){
         System.out.println("Oopening the browser: Google Chromer");
         WebDriverManager.chromedriver().setup();
@@ -24,7 +24,7 @@ public class HooksSelenium {
         base.driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
     }
 
-    @After
+    @After("@CloseDriver")
     public void TearDownTest(){
         System.out.println("Closing the navigator");
         base.driver.close();
