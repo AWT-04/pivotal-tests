@@ -20,4 +20,8 @@ public class LoginPage {
 
     @FindBy(how = How.CSS, using = "#credentials_password")
     public WebElement txtPassword;
+
+    public void ClickLogin(){
+        btnActionButton.submit();
+    }
 }
