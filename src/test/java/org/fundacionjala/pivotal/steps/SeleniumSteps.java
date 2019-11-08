@@ -11,11 +11,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import java.time.LocalDateTime;
 
 
 public class SeleniumSteps {
 
     private BaseUtil base;
+    final String title = LocalDateTime.now().toString();
 
     public SeleniumSteps(BaseUtil base) {
         this.base = base;
@@ -52,13 +54,13 @@ public class SeleniumSteps {
     @When("I click create project button")
     public void iClickCreateProjectButton() {
         DashboardPage dashboardPage = new DashboardPage(base.driver);
-        dashboardPage.btnCreateProject.submit();
+        dashboardPage.btnCreateProject.click();
     }
 
     @And("I enter {string} the name of the project")
     public void iEnterTheNameOfTheProject(String nameProject) {
         DashboardPage dashboardPage = new DashboardPage(base.driver);
-        dashboardPage.txtProjectName.sendKeys(nameProject);
+        dashboardPage.txtProjectName.sendKeys(title);
     }
 
     @And("I click the account options")
@@ -76,11 +78,11 @@ public class SeleniumSteps {
     @And("I click the accept button")
     public void iClickTheAcceptButton() {
         DashboardPage dashboardPage = new DashboardPage(base.driver);
-        dashboardPage.btnAcceptCreateProject.submit();
+        dashboardPage.btnAcceptCreateProject.click();
     }
 
     @Then("I should see the title {string} in the navigator")
-    public void iShouldSeeTheTitleInTheNavigator(String title) {
+    public void iShouldSeeTheTitleInTheNavigator(String titleProject) {
         (new WebDriverWait(base.driver, 30)).until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".scrimVisible")));
         //Validate the title in the project page
         Assert.assertTrue(base.driver.getTitle().contains(title));
