@@ -113,4 +113,9 @@ public class SeleniumSteps {
         loginPage.txtPassword.sendKeys(user.get("password"));
         loginPage.ClickLogin();
     }
+
+    @And("I should not see int the title {string} in the navigator")
+    public void iShouldNotSeeIntTheTitleInTheNavigator(String privacity) {
+        Assert.assertFalse(base.driver.getTitle().contains(privacity));
+    }
 }
