@@ -101,4 +101,14 @@ public class SeleniumSteps {
         dashboardPage.btnSelection.click();
         dashboardPage.optAccount.click();
     }
+
+    @Given("I login as user:")
+    public void iLoginAsUser(final Map<String, String> user) {
+        base.driver.get("https://www.pivotaltracker.com/signin");
+        LoginPage loginPage = new LoginPage(base.driver);
+        loginPage.txtUserName.sendKeys(user.get("name"));
+        loginPage.ClickLogin();
+        loginPage.txtPassword.sendKeys(user.get("password"));
+        loginPage.ClickLogin();
+    }
 }
