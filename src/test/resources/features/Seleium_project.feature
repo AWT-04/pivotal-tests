@@ -7,7 +7,6 @@ Feature: Project creation
     Given I login as user:
       | name     | raullaredo |
       | password | r4514812L* |
-    #Given I log in as "owner" account
     When I click create project button
     And I enter "My project" the name of the project
     And I click the account options
