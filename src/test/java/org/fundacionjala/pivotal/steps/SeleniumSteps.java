@@ -97,7 +97,7 @@ public class SeleniumSteps {
     @And("I set the project form:")
     public void iSetTheProjectForm(final Map<String, String> data) {
         DashboardPage dashboardPage = new DashboardPage(base.driver);
-        dashboardPage.txtProjectName.sendKeys(data.get("name"));
+        dashboardPage.txtProjectName.sendKeys(title);
         dashboardPage.btnSelection.click();
         dashboardPage.optAccount.click();
     }

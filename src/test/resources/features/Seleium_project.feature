@@ -13,4 +13,4 @@ Feature: Project creation
     And I click the account options
     And I select the account
     And I click the accept button
-    Then I should see the title "My project1451" in the navigator
+    Then I should see the title "NAME" in the navigator
