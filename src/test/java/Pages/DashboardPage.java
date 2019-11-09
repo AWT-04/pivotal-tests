@@ -1,5 +1,6 @@
 package Pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,11 +22,14 @@ public class DashboardPage {
     @FindBy(how = How.CSS, using = ".tc-account-selector__header")
     public WebElement btnSelection;
 
-    @FindBy(how = How.XPATH, using = "//div[@class='tc-account-selector__option-account-name']")
-    public WebElement optAccount;
-
     @FindBy(how = How.CSS, using = ".pvXpn__Button--positive")
     public WebElement btnAcceptCreateProject;
+
+    @FindBy(how = How.XPATH, using = "//input[@value='private']")
+    public WebElement optPrivate;
+
+    @FindBy(how = How.XPATH, using = "//input[@value='public']")
+    public WebElement optPublic;
 
     public void ClickElement(WebElement element){
         element.submit();
@@ -33,5 +37,19 @@ public class DashboardPage {
 
     public void SendKeysToElement(WebElement element, String text){
         element.sendKeys(text);
+    }
+
+    public void SelectPrivacity(Boolean value){
+        if (value){
+            optPrivate.click();
+        } else {
+            optPublic.click();
+        }
+    }
+
+    public void SelectAccount(String account){
+        WebElement optAccount=null;
+        System.out.println("element = " + "//div[contains(text(),'"+ account +"')]");
+        optAccount.findElement(By.xpath("//div[contains(text(),'"+ account +"')]")).click();
     }
 }

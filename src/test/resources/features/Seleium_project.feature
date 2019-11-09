@@ -2,7 +2,7 @@ Feature: Project creation
   As an owner user, I want to add projects to a specific pivotal account,
   so that I can register my tasks, stories, workspaces in my projects.
 
-  @InitializeDriver @CloseDriver
+  @InitializeDriver
   Scenario: Login with correct username and password
     Given I login as user:
       | name     | raullaredo |
@@ -13,3 +13,4 @@ Feature: Project creation
     And I select the account
     And I click the accept button
     Then I should see the title "NAME" in the navigator
+    And I should see the title "Public" in the navigator

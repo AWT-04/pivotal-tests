@@ -74,7 +74,7 @@ public class SeleniumSteps {
     @And("I select the account")
     public void iSelectTheAccount() {
         DashboardPage dashboardPage = new DashboardPage(base.driver);
-        dashboardPage.optAccount.click();
+//        dashboardPage.optAccount.click();
     }
 
     @And("I click the accept button")
@@ -99,7 +99,8 @@ public class SeleniumSteps {
         DashboardPage dashboardPage = new DashboardPage(base.driver);
         dashboardPage.txtProjectName.sendKeys(title);
         dashboardPage.btnSelection.click();
-        dashboardPage.optAccount.click();
+        dashboardPage.SelectAccount(data.get("account"));
+        dashboardPage.SelectPrivacity(Boolean.parseBoolean(data.get("privacy")));
     }
 
     @Given("I login as user:")
