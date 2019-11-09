@@ -8,6 +8,7 @@ before_script:
 - export GRADLE_HOME=$PWD/gradle-5.6.2
 - export PATH=$GRADLE_HOME/bin:$PATH
 addons:
+  chrome: stable
   sonarcloud:
     organization: awt-04
     token:
@@ -21,3 +22,5 @@ notifications:
 before_install:
 - openssl aes-256-cbc -K $encrypted_d40277219749_key -iv $encrypted_d40277219749_iv
   -in configJson/config.json.enc -out configJson/config.json -d
+- google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+- google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
