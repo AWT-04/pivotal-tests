@@ -22,6 +22,9 @@ public class DashboardPage {
     @FindBy(how = How.CSS, using = ".tc-account-selector__header")
     public WebElement btnSelection;
 
+    @FindBy(how = How.XPATH, using = "//div[contains(text(),'ramalaso')]")
+    public WebElement btnAccount;
+
     @FindBy(how = How.CSS, using = ".pvXpn__Button--positive")
     public WebElement btnAcceptCreateProject;
 
@@ -47,9 +50,9 @@ public class DashboardPage {
         }
     }
 
-    public void SelectAccount(String account){
+    public WebElement SelectAccount(String account){
         WebElement optAccount=null;
         System.out.println("element = " + "//div[contains(text(),'"+ account +"')]");
-        optAccount.findElement(By.xpath("//div[contains(text(),'"+ account +"')]")).click();
+        return optAccount.findElement(By.xpath("//div[contains(text(),'"+ account +"')]"));
     }
 }

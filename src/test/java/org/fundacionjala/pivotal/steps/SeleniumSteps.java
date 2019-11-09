@@ -99,7 +99,8 @@ public class SeleniumSteps {
         DashboardPage dashboardPage = new DashboardPage(base.driver);
         dashboardPage.txtProjectName.sendKeys(title);
         dashboardPage.btnSelection.click();
-        dashboardPage.SelectAccount(data.get("account"));
+        dashboardPage.btnAccount.click();
+        //dashboardPage.SelectAccount(data.get("account")).click();
         dashboardPage.SelectPrivacity(Boolean.parseBoolean(data.get("privacy")));
     }
 
