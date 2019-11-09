@@ -18,7 +18,7 @@ public class HooksSelenium {
 
     @Before("@InitializeDriver")
     public void InitializeTest(){
-        System.out.println("Oopening the browser: Google Chromer");
+        System.out.println("Opening the browser: Google Chromer");
         WebDriverManager.chromedriver().setup();
         base.driver = new ChromeDriver();
         base.driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);

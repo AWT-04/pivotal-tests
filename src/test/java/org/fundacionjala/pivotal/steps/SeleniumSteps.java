@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 
 public class SeleniumSteps {
@@ -91,5 +92,13 @@ public class SeleniumSteps {
 //        projectPage.btnAllProjects.click();
 //        Assert.assertTrue(projectPage.itemProject.isDisplayed());
 
+    }
+
+    @And("I set the project form:")
+    public void iSetTheProjectForm(final Map<String, String> data) {
+        DashboardPage dashboardPage = new DashboardPage(base.driver);
+        dashboardPage.txtProjectName.sendKeys(data.get("name"));
+        dashboardPage.btnSelection.click();
+        dashboardPage.optAccount.click();
     }
 }

@@ -14,6 +14,6 @@ public class ProjectPage {
     @FindBy(how = How.CSS, using =".tc_projects_dropdown_link.tc_context_name")
     public WebElement btnAllProjects;
 
-    @FindBy(how = How.CSS, using =".tc_projects_menu_list .tc_projects_menu_item. tc_projects_menu_item_link. raw_project_name")
+    @FindBy(how = How.XPATH, using ="//span[contains(text(),'2019-11-08T08:05:13.697284')]")
     public WebElement itemProject;
 }
