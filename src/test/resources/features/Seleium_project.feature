@@ -14,7 +14,7 @@ Feature: Project creation
     And I click the accept button
     Then I should see the title "NAME" in the navigator
     And I should see the title "Public" in the navigator
-
+    And I should see the project in the list of projects
 
   @InitializeDriver @CloseDriver
   Scenario: Create private project
@@ -29,3 +29,4 @@ Feature: Project creation
     And I click the accept button
     Then I should see the title "NAME" in the navigator
     And I should not see int the title "Public" in the navigator
+    And I should see the project in the list of projects

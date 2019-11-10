@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class SeleniumSteps {
@@ -91,7 +92,6 @@ public class SeleniumSteps {
 //        ProjectPage projectPage = new ProjectPage(base.driver);
 //        projectPage.btnAllProjects.click();
 //        Assert.assertTrue(projectPage.itemProject.isDisplayed());
-
     }
 
     @And("I set the project form:")
@@ -117,5 +117,15 @@ public class SeleniumSteps {
     @And("I should not see int the title {string} in the navigator")
     public void iShouldNotSeeIntTheTitleInTheNavigator(String privacity) {
         Assert.assertFalse(base.driver.getTitle().contains(privacity));
+    }
+
+    @And("I should see the project in the list of projects")
+    public void iShouldSeeTheProjectInTheListOfProjects() throws InterruptedException {
+        ProjectPage projectPage = new ProjectPage(base.driver);
+        projectPage.btnProjects.click();
+        String XPath = String.format("//*[@class='raw_project_name public' and contains(text(),'%s')]", title);
+//        (new WebDriverWait(base.driver, 30)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".tc_menu_header.tc_menu_header_projects")));
+        Assert.assertEquals(base.driver.findElement(By.xpath(XPath)).getText(), title);
+//        projectPage.ProjectInList(title).click();
     }
 }

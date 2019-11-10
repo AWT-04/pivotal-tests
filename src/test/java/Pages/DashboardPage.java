@@ -55,4 +55,6 @@ public class DashboardPage {
         System.out.println("element = " + "//div[contains(text(),'"+ account +"')]");
         return optAccount.findElement(By.xpath("//div[contains(text(),'"+ account +"')]"));
     }
+
+
 }
