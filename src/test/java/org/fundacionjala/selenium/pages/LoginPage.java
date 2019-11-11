@@ -16,7 +16,7 @@ public class LoginPage {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
-        webDriver = new ChromeDriver();
+        webDriver = new ChromeDriver(options);
         webDriver.manage().timeouts().implicitlyWait(IMPLICIT_TIME, TimeUnit.SECONDS);
         webDriver.navigate().to("https://www.pivotaltracker.com/signin/");
     }
