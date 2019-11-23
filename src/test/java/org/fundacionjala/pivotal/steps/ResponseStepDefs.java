@@ -13,7 +13,6 @@ public class ResponseStepDefs {
     private Response response;
 
     public ResponseStepDefs(final ScenarioContext context) {
-
         this.context = context;
     }
 
