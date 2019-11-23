@@ -19,7 +19,8 @@ import org.testng.Assert;
 import static org.testng.Assert.assertEquals;
 
 public class RequestStepDefs {
-    private static final String KEY_LAST_RESPONSE = "LAST_RESPONSE";
+    public static final String KEY_LAST_RESPONSE = "LAST_RESPONSE";
+    private static final String KEY_LAST_ENDPOINT = "LAST_ENDPOINT";
 
     private ScenarioContext context;
     private Response response;
@@ -36,14 +37,18 @@ public class RequestStepDefs {
 
     @Given("I send a POST request to {string} with body json:")
     public void iSendAPOSTRequestToEndpointWithBodyJson(final String endPoint, final String body) {
-        response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context),
+        final String builtEndpoint = EndpointHelper.buildEndpoint(endPoint, context);
+        response = RequestManager.post(requestSpec, builtEndpoint,
          VariableNameHandler.replaceRandom(body, context));
+        context.setContext(KEY_LAST_ENDPOINT, builtEndpoint);
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
     @Given("I send a POST request to {string} with body:")
     public void iSendAPOSTRequestToEndpointWithBody(final String endPoint, final Map<String, String> body) {
-        response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context), body);
+        final String builtEndpoint = EndpointHelper.buildEndpoint(endPoint, context);
+        response = RequestManager.post(requestSpec, builtEndpoint, body);
+        context.setContext(KEY_LAST_ENDPOINT, builtEndpoint);
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
@@ -59,7 +64,9 @@ public class RequestStepDefs {
     public void iSendAPOSTRequestToEndpointWithBodyJsonFile(final String endPoint,
                                                             final String jsonPath) {
         JSONObject body = JSONHelper.getJsonObject("src/test/resources/".concat(jsonPath));
-        response = RequestManager.post(requestSpec, EndpointHelper.buildEndpoint(endPoint, context), body);
+        final String builtEndpoint = EndpointHelper.buildEndpoint(endPoint, context);
+        response = RequestManager.post(requestSpec, builtEndpoint, body);
+        context.setContext(KEY_LAST_ENDPOINT, builtEndpoint);
         context.setContext(KEY_LAST_RESPONSE, response);
     }
 
@@ -102,14 +109,14 @@ public class RequestStepDefs {
 
     @And("I should see the size of {string} in {string} as {int}")
     public void iShouldSeeTheSizeOfInAs(final String field, final String endPoint, final int size) {
-        response = context.getContext(endPoint);
+        response = ((Response) context.getContext(endPoint));
         assertEquals(this.response.jsonPath().getList(field).size(), size);
     }
 
     @And("I should see the size of type {string} in {string} of {string} as {int}")
     public void iShouldSeeTheSizeOfTypeInOfAs(final String kind, final String field,
                                               final String endPoint, final int size) {
-        response = context.getContext(endPoint);
+        response = ((Response) context.getContext(endPoint));
         assertEquals((int) response.jsonPath().getList(field).stream()
                 .filter(x -> x.equals(kind))
                 .count(), size);
@@ -118,7 +125,7 @@ public class RequestStepDefs {
     @Then("I should see the size of type {string} in {string} of {string} as <size>")
     public void iShouldSeeTheSizeOfTypeInOfAsSize(final String kind, final String field,
                                                   final String endPoint, final int size) {
-        response = context.getContext(endPoint);
+        response = ((Response) context.getContext(endPoint));
         assertEquals((int) response.jsonPath().getList(field).stream()
                 .filter(x -> x.equals(kind))
                 .count(), size);
@@ -127,5 +134,12 @@ public class RequestStepDefs {
     @And("I send a GET request to {string} ")
     public void iSendAGETRequestToContext(final String endPoint) {
         response = RequestManager.get(requestSpec, EndpointHelper.buildEndpoint(endPoint, context));
+    }
+
+    @And("I save the request endpoint for deleting")
+    public void iSaveTheRequestEndpointForDeleting() {
+        final String lastEndpoint = (String) context.getContext(KEY_LAST_ENDPOINT);
+        final String lastResponseId = ((Response) context.getContext("LAST_RESPONSE")).jsonPath().getString("id");
+        context.addEndpoint(String.format("%s/%s", lastEndpoint, lastResponseId));
     }
 }

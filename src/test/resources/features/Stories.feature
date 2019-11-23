@@ -4,11 +4,18 @@ Feature: Stories in projects
 
   Background:
     Given I use "owner" user
-
-  @cleanProjects
-  Scenario: Verify post request for story endpoint
-    Given I send a POST request to "/projects" with json file "json/ProjectJsonBody.json"
+    And I send a POST request to "/projects" with body json:
+    """
+    {
+    "name": "{RANDOM}",
+    "new_account_name": "Test"
+    }
+    """
     And I save response as "Project"
+    And I save the request endpoint for deleting
+
+  @cleanData
+  Scenario: Verify post request for story endpoint
     When I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
@@ -21,17 +28,9 @@ Feature: Stories in projects
     And I should see the "current_state" as "unscheduled"
     And I should see the "story_type" as "feature"
 
-
-  @cleanProjects
+  @cleanData
   Scenario: Verify put request for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name":"{RANDOM}"
-    }
-    """
-    And I save response as "Project"
-    And I send a POST request to "/projects/{Project.id}/stories" with body json:
+    Given I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
     "name": "Story Test"
@@ -51,16 +50,9 @@ Feature: Stories in projects
     And I should see the "current_state" as "unscheduled"
     And I should see the "story_type" as "feature"
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify delete request for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name":"{RANDOM}"
-    }
-    """
-    And I save response as "Project"
-    And I send a POST request to "/projects/{Project.id}/stories" with body json:
+    Given I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
     "name": "Story Test"
@@ -76,15 +68,8 @@ Feature: Stories in projects
 
 
 # Negative Tests
-  @cleanProjects
+  @cleanData
   Scenario: Verify no value for current_state for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "{RANDOM}"
-    }
-    """
-    And I save response as "Project"
     When I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
@@ -96,15 +81,8 @@ Feature: Stories in projects
     Then I should see the status code as 400
     And I should see the "error" as "One or more request parameters was missing or invalid."
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify error for no estimate value with accepted current_state for story endpoint
-    Given I send a POST request to "/projects" with body json:
-    """
-    {
-    "name": "{RANDOM}"
-    }
-    """
-    And I save response as "Project"
     When I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
@@ -116,11 +94,8 @@ Feature: Stories in projects
     And I should see the "general_problem" as "Stories in the accepted state must be estimated."
 
 #Scenario outline tests
-  @cleanProjects
+  @cleanData
   Scenario Outline: Verify story_types for story endpoint
-    Given I send a POST request to "/projects" with body:
-     | name | "AT_{RANDOM}" |
-    And I save response as "Project"
     When I send a POST request to "/projects/{Project.id}/stories" with body:
       | name       | <name>       |
       | story_type | <story_type> |
@@ -133,11 +108,8 @@ Feature: Stories in projects
       | Story Test | chore      |
       | Story Test | release    |
 
-  @cleanProjects
+  @cleanData
   Scenario Outline: Verify current_state for story endpoint
-    Given I send a POST request to "/projects" with body:
-      | name | "AT_{RANDOM}" |
-    And I save response as "Project"
     When I send a POST request to "/projects/{Project.id}/stories" with body:
       | name          | <name>          |
       | estimate      | <estimate>      |
@@ -154,11 +126,8 @@ Feature: Stories in projects
       | Story Test | 1.00     | unstarted     |
       | Story Test | 1.00     | unscheduled   |
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify the size for story endpoint when adding stories
-    Given I send a POST request to "/projects" with body:
-      | name | "AT_{RANDOM}" |
-    And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body list:
       | name         | story_type |
       | Story Test 1 | feature    |
@@ -168,11 +137,8 @@ Feature: Stories in projects
     And I save response as "Stories"
     Then I should see the size of "id" in "Stories" as 3
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify the size of bugs for story endpoint when adding stories
-    Given I send a POST request to "/projects" with body:
-      | name | "AT_{RANDOM}" |
-    And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body list:
       | name         | story_type |
       | Story Test 1 | feature    |
@@ -186,11 +152,8 @@ Feature: Stories in projects
     And I save response as "Stories"
     Then I should see the size of type "bug" in "story_type" of "Stories" as 4
 
-  @cleanProjects
+  @cleanData
   Scenario Outline: Verify the size of bugs with story_type query param
-    Given I send a POST request to "/projects" with body:
-      | name | "AT_{RANDOM}" |
-    And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body list:
       | name         | story_type |
       | Story Test 1 | feature    |
@@ -209,11 +172,8 @@ Feature: Stories in projects
       | feature | 1    |
       | chore   | 2    |
 
-  @cleanProjects
+  @cleanData
   Scenario Outline: Verify the size of bugs with state query param
-    Given I send a POST request to "/projects" with body:
-      | name | "AT_{RANDOM}" |
-    And I save response as "Project"
     And I send a POST request to "/projects/{Project.id}/stories" with body list:
       | name       | estimate | current_state |
       | Story Test | 1.00     | accepted      |
