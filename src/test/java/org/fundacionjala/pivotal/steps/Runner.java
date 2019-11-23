@@ -39,7 +39,7 @@ public class Runner extends AbstractTestNGCucumberTests {
     @BeforeTest
     public void beforeAllScenarios() {
 
-        System.setProperty("dataproviderthreadcount", "5");
+        System.setProperty("dataproviderthreadcount", "3");
 
         Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER), "/projects");
         List<Integer> allID = response.jsonPath().getList("id");
