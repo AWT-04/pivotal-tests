@@ -139,7 +139,7 @@ public class RequestStepDefs {
     @And("I save the request endpoint for deleting")
     public void iSaveTheRequestEndpointForDeleting() {
         final String lastEndpoint = (String) context.getContext(KEY_LAST_ENDPOINT);
-        final String lastResponseId = ((Response) context.getContext("LAST_RESPONSE")).jsonPath().getString("id");
+        final String lastResponseId = ((Response) context.getContext(KEY_LAST_RESPONSE)).jsonPath().getString("id");
         context.addEndpoint(String.format("%s/%s", lastEndpoint, lastResponseId));
     }
 }
