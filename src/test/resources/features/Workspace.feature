@@ -4,6 +4,7 @@ Feature: Workspaces tests
   Background:
     Given I use "owner" user
 
+  @cleanData
   Scenario: I want confirm a workspace creation without projects
     Given I send a POST request to "/my/workspaces" with body json:
     """
@@ -11,19 +12,23 @@ Feature: Workspaces tests
       "name":"{RANDOM}"
       }
     """
+    And I save the request endpoint for deleting
     When I should see the status code as 200
     Then I should see "id" is not null
     And I should see "person_id" is not null
     And I should see the kind as "workspace"
 
+  @cleanData
   Scenario: I want confirm a workspace creation with a project
     Given I send a POST request to "/projects" with body json:
     """
       {
-      "name":"{RANDOM}"
+      "name":"{RANDOM}",
+      "new_account_name": "Test"
       }
     """
     And I save response as "newProject"
+    And I save the request endpoint for deleting
     And I send a GET request to "/projects/{newProject.id}"
     And I save response as "p"
     And I should see the status code as 200
@@ -33,6 +38,7 @@ Feature: Workspaces tests
       "name":"{RANDOM}"
       }
     """
+    And I save the request endpoint for deleting
     Then I should see the status code as 200
     And I should see "id" is not null
     And I should see "person_id" is not null
@@ -40,17 +46,16 @@ Feature: Workspaces tests
     And I should see "id" is not null
     And I should see "person_id" is not null
 
-  @cleanProjectsBefore
+  @cleanData
   Scenario: I want confirm a workspace creation with projects
     Given I send a POST request to "/projects" with body json:
       """
         {
         "name":"{RANDOM}",
-        "name":"{RANDOM}",
-        "name":"{RANDOM}",
-        "name":"{RANDOM}"
+        "new_account_name": "Test"
         }
       """
+    And I save the request endpoint for deleting
     And I send a GET request to "/projects"
     And I save response as "p"
     And I should see the status code as 200
@@ -60,6 +65,7 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
+    And I save the request endpoint for deleting
     Then I should see the status code as 200
     And I should see "id" is not null
     And I should see "person_id" is not null
@@ -67,7 +73,7 @@ Feature: Workspaces tests
     And I should see "id" is not null
     And I should see "person_id" is not null
 
-  @cleanProjectsBefore
+  @cleanData
   Scenario: I want to validate GET method execution for workspaces
     Given I send a POST request to "/my/workspaces" with body json:
       """
@@ -75,6 +81,7 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
+    And I save the request endpoint for deleting
     And I should see the status code as 200
     And I send a GET request to "/my/workspaces"
     And I save response as "myWorkspace"
@@ -85,18 +92,16 @@ Feature: Workspaces tests
     And I should see "id" is not null
     And I should see "person_id" is not null
 
-  @cleanProjects
-  @cleanWorkspaces
+  @cleanData
   Scenario: I want confirm a workspaces creation with projects in a single request
     Given I send a POST request to "/projects" with body json:
       """
         {
         "name":"{RANDOM}",
-        "name":"{RANDOM}",
-        "name":"{RANDOM}",
-        "name":"{RANDOM}"
+        "new_account_name": "Test"
         }
       """
+    And I save the request endpoint for deleting
     And I send a GET request to "/projects"
     And I save response as "p"
     And I should see the status code as 200
@@ -115,7 +120,7 @@ Feature: Workspaces tests
     And I should see "id" is not null
     And I should see "person_id" is not null
 
-  @cleanWorkspacesBefore
+  @cleanData
   Scenario: I want to validate GET method execution for workspaces by specific ID
     Given I send a POST request to "/my/workspaces" with body json:
       """
@@ -123,6 +128,7 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
+    And I save the request endpoint for deleting
     And I save response as "myWorkspace"
     When I should see the status code as 200
     And I send a GET request to "/my/workspaces/{myWorkspace.id}"
@@ -131,15 +137,17 @@ Feature: Workspaces tests
     And I should see "id" is not null
     And I should see "person_id" is not null
 
-  @cleanProjects
+  @cleanData
   Scenario: I want to validate a PUT request
     Given I send a POST request to "/projects" with body json:
       """
         {
-        "name":"{RANDOM}"
+        "name":"{RANDOM}",
+        "new_account_name": "Test"
         }
       """
     And I save response as "pro"
+    And I save the request endpoint for deleting
     And I should see the status code as 200
     And I send a POST request to "/my/workspaces" with body json:
       """
@@ -147,8 +155,8 @@ Feature: Workspaces tests
         "name":"{RANDOM}"
         }
       """
-
     And I save response as "ws"
+    And I save the request endpoint for deleting
     And I should see the status code as 200
 #    And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
 #      """
@@ -163,7 +171,7 @@ Feature: Workspaces tests
     And I should see "person_id" is not null
 
 
-  @cleanWorkspacesBefore
+  @cleanData
   Scenario: I want to validate DELETE method execution for workspaces by specific ID
     Given I send a POST request to "/my/workspaces" with body json:
       """
@@ -172,13 +180,13 @@ Feature: Workspaces tests
         }
       """
     And I save response as "myWorkspace"
+    And I save the request endpoint for deleting
     When I should see the status code as 200
     And I send a DELETE request to "/my/workspaces/{myWorkspace.id}"
     Then I save response as "ws"
     And I should see the kind as "workspace"
 
   # negative tests
-  @cleanWorkspaces
   Scenario: I want validate error message of workspace creation with empty name
     Given I send a POST request to "/my/workspaces" with body json:
       """
@@ -191,7 +199,6 @@ Feature: Workspaces tests
     And I should see the "kind" as "error"
     And I should see the "general_problem" as "Name can't be blank"
 
-  @cleanWorkspaces
   Scenario: I want validate error message of workspace creation with invalid project ids
     Given I send a POST request to "/my/workspaces" with body json:
       """
@@ -205,7 +212,6 @@ Feature: Workspaces tests
     And I should see the "kind" as "error"
     And I should see the "error" as "One or more request parameters was missing or invalid."
 
-  @cleanProjects
   Scenario: I want validate error message of workspace creation with invalid project ids
     Given I send a POST request to "/my/workspaces" with body json:
       """
@@ -217,14 +223,12 @@ Feature: Workspaces tests
     And I should see the "kind" as "error"
     And I should see the "error" as "One or more request parameters was missing or invalid."
 
-  @cleanProjects
   Scenario: I want validate error message for not existing workspace
     Given I send a GET request to "/my/workspaces/ABC"
     Then I should see the status code as 404
     And I should see the "kind" as "error"
     And I should see the "code" as "unfound_resource"
 
-  @cleanWorkspacesBefore
   Scenario: I want to validate error control of DELETE request for un existing workspace
     Given I send a DELETE request to "/my/workspaces/123"
     And I save response as "delete"
@@ -232,15 +236,17 @@ Feature: Workspaces tests
     And I should see the "kind" as "error"
     And I should see the "code" as "unfound_resource"
 
-  @cleanProjects @cleanWorkspaces
+  @cleanData
   Scenario: I want to validate an error sending parameters to workspaces PUT request
     Given I send a POST request to "/projects" with body json:
       """
         {
-        "name":"{RANDOM}"
+        "name":"{RANDOM}",
+        "new_account_name": "Test"
         }
       """
     And I save response as "pro"
+    And I save the request endpoint for deleting
     And I should see the status code as 200
     And I send a POST request to "/my/workspaces" with body json:
       """
@@ -249,6 +255,7 @@ Feature: Workspaces tests
         }
       """
     And I save response as "ws"
+    And I save the request endpoint for deleting
     And I should see the status code as 200
 #    And I send a PUT request to "/my/workspaces/{ws.id}" with body json:
 #      """

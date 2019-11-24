@@ -5,10 +5,12 @@ Feature: Tasks in stories
     And I send a POST request to "/projects" with body json:
     """
     {
-    "name": "{RANDOM}"
+    "name": "{RANDOM}",
+    "new_account_name": "Test"
     }
     """
     And I save response as "Project"
+    And I save the request endpoint for deleting
     And I send a POST request to "/projects/{Project.id}/stories" with body json:
     """
     {
@@ -17,7 +19,7 @@ Feature: Tasks in stories
     """
     And I save response as "S"
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify post request for task endpoint
     When I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """
@@ -32,7 +34,7 @@ Feature: Tasks in stories
     And I should see the "complete" as "false"
     And I should see the "position" as "1"
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify put request for task endpoint
     Given I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """
@@ -53,7 +55,7 @@ Feature: Tasks in stories
     And I should see the "complete" as "false"
     And I should see the "position" as "1"
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify delete request for task endpoint
     Given I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """
@@ -69,7 +71,7 @@ Feature: Tasks in stories
     And I should see the "kind" as "error"
     And I should see the "code" as "unfound_resource"
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify error request for task endpoint
     When I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """
@@ -79,7 +81,7 @@ Feature: Tasks in stories
     Then I should see the status code as 400
     And I should see the "error" as "One or more request parameters was missing or invalid."
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify GET request for task endpoint
     Given I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """
@@ -95,7 +97,7 @@ Feature: Tasks in stories
     And I should see the "complete" as "false"
     And I should see the "position" as "1"
 
-  @cleanProjects
+  @cleanData
   Scenario: Verify GET complete parameter request for task endpoint
     Given I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """
@@ -120,7 +122,7 @@ Feature: Tasks in stories
     And I should see the "position" as "1"
 
     # Join this scenario with the previous scenario
-  @cleanProjects
+  @cleanData
   Scenario: Verify GET position parameter request for task endpoint
     Given I send a POST request to "/projects/{Project.id}/stories/{S.id}/tasks" with body json:
     """

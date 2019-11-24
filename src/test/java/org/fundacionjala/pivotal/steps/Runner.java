@@ -15,18 +15,20 @@ import io.restassured.response.Response;
 
 import org.fundacionjala.core.api.Authentication;
 import org.fundacionjala.core.api.RequestManager;
+
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 
 import java.util.List;
-
-@CucumberOptions(
-        glue = {"org.fundacionjala"},
-        features = "src/test/resources/features/"
-)
 
 /**
  * This class delete all.
  */
+@CucumberOptions(
+        glue = {"org.fundacionjala"},
+        features = "src/test/resources/features/"
+)
 public class Runner extends AbstractTestNGCucumberTests {
 
     private static final String OWNER = "owner";
@@ -36,6 +38,9 @@ public class Runner extends AbstractTestNGCucumberTests {
      */
     @BeforeTest
     public void beforeAllScenarios() {
+
+        System.setProperty("dataproviderthreadcount", "3");
+
         Response response = RequestManager.get(Authentication.getRequestSpecification(OWNER), "/projects");
         List<Integer> allID = response.jsonPath().getList("id");
         for (Integer id : allID) {
@@ -46,5 +51,16 @@ public class Runner extends AbstractTestNGCucumberTests {
         for (Integer id : allID) {
             RequestManager.delete(Authentication.getRequestSpecification(OWNER), "/my/workspaces/" + id);
         }
+    }
+
+    @Override
+    @DataProvider(parallel = true)
+    public Object[][] scenarios() {
+        return super.scenarios();
+    }
+
+    @AfterTest
+    public void afterAllScenarios() {
+        // clean data
     }
 }

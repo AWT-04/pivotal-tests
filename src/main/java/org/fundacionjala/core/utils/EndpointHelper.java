@@ -14,6 +14,8 @@ import org.fundacionjala.pivotal.ScenarioContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.restassured.response.Response;
+
 /**
  * This class build the different endpoint.
  *
@@ -39,7 +41,7 @@ public final class EndpointHelper {
             Matcher matcher = pattern.matcher(endpointSplit[i]);
             if (matcher.find()) {
                 String[] keyValue = matcher.group().split("\\.");
-                String valueToReplace = context.getContext(keyValue[0]).jsonPath().getString(keyValue[1]);
+                String valueToReplace = ((Response) context.getContext(keyValue[0])).jsonPath().getString(keyValue[1]);
                 endpointSplit[i] = valueToReplace;
             }
         }

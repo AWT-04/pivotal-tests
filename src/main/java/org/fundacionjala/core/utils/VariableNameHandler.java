@@ -17,6 +17,8 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.restassured.response.Response;
+
 import org.fundacionjala.pivotal.ScenarioContext;
 
 /**
@@ -109,7 +111,8 @@ public final class VariableNameHandler {
 
                 if (var.contains(".")) {
                     String[] keyValue = matcher.group().split("\\.");
-                    String valueToReplace = context.getContext(keyValue[0]).jsonPath().getString(keyValue[1]);
+                    String valueToReplace = ((Response) context.getContext(keyValue[0])).jsonPath()
+                            .getString(keyValue[1]);
                     linesSplit[i] = linesSplit[i].replaceAll("\\{" + matcher.group() + "}", valueToReplace);
 
                 } else {

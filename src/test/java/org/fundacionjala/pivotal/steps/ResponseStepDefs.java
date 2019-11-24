@@ -3,8 +3,9 @@ package org.fundacionjala.pivotal.steps;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
-import org.fundacionjala.pivotal.ScenarioContext;
 import org.testng.Assert;
+
+import org.fundacionjala.pivotal.ScenarioContext;
 
 public class ResponseStepDefs {
 
@@ -12,20 +13,19 @@ public class ResponseStepDefs {
     private Response response;
 
     public ResponseStepDefs(final ScenarioContext context) {
-
         this.context = context;
     }
 
     @Then("Validate status code {int} of response {string}")
     public void validateStatusCodeOfResponse(int statusCode, final String resp) {
-        response = context.getContext(resp);
+        response = ((Response) context.getContext(resp));
         int status = response.statusCode();
         Assert.assertEquals(status, statusCode);
     }
 
     @Then("I should see the status code as {int}")
     public void iShouldSeeTheStatusCode(int statusCode) {
-        response = context.getContext("LAST_RESPONSE");
+        response = ((Response) context.getContext(RequestStepDefs.KEY_LAST_RESPONSE));
         Assert.assertEquals(this.response.statusCode(), statusCode);
 
     }
@@ -42,7 +42,7 @@ public class ResponseStepDefs {
 
     @And("I should see {string} is not null")
     public void iShouldSeeIsNotNull(final String varName) {
-        response = context.getContext("LAST_RESPONSE");
+        response = ((Response) context.getContext(RequestStepDefs.KEY_LAST_RESPONSE));
         Assert.assertNotNull(this.response.jsonPath().getString(varName));
     }
 

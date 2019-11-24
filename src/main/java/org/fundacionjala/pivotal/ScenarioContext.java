@@ -1,22 +1,32 @@
 package org.fundacionjala.pivotal;
 
-import io.restassured.response.Response;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ScenarioContext {
 
-    private HashMap<String, Response> context;
+    private HashMap<String, Object> context;
+    private List<String> endpoints;
 
     public ScenarioContext() {
         context = new HashMap<>();
+        endpoints = new ArrayList<>();
     }
 
-    public void setContext(final String key, final Response response) {
-        this.context.put(key, response);
+    public void setContext(final String key, final Object anyData) {
+        this.context.put(key, anyData);
     }
 
-    public Response getContext(final String key) {
+    public Object getContext(final String key) {
         return context.get(key);
+    }
+
+    public void addEndpoint(final String endpoint) {
+        endpoints.add(endpoint);
+    }
+
+    public List<String> getEndpoints() {
+        return endpoints;
     }
 }
